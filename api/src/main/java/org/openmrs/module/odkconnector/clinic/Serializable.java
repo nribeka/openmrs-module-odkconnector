@@ -14,22 +14,16 @@
 
 package org.openmrs.module.odkconnector.clinic;
 
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
 
 public interface Serializable {
-
-	/**
-	 * Method to read the object
-	 *
-	 * @param stream the input stream
-	 */
-	void read(InputStream stream);
 
 	/**
 	 * Method to write the object to the output stream
 	 *
 	 * @param stream the output stream
+	 * @throws java.io.IOException when writing fail
 	 */
-	void write(OutputStream stream);
+	void write(DataOutputStream stream) throws IOException;
 }

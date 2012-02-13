@@ -14,11 +14,33 @@
 
 package org.openmrs.module.odkconnector.clinic.data;
 
+import java.io.DataOutputStream;
+import java.io.IOException;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.openmrs.module.odkconnector.clinic.Serializable;
 
-public class PatientObs {
+public class PatientObs implements Serializable {
 
 	private static final Log log = LogFactory.getLog(PatientObs.class);
 
+	public static final Integer TYPE_STRING = 1;
+
+	public static final Integer TYPE_INT = 2;
+
+	public static final Integer TYPE_FLOAT = 3;
+
+	public static final Integer TYPE_DATE = 4;
+
+	private String concept;
+
+	/**
+	 * Method to write the object to the output stream
+	 *
+	 * @param stream the output stream
+	 */
+	@Override
+	public void write(final DataOutputStream stream) throws IOException {
+	}
 }

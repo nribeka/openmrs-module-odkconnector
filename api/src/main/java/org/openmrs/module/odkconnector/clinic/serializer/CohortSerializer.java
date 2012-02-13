@@ -14,11 +14,53 @@
 
 package org.openmrs.module.odkconnector.clinic.serializer;
 
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.util.List;
+
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang.ClassUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.openmrs.Cohort;
+import org.openmrs.module.odkconnector.clinic.Serializer;
 
-public class CohortSerializer {
+public class CohortSerializer implements Serializer {
 
 	private static final Log log = LogFactory.getLog(CohortSerializer.class);
 
+	/**
+	 * Write the data to the output stream.
+	 *
+	 * @param os   the output stream
+	 * @param data the data that need to be written to the output stream
+	 */
+	@Override
+	public void serialize(final OutputStream os, final Object data) throws IOException {
+
+		DataOutputStream stream = new DataOutputStream(os);
+
+		List cohorts = null;
+		if (ClassUtils.isAssignable(data.getClass(), List.class))
+			cohorts = (List) data;
+
+		// not null checking are also performed inside the isEmpty method
+		if (cohorts == null || CollectionUtils.isEmpty(cohorts))
+			stream.write(Serializer.ZERO);
+		else {
+			stream.write(cohorts.size());
+			for (Object cohort : cohorts)
+				if (ClassUtils.isAssignable(cohort.getClass(), Cohort.class))
+					serialize(os, (Cohort) cohort);
+		}
+	}
+
+	private void serialize(final OutputStream os, final Cohort cohort) throws IOException {
+
+		DataOutputStream stream = new DataOutputStream(os);
+
+		stream.writeInt(cohort.getCohortId());
+		stream.writeUTF(cohort.getName());
+	}
 }

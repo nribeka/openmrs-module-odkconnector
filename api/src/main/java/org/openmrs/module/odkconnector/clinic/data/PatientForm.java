@@ -14,11 +14,44 @@
 
 package org.openmrs.module.odkconnector.clinic.data;
 
+import java.io.DataOutputStream;
+import java.io.IOException;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.openmrs.module.odkconnector.clinic.Serializable;
 
-public class PatientForm {
+public class PatientForm implements Serializable {
 
 	private static final Log log = LogFactory.getLog(PatientForm.class);
 
+	private Integer formId;
+
+	/**
+	 * Get the form id
+	 *
+	 * @return the form id
+	 */
+	public Integer getFormId() {
+		return formId;
+	}
+
+	/**
+	 * Set the form id
+	 *
+	 * @param formId the form id
+	 */
+	public void setFormId(final Integer formId) {
+		this.formId = formId;
+	}
+
+	/**
+	 * Method to write the object to the output stream
+	 *
+	 * @param stream the output stream
+	 */
+	@Override
+	public void write(final DataOutputStream stream) throws IOException {
+		stream.writeInt(getFormId());
+	}
 }

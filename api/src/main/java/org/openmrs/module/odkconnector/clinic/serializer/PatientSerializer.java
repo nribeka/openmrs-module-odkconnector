@@ -14,6 +14,7 @@
 
 package org.openmrs.module.odkconnector.clinic.serializer;
 
+import java.io.IOException;
 import java.io.OutputStream;
 
 import org.apache.commons.logging.Log;
@@ -31,6 +32,6 @@ public class PatientSerializer implements Serializer {
 	 * @param data the data that need to be written to the output stream
 	 */
 	@Override
-	public void serialize(final OutputStream os, final Object data) {
+	public void serialize(final OutputStream os, final Object data) throws IOException {
 	}
 }

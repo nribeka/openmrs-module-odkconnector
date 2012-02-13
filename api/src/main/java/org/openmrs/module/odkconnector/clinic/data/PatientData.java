@@ -14,24 +14,77 @@
 
 package org.openmrs.module.odkconnector.clinic.data;
 
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.openmrs.module.odkconnector.clinic.Serializable;
+import org.openmrs.module.odkconnector.clinic.utils.SerializationUtils;
 
 public class PatientData implements Serializable {
 
 	private static final Log log = LogFactory.getLog(PatientData.class);
 
+	private Integer patientId;
+
+	private List<PatientObs> observations;
+
+	private List<PatientForm> forms;
+
 	/**
-	 * Method to read the object
+	 * Get the internal patient id for the patient data
 	 *
-	 * @param stream the input stream
+	 * @return the internal id for the patient data
 	 */
-	@Override
-	public void read(final InputStream stream) {
+	public Integer getPatientId() {
+		return patientId;
+	}
+
+	/**
+	 * Set the internal patient id for this patient data
+	 *
+	 * @param patientId the internal id for the patient data
+	 */
+	public void setPatientId(final Integer patientId) {
+		this.patientId = patientId;
+	}
+
+	/**
+	 * Get all observations information from the patient data
+	 *
+	 * @return list of all observations for the patient data
+	 */
+	public List<PatientObs> getObservations() {
+		return observations;
+	}
+
+	/**
+	 * Set all the observations information for the patient data
+	 *
+	 * @param observations list of all observations for the patient data
+	 */
+	public void setObservations(final List<PatientObs> observations) {
+		this.observations = observations;
+	}
+
+	/**
+	 * Get all forms applicable for the patient data
+	 *
+	 * @return list of all forms information for the patient data
+	 */
+	public List<PatientForm> getForms() {
+		return forms;
+	}
+
+	/**
+	 * Set all applicable forms information for the patient data
+	 *
+	 * @param forms list of all forms information for the patient data
+	 */
+	public void setForms(final List<PatientForm> forms) {
+		this.forms = forms;
 	}
 
 	/**
@@ -40,6 +93,9 @@ public class PatientData implements Serializable {
 	 * @param stream the output stream
 	 */
 	@Override
-	public void write(final OutputStream stream) {
+	public void write(final DataOutputStream stream) throws IOException {
+		stream.writeInt(getPatientId());
+		SerializationUtils.serialize(getObservations(), stream);
+		SerializationUtils.serialize(getForms(), stream);
 	}
 }
