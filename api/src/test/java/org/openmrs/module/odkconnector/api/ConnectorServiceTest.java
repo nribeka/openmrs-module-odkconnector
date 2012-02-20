@@ -11,18 +11,24 @@
  *
  * Copyright (C) OpenMRS, LLC.  All Rights Reserved.
  */
+
 package org.openmrs.module.odkconnector.api;
 
-import static org.junit.Assert.*;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.junit.Test;
 import org.openmrs.api.context.Context;
 import org.openmrs.test.BaseModuleContextSensitiveTest;
 
+import static org.junit.Assert.assertNotNull;
+
 /**
- * Tests {@link ${ConnectorService}}.
+ * Tests {@link ConnectorService}.
  */
 public class ConnectorServiceTest extends BaseModuleContextSensitiveTest {
-	
+
+	private static final Log log = LogFactory.getLog(ConnectorServiceTest.class);
+
 	@Test
 	public void shouldSetupContext() {
 		assertNotNull(Context.getService(ConnectorService.class));

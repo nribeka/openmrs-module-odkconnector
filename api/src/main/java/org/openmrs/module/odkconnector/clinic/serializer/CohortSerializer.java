@@ -56,11 +56,13 @@ public class CohortSerializer implements Serializer {
 		}
 	}
 
-	private void serialize(final OutputStream os, final Cohort cohort) throws IOException {
-
-		DataOutputStream stream = new DataOutputStream(os);
-
-		stream.writeInt(cohort.getCohortId());
-		stream.writeUTF(cohort.getName());
+	private void serialize(final OutputStream os, final Cohort cohort) {
+		try {
+			DataOutputStream stream = new DataOutputStream(os);
+			stream.writeInt(cohort.getCohortId());
+			stream.writeUTF(cohort.getName());
+		} catch (IOException e) {
+			log.error("Serializing cohort element failed", e);
+		}
 	}
 }

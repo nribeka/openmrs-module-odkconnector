@@ -14,12 +14,17 @@
 
 package org.openmrs.module.odkconnector.clinic.serializer;
 
+import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.List;
 
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang.ClassUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.openmrs.module.odkconnector.clinic.Serializer;
+import org.openmrs.module.odkconnector.clinic.data.PatientData;
 
 public class PatientSerializer implements Serializer {
 
@@ -33,5 +38,30 @@ public class PatientSerializer implements Serializer {
 	 */
 	@Override
 	public void serialize(final OutputStream os, final Object data) throws IOException {
+
+		DataOutputStream stream = new DataOutputStream(os);
+
+		List patientsData = null;
+		if (ClassUtils.isAssignable(data.getClass(), List.class))
+			patientsData = (List) data;
+
+		if (patientsData == null || CollectionUtils.isEmpty(patientsData))
+			stream.writeInt(Serializer.ZERO);
+		else {
+			stream.writeInt(patientsData.size());
+			for (Object patientData : patientsData) {
+				if (ClassUtils.isAssignable(patientData.getClass(), PatientData.class))
+					serialize(os, (PatientData) patientData);
+			}
+		}
+	}
+
+	private void serialize(final OutputStream os, final PatientData patientData) {
+		try {
+			DataOutputStream stream = new DataOutputStream(os);
+			patientData.write(stream);
+		} catch (IOException e) {
+			log.error("Serializing patient data element failed", e);
+		}
 	}
 }
