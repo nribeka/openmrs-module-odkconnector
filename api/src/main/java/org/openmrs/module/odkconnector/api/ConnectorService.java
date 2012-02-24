@@ -11,26 +11,43 @@
  *
  * Copyright (C) OpenMRS, LLC.  All Rights Reserved.
  */
+
 package org.openmrs.module.odkconnector.api;
 
+import java.util.List;
+
+import org.openmrs.Concept;
+import org.openmrs.Patient;
+import org.openmrs.api.APIException;
 import org.openmrs.api.OpenmrsService;
+import org.openmrs.module.odkconnector.clinic.data.PatientObs;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
  * This service exposes module's core functionality. It is a Spring managed bean which is configured in moduleApplicationContext.xml.
- * <p>
+ * <p/>
  * It can be accessed only via Context:<br>
  * <code>
  * Context.getService(ConnectorServiceService.class).someMethod();
  * </code>
- * 
+ *
  * @see org.openmrs.api.context.Context
  */
 @Transactional
 public interface ConnectorService extends OpenmrsService {
-     
+
 	/*
-	 * Add service methods here
-	 * 
+		 * Add service methods here
+		 *
+		 */
+
+	/**
+	 * Get all applicable patient observations based on the concept list information
+	 *
+	 * @param patient  the patient
+	 * @param concepts the applicable concept list
+	 * @return all observation for the patient based on the concept list
+	 * @throws APIException when failed getting the observation information
 	 */
+	List<PatientObs> getPatientObservations(final Patient patient, final List<Concept> concepts) throws APIException;
 }

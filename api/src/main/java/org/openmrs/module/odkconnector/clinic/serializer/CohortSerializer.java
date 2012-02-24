@@ -47,9 +47,9 @@ public class CohortSerializer implements Serializer {
 
 		// not null checking are also performed inside the isEmpty method
 		if (cohorts == null || CollectionUtils.isEmpty(cohorts))
-			stream.write(Serializer.ZERO);
+			stream.writeInt(Serializer.ZERO);
 		else {
-			stream.write(cohorts.size());
+			stream.writeInt(cohorts.size());
 			for (Object cohort : cohorts)
 				if (ClassUtils.isAssignable(cohort.getClass(), Cohort.class))
 					serialize(os, (Cohort) cohort);

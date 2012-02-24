@@ -35,7 +35,6 @@ import org.openmrs.module.odkconnector.clinic.data.PatientData;
 import org.openmrs.module.odkconnector.clinic.data.PatientForm;
 import org.openmrs.module.odkconnector.clinic.data.PatientObs;
 import org.openmrs.test.BaseModuleContextSensitiveTest;
-import org.openmrs.test.TestUtil;
 import org.openmrs.util.OpenmrsUtil;
 
 /**
@@ -47,12 +46,7 @@ public class PatientSerializerTest extends BaseModuleContextSensitiveTest {
 
 	@Test
 	public void serialize_shouldSerializePatientInformation() throws Exception {
-		TestUtil.printOutTableContents(getConnection(), "person");
-		TestUtil.printOutTableContents(getConnection(), "patient");
-		TestUtil.printOutTableContents(getConnection(), "patient_identifier");
-		TestUtil.printOutTableContents(getConnection(), "obs");
-
-		File file = File.createTempFile("Serialization", "Example");
+		File file = File.createTempFile("PatientSerialization", "Example");
 		BufferedOutputStream outputStream = new BufferedOutputStream(new FileOutputStream(file));
 
 		log.info("Writing to: " + file.getAbsolutePath());
@@ -88,7 +82,7 @@ public class PatientSerializerTest extends BaseModuleContextSensitiveTest {
 					patientObs.setValue(observation.getValueAsString(Context.getLocale()));
 				}
 
-				patientData.addObservations(patientObs);
+				patientData.addObservation(patientObs);
 			}
 
 			PatientForm patientForm = new PatientForm();

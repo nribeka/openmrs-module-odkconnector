@@ -78,8 +78,17 @@ public class PatientData implements Serializable {
 	 *
 	 * @param patientObs the patient observation
 	 */
-	public void addObservations(PatientObs patientObs) {
+	public void addObservation(final PatientObs patientObs) {
 		getObservations().add(patientObs);
+	}
+
+	/**
+	 * Add the patient observation into the list of all patient observations
+	 *
+	 * @param observations the patient observations
+	 */
+	public void addObservations(final List<PatientObs> observations) {
+		getObservations().addAll(observations);
 	}
 
 	/**
@@ -94,21 +103,30 @@ public class PatientData implements Serializable {
 	}
 
 	/**
-	 * Add the patient form into the list of all patient forms
-	 *
-	 * @param patientForm the patient form
-	 */
-	public void addForm(PatientForm patientForm) {
-		getForms().add(patientForm);
-	}
-
-	/**
 	 * Set all applicable forms information for the patient data
 	 *
 	 * @param forms list of all forms information for the patient data
 	 */
 	public void setForms(final List<PatientForm> forms) {
 		this.forms = forms;
+	}
+
+	/**
+	 * Add the patient form into the list of all patient forms
+	 *
+	 * @param patientForm the patient form
+	 */
+	public void addForm(final PatientForm patientForm) {
+		getForms().add(patientForm);
+	}
+
+	/**
+	 * Add the patient form into the list of all patient forms
+	 *
+	 * @param forms the patient forms
+	 */
+	public void addForms(final List<PatientForm> forms) {
+		getForms().addAll(forms);
 	}
 
 	/**
