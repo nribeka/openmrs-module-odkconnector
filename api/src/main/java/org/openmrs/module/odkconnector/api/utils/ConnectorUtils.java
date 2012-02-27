@@ -12,18 +12,13 @@
  * Copyright (C) OpenMRS, LLC.  All Rights Reserved.
  */
 
-package org.openmrs.module.odkconnector.clinic;
+package org.openmrs.module.odkconnector.api.utils;
 
-import java.io.DataOutputStream;
-import java.io.IOException;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
-public interface Serializable {
+public class ConnectorUtils {
 
-	/**
-	 * Method to write the object to the output stream
-	 *
-	 * @param stream the output stream
-	 * @throws java.io.IOException when writing fail
-	 */
-	void write(DataOutputStream stream) throws IOException;
+	private static final Log log = LogFactory.getLog(ConnectorUtils.class);
+
 }

@@ -17,17 +17,16 @@ package org.openmrs.module.odkconnector.api.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.openmrs.Concept;
+import org.openmrs.Cohort;
 import org.openmrs.Obs;
 import org.openmrs.Patient;
 import org.openmrs.api.APIException;
-import org.openmrs.api.context.Context;
 import org.openmrs.api.impl.BaseOpenmrsService;
 import org.openmrs.module.odkconnector.api.ConnectorService;
 import org.openmrs.module.odkconnector.api.db.ConnectorDAO;
-import org.openmrs.module.odkconnector.clinic.data.PatientObs;
 
 /**
  * It is a default implementation of {@link org.openmrs.module.odkconnector.api.ConnectorService}.
@@ -52,43 +51,31 @@ public class ConnectorServiceImpl extends BaseOpenmrsService implements Connecto
 		return dao;
 	}
 
-
 	/**
-	 * Get all applicable patient observations based on the concept list information
+	 * Service methods to get all patients inside the cohort
 	 *
-	 * @param patient  the patient
-	 * @param concepts the applicable concept list
-	 * @return all observation for the patient based on the concept list
-	 * @throws APIException when failed getting the observation information
+	 * @param cohort the cohort
+	 * @return all patients in the cohort or empty list when no patient match the patient id in the cohort
+	 * @throws org.openmrs.api.APIException when the process failed
 	 */
 	@Override
-	public List<PatientObs> getPatientObservations(final Patient patient, final List<Concept> concepts) throws APIException {
-		List<PatientObs> patientObservations = new ArrayList<PatientObs>();
-		for (Concept concept : concepts) {
-			List<Obs> observations = Context.getObsService().getObservationsByPersonAndConcept(patient, concept);
-			for (Obs observation : observations) {
-				PatientObs patientObservation = new PatientObs();
-				patientObservation.setConcept(observation.getConcept().getDisplayString());
-				patientObservation.setDatetime(observation.getObsDatetime());
+	public List<Patient> getCohortPatients(final Cohort cohort) throws APIException {
+		if (cohort == null || CollectionUtils.isEmpty(cohort.getMemberIds()))
+			return new ArrayList<Patient>();
+		return dao.getCohortPatients(cohort);
+	}
 
-				if (observation.getValueDatetime() != null) {
-					patientObservation.setType(PatientObs.TYPE_DATE);
-					patientObservation.setValue(observation.getValueDatetime());
-				} else if (observation.getValueCoded() != null) {
-					patientObservation.setType(PatientObs.TYPE_INT);
-					patientObservation.setValue(observation.getValueCoded());
-				} else if (observation.getValueNumeric() != null) {
-					patientObservation.setType(PatientObs.TYPE_DOUBLE);
-					patientObservation.setValue(observation.getValueNumeric());
-				} else {
-					patientObservation.setType(PatientObs.TYPE_STRING);
-					patientObservation.setValue(observation.getValueAsString(Context.getLocale()));
-				}
-
-				patientObservations.add(patientObservation);
-			}
-		}
-
-		return patientObservations;
+	/**
+	 * Service methods to get all observations for all patients in the cohort
+	 *
+	 * @param cohort the cohort
+	 * @return all observations for patients in the cohort or empty list when no observations for the patient ids in the cohort exists
+	 * @throws org.openmrs.api.APIException
+	 */
+	@Override
+	public List<Obs> getCohortObservations(final Cohort cohort) throws APIException {
+		if (cohort == null || CollectionUtils.isEmpty(cohort.getMemberIds()))
+			return new ArrayList<Obs>();
+		return dao.getCohortObservations(cohort);
 	}
 }

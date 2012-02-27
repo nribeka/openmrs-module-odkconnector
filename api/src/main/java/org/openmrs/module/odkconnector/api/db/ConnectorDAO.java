@@ -11,14 +11,39 @@
  *
  * Copyright (C) OpenMRS, LLC.  All Rights Reserved.
  */
+
 package org.openmrs.module.odkconnector.api.db;
 
+import java.util.List;
+
+import org.openmrs.Cohort;
+import org.openmrs.Obs;
+import org.openmrs.Patient;
+
 /**
- *  Database methods for {@link org.openmrs.module.odkconnector.api.ConnectorService}.
+ * Database methods for {@link org.openmrs.module.odkconnector.api.ConnectorService}.
  */
 public interface ConnectorDAO {
-	
+
 	/*
-	 * Add DAO methods here
+		 * Add DAO methods here
+		 */
+
+	/**
+	 * Service methods to get all patients inside the cohort
+	 *
+	 * @param cohort the cohort
+	 * @return all patients in the cohort or empty list when no patient match the patient id in the cohort
+	 * @throws org.openmrs.api.APIException when the process failed
 	 */
+	List<Patient> getCohortPatients(Cohort cohort);
+
+	/**
+	 * Service methods to get all observations for all patients in the cohort
+	 *
+	 * @param cohort the cohort
+	 * @return all observations for patients in the cohort or empty list when no observations for the patient ids in the cohort exists
+	 * @throws org.openmrs.api.APIException
+	 */
+	List<Obs> getCohortObservations(Cohort cohort);
 }

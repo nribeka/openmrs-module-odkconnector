@@ -11,9 +11,8 @@
 	<bean parent="serviceContext">
 		<property name="moduleService">
 			<list>
-				<value>${project.parent.groupId}.${project.parent.artifactId}.api.ConnectorServiceService</value>
-				<bean
-						class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+				<value>org.openmrs.module.odkconnector.api.ConnectorService</value>
+				<bean class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
 					<property name="transactionManager">
 						<ref bean="transactionManager"/>
 					</property>

@@ -16,11 +16,11 @@ package org.openmrs.module.odkconnector.api;
 
 import java.util.List;
 
-import org.openmrs.Concept;
+import org.openmrs.Cohort;
+import org.openmrs.Obs;
 import org.openmrs.Patient;
 import org.openmrs.api.APIException;
 import org.openmrs.api.OpenmrsService;
-import org.openmrs.module.odkconnector.clinic.data.PatientObs;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -37,17 +37,27 @@ import org.springframework.transaction.annotation.Transactional;
 public interface ConnectorService extends OpenmrsService {
 
 	/*
-		 * Add service methods here
-		 *
-		 */
+	 * Add service methods here
+	 *
+	 */
 
 	/**
-	 * Get all applicable patient observations based on the concept list information
+	 * Service methods to get all patients inside the cohort
 	 *
-	 * @param patient  the patient
-	 * @param concepts the applicable concept list
-	 * @return all observation for the patient based on the concept list
-	 * @throws APIException when failed getting the observation information
+	 * @param cohort the cohort
+	 * @return all patients in the cohort or empty list when no patient match the patient id in the cohort
+	 * @throws APIException when the process failed
 	 */
-	List<PatientObs> getPatientObservations(final Patient patient, final List<Concept> concepts) throws APIException;
+	@Transactional(readOnly = true)
+	List<Patient> getCohortPatients(Cohort cohort) throws APIException;
+
+	/**
+	 * Service methods to get all observations for all patients in the cohort
+	 *
+	 * @param cohort the cohort
+	 * @return all observations for patients in the cohort or empty list when no observations for the patient ids in the cohort exists
+	 * @throws APIException
+	 */
+	@Transactional(readOnly = true)
+	List<Obs> getCohortObservations(Cohort cohort) throws APIException;
 }

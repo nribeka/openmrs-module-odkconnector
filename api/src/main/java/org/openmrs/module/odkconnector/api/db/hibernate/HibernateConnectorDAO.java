@@ -14,9 +14,18 @@
 
 package org.openmrs.module.odkconnector.api.db.hibernate;
 
+import java.util.Arrays;
+import java.util.List;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.hibernate.Criteria;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Restrictions;
+import org.openmrs.Cohort;
+import org.openmrs.Obs;
+import org.openmrs.Patient;
+import org.openmrs.api.context.Context;
 import org.openmrs.module.odkconnector.api.db.ConnectorDAO;
 
 /**
@@ -40,5 +49,30 @@ public class HibernateConnectorDAO implements ConnectorDAO {
 	 */
 	public SessionFactory getSessionFactory() {
 		return sessionFactory;
+	}
+
+	/**
+	 * @see org.openmrs.module.odkconnector.api.ConnectorService#getCohortPatients(org.openmrs.Cohort)
+	 */
+	@Override
+	@SuppressWarnings("unchecked")
+	public List<Patient> getCohortPatients(final Cohort cohort) {
+		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(Patient.class);
+		criteria.add(Restrictions.in("patientId", cohort.getMemberIds()));
+		criteria.add(Restrictions.eq("voided", Boolean.FALSE));
+		return criteria.list();
+	}
+
+	/**
+	 * @see org.openmrs.module.odkconnector.api.ConnectorService#getCohortObservations(org.openmrs.Cohort)
+	 */
+	@Override
+	@SuppressWarnings("unchecked")
+	public List<Obs> getCohortObservations(final Cohort cohort) {
+		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(Obs.class);
+		criteria.add(Restrictions.in("personId", cohort.getMemberIds()));
+		criteria.add(Restrictions.in("concept", Arrays.asList(Context.getConceptService().getConcept("CD4"), Context.getConceptService().getConcept("HGB"))));
+		criteria.add(Restrictions.eq("voided", Boolean.FALSE));
+		return criteria.list();
 	}
 }

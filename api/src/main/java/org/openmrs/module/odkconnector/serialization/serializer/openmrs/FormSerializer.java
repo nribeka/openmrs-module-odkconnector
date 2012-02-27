@@ -12,46 +12,30 @@
  * Copyright (C) OpenMRS, LLC.  All Rights Reserved.
  */
 
-package org.openmrs.module.odkconnector.clinic.data;
+package org.openmrs.module.odkconnector.serialization.serializer.openmrs;
 
-import java.io.DataOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.openmrs.module.odkconnector.clinic.Serializable;
+import org.openmrs.Form;
+import org.openmrs.annotation.Handler;
+import org.openmrs.module.odkconnector.serialization.Serializer;
 
-public class PatientForm implements Serializable {
+@Handler(supports = Form.class, order = 50)
+public class FormSerializer implements Serializer {
 
-	private static final Log log = LogFactory.getLog(PatientForm.class);
-
-	private Integer formId;
-
-	/**
-	 * Get the form id
-	 *
-	 * @return the form id
-	 */
-	public Integer getFormId() {
-		return formId;
-	}
+	private static final Log log = LogFactory.getLog(FormSerializer.class);
 
 	/**
-	 * Set the form id
-	 *
-	 * @param formId the form id
-	 */
-	public void setFormId(final Integer formId) {
-		this.formId = formId;
-	}
-
-	/**
-	 * Method to write the object to the output stream
+	 * Write the data to the output stream.
 	 *
 	 * @param stream the output stream
+	 * @param data   the data that need to be written to the output stream
+	 * @throws java.io.IOException thrown when the writing process encounter is failing
 	 */
 	@Override
-	public void write(final DataOutputStream stream) throws IOException {
-		stream.writeInt(getFormId());
+	public void write(final OutputStream stream, final Object data) throws IOException {
 	}
 }

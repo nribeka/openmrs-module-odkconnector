@@ -12,7 +12,7 @@
  * Copyright (C) OpenMRS, LLC.  All Rights Reserved.
  */
 
-package org.openmrs.module.odkconnector.clinic.serializer;
+package org.openmrs.module.odkconnector.serialization.serializer.openmrs;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -20,6 +20,9 @@ import java.io.DataInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.util.List;
+import java.util.zip.GZIPInputStream;
+import java.util.zip.GZIPOutputStream;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -27,8 +30,9 @@ import org.junit.Test;
 import org.openmrs.Cohort;
 import org.openmrs.api.CohortService;
 import org.openmrs.api.context.Context;
-import org.openmrs.module.odkconnector.clinic.Serializer;
+import org.openmrs.module.odkconnector.serialization.Serializer;
 import org.openmrs.test.BaseModuleContextSensitiveTest;
+import org.openmrs.util.HandlerUtil;
 
 public class CohortSerializerTest extends BaseModuleContextSensitiveTest {
 
@@ -56,14 +60,15 @@ public class CohortSerializerTest extends BaseModuleContextSensitiveTest {
 		cohortService.saveCohort(secondCohort);
 
 		File file = File.createTempFile("CohortSerialization", "Example");
-		BufferedOutputStream outputStream = new BufferedOutputStream(new FileOutputStream(file));
+		GZIPOutputStream outputStream = new GZIPOutputStream(new BufferedOutputStream(new FileOutputStream(file)));
 
-		Serializer serializer = new CohortSerializer();
-		serializer.serialize(outputStream, cohortService.getAllCohorts());
+		List<Cohort> cohorts = cohortService.getAllCohorts();
+		Serializer serializer = HandlerUtil.getPreferredHandler(Serializer.class, List.class);
+		serializer.write(outputStream, cohorts);
 
 		outputStream.close();
 
-		BufferedInputStream inputStream = new BufferedInputStream(new FileInputStream(file));
+		GZIPInputStream inputStream = new GZIPInputStream(new BufferedInputStream(new FileInputStream(file)));
 		DataInputStream dataInputStream = new DataInputStream(inputStream);
 
 		Integer cohortCounts = dataInputStream.readInt();
