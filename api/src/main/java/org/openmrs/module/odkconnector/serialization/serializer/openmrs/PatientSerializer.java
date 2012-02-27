@@ -45,8 +45,9 @@ public class PatientSerializer implements Serializer {
 		Patient patient = (Patient) data;
 
 		DataOutputStream outputStream = new DataOutputStream(stream);
+		// skip if the patient is an invalid patient
 		if (patient == null || patient.getPersonName() == null || patient.getPatientIdentifier() == null)
-			throw new IOException("Trying to write invalid patient information.");
+			return;
 
 		outputStream.writeInt(patient.getPatientId());
 

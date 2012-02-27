@@ -24,7 +24,7 @@ import org.openmrs.module.ModuleActivator;
  */
 public class ConnectorActivator implements ModuleActivator {
 
-	protected Log log = LogFactory.getLog(getClass());
+	private static final Log log = LogFactory.getLog(ConnectorActivator.class);
 
 	/**
 	 * @see ModuleActivator#willRefreshContext()

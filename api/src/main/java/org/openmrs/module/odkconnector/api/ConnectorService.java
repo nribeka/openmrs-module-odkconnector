@@ -56,7 +56,7 @@ public interface ConnectorService extends OpenmrsService {
 	 *
 	 * @param cohort the cohort
 	 * @return all observations for patients in the cohort or empty list when no observations for the patient ids in the cohort exists
-	 * @throws APIException
+	 * @throws APIException when the process failed
 	 */
 	@Transactional(readOnly = true)
 	List<Obs> getCohortObservations(Cohort cohort) throws APIException;

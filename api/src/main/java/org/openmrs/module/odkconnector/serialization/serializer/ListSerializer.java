@@ -53,12 +53,8 @@ public class ListSerializer implements Serializer {
 		else {
 			outputStream.writeInt(list.size());
 			for (Object object : list) {
-				try {
-					Serializer serializer = HandlerUtil.getPreferredHandler(Serializer.class, object.getClass());
-					serializer.write(outputStream, object);
-				} catch (Exception e) {
-					log.error("Writing object to stream failed!", e);
-				}
+				Serializer serializer = HandlerUtil.getPreferredHandler(Serializer.class, object.getClass());
+				serializer.write(outputStream, object);
 			}
 		}
 	}
