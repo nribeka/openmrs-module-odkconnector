@@ -14,27 +14,33 @@
 
 package org.openmrs.module.odkconnector.web.controller;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import java.util.Arrays;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.openmrs.module.odkconnector.serialization.Processor;
-import org.openmrs.module.odkconnector.serialization.processor.HttpProcessor;
+import org.openmrs.api.context.Context;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
-@RequestMapping(value = "/module/odkconnector/download/patients")
-public class DownloadPatientsController {
+@RequestMapping("/module/odkconnector/manage")
+public class ManageConceptController {
 
-	private static final Log log = LogFactory.getLog(DownloadPatientsController.class);
+	private static final Log log = LogFactory.getLog(ManageConceptController.class);
+
+	@RequestMapping(method = RequestMethod.GET)
+	public void preparePage(final Model model) {
+		Integer conceptId = 5497;
+		model.addAttribute("concepts", Arrays.asList(Context.getConceptService().getConcept(conceptId)));
+		model.addAttribute("conceptIds", Arrays.asList(conceptId));
+	}
 
 	@RequestMapping(method = RequestMethod.POST)
-	public void process(final HttpServletRequest request, final HttpServletResponse response) throws Exception {
-		Processor processor = new HttpProcessor(HttpProcessor.PROCESS_PATIENTS);
-		processor.process(request.getInputStream(), response.getOutputStream());
+	public void process(final @RequestParam(value = "conceptIds", required = true) String conceptIds) {
+		System.out.println("Concepts from the UI: " + conceptIds);
 	}
 
 }

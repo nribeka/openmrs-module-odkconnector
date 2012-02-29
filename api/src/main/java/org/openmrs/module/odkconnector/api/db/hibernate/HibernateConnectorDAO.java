@@ -71,7 +71,11 @@ public class HibernateConnectorDAO implements ConnectorDAO {
 	public List<Obs> getCohortObservations(final Cohort cohort) {
 		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(Obs.class);
 		criteria.add(Restrictions.in("personId", cohort.getMemberIds()));
-		criteria.add(Restrictions.in("concept", Arrays.asList(Context.getConceptService().getConcept("CD4"), Context.getConceptService().getConcept("HGB"))));
+		criteria.add(Restrictions.in("concept",
+				Arrays.asList(Context.getConceptService().getConcept("PREGNANCY STATUS"),
+						Context.getConceptService().getConcept("HT"),
+						Context.getConceptService().getConcept("PULSE"),
+						Context.getConceptService().getConcept("WT"))));
 		criteria.add(Restrictions.eq("voided", Boolean.FALSE));
 		return criteria.list();
 	}
