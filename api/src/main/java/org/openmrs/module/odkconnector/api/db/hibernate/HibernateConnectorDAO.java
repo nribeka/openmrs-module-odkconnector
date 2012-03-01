@@ -14,18 +14,18 @@
 
 package org.openmrs.module.odkconnector.api.db.hibernate;
 
-import java.util.Arrays;
 import java.util.List;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.Criteria;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
 import org.openmrs.Cohort;
+import org.openmrs.Concept;
 import org.openmrs.Obs;
 import org.openmrs.Patient;
-import org.openmrs.api.context.Context;
 import org.openmrs.module.odkconnector.api.db.ConnectorDAO;
 
 /**
@@ -40,7 +40,7 @@ public class HibernateConnectorDAO implements ConnectorDAO {
 	/**
 	 * @param sessionFactory the sessionFactory to set
 	 */
-	public void setSessionFactory(SessionFactory sessionFactory) {
+	public void setSessionFactory(final SessionFactory sessionFactory) {
 		this.sessionFactory = sessionFactory;
 	}
 
@@ -64,18 +64,16 @@ public class HibernateConnectorDAO implements ConnectorDAO {
 	}
 
 	/**
-	 * @see org.openmrs.module.odkconnector.api.ConnectorService#getCohortObservations(org.openmrs.Cohort)
+	 * @see org.openmrs.module.odkconnector.api.ConnectorService#getCohortObservations(org.openmrs.Cohort, java.util.List
 	 */
 	@Override
 	@SuppressWarnings("unchecked")
-	public List<Obs> getCohortObservations(final Cohort cohort) {
+	public List<Obs> getCohortObservations(final Cohort cohort, final List<Concept> concepts) {
 		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(Obs.class);
 		criteria.add(Restrictions.in("personId", cohort.getMemberIds()));
-		criteria.add(Restrictions.in("concept",
-				Arrays.asList(Context.getConceptService().getConcept("PREGNANCY STATUS"),
-						Context.getConceptService().getConcept("HT"),
-						Context.getConceptService().getConcept("PULSE"),
-						Context.getConceptService().getConcept("WT"))));
+		// only put the concepts restriction when they are not empty. otherwise, just return all obs
+		if (CollectionUtils.isNotEmpty(concepts))
+			criteria.add(Restrictions.in("concept", concepts));
 		criteria.add(Restrictions.eq("voided", Boolean.FALSE));
 		return criteria.list();
 	}

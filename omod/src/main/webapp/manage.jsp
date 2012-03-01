@@ -26,7 +26,26 @@
 	}
 
 	$j(document).ready(function () {
-		$j(".search").autocomplete({
+
+		$j("#removeConcept").click(function () {
+			// get the select list
+			var list = document.getElementById("conceptList");
+			// get the id list and then split them
+			var idList = document.getElementById("conceptIds");
+			var terms = split(idList.value);
+			// remove selected element and then wipe out the associated id
+			for (var i = 0; i < list.length; i++) {
+				if (list.options[i].selected) {
+					// remove the option element
+					list.remove(i);
+					// wipe out the id
+					terms.splice(i, 1);
+				}
+			}
+			idList.value = terms.join(",");
+		});
+
+		$j("#searchConcept").autocomplete({
 			source:function (request, response) {
 				jQuery.ajax({
 					url:"${pageContext.request.contextPath}/module/odkconnector/search/concept.form",
@@ -35,16 +54,10 @@
 						searchTerm:extractLast(request.term)
 					},
 					success:function (data) {
-						jQuery.map(data.elements, function (value, index) {
-							console.log("Value: " + value);
-							console.log("Index: " + index);
-						});
-						response(jQuery.map(data.elements, function (key, item) {
-							console.log("Inside Response: " + data);
-							console.log("Key: " + key);
-							console.log("Value: " + item);
+						response(jQuery.map(data.elements, function (item) {
 							return {
-								label:item, value:key
+								// see the json representation of the map
+								label:item.name, value:item.id
 							}
 						}));
 					}
@@ -56,18 +69,18 @@
 				return false;
 			},
 			select:function (event, ui) {
-				var name = ui.label
-				var id = ui.value;
+				var name = ui.item.label
+				var id = ui.item.value;
 
 				var list = document.getElementById("conceptList");
 				var idList = document.getElementById("conceptIds");
 
 				if (!valueExists(id, idList.value)) {
-
+					// create the new option for the select
 					var option = new Option(name, id);
 					option.selected = true;
 					list.options[list.options.length] = option;
-
+					// add the new id into the concept id list
 					var terms = split(idList.value);
 					terms[terms.length] = id;
 					idList.value = terms.join(",");
@@ -80,6 +93,47 @@
 	})
 </script>
 
+<style type="text/css">
+
+	#message {
+		background-color: lightyellow;
+	}
+
+	fieldset {
+		padding: 0;
+		margin-bottom: 1em;
+	}
+
+	legend {
+		margin-left: 1em;
+		margin-left: 1em;
+		color: #000000;
+		font-weight: bold;
+	}
+
+	fieldset ol {
+		padding: 0 0 1em 1em;
+		list-style: none;
+	}
+
+	fieldset li {
+		padding-bottom: 0.5em;
+	}
+
+	ol li label {
+		display: block;
+	}
+
+	fieldset ul {
+		padding: 0 0 0 0;
+		list-style: none;
+	}
+</style>
+
+<c:if test="${message != null}">
+	<div id="message"><spring:message code="${message}" text="${message}"/></div>
+</c:if>
+
 <div>
 	<form method="post">
 		<fieldset>
@@ -91,11 +145,14 @@
 							<option value="${concept.conceptId}">${concept.name}</option>
 						</c:forEach>
 					</select>
+					<input type="button" id="removeConcept" value="remove"/>
 				</li>
 				<li>
+					<label for="searchConcept"><spring:message code="odkconnector.manage.conceptSearch"/></label>
 					<input type="hidden" id="conceptIds" name="conceptIds" value="${conceptIds}"/>
-					<input type="text" class="search" searchType="concept" size="43"/>
+					<input type="text" id="searchConcept" class="search" size="43"/>
 				</li>
+				<li><input type="submit" value="<spring:message code='odkconnector.manage.conceptSave' />"/></li>
 			</ol>
 		</fieldset>
 	</form>

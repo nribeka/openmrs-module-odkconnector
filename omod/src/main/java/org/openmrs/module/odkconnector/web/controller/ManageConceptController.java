@@ -14,11 +14,17 @@
 
 package org.openmrs.module.odkconnector.web.controller;
 
-import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.openmrs.Concept;
+import org.openmrs.GlobalProperty;
+import org.openmrs.api.AdministrationService;
 import org.openmrs.api.context.Context;
+import org.openmrs.module.odkconnector.Constants;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -33,14 +39,37 @@ public class ManageConceptController {
 
 	@RequestMapping(method = RequestMethod.GET)
 	public void preparePage(final Model model) {
-		Integer conceptId = 5497;
-		model.addAttribute("concepts", Arrays.asList(Context.getConceptService().getConcept(conceptId)));
-		model.addAttribute("conceptIds", Arrays.asList(conceptId));
+		AdministrationService service = Context.getAdministrationService();
+		String conceptIds = service.getGlobalProperty(Constants.CLINIC_CONCEPTS);
+		model.addAttribute("concepts", searchConcept(conceptIds));
+		model.addAttribute("conceptIds", conceptIds);
 	}
 
 	@RequestMapping(method = RequestMethod.POST)
-	public void process(final @RequestParam(value = "conceptIds", required = true) String conceptIds) {
-		System.out.println("Concepts from the UI: " + conceptIds);
+	public void process(final @RequestParam(value = "conceptIds", required = true) String conceptIds,
+	                    final Model model) {
+
+		GlobalProperty property = new GlobalProperty();
+		property.setProperty(Constants.CLINIC_CONCEPTS);
+		property.setDescription("Global property for concepts of observations which will be transferred to the ODK Clinic.");
+		property.setPropertyValue(conceptIds);
+
+		AdministrationService service = Context.getAdministrationService();
+		service.saveGlobalProperty(property);
+
+		model.addAttribute("message", "odkconnector.manage.conceptSaved");
+		model.addAttribute("concepts", searchConcept(conceptIds));
+		model.addAttribute("conceptIds", conceptIds);
+	}
+
+	private static List<Concept> searchConcept(String conceptIds) {
+		List<Concept> concepts = new ArrayList<Concept>();
+		for (String conceptId : StringUtils.split(StringUtils.defaultString(conceptIds), ",")) {
+			Concept concept = Context.getConceptService().getConcept(conceptId);
+			if (concept != null)
+				concepts.add(concept);
+		}
+		return concepts;
 	}
 
 }

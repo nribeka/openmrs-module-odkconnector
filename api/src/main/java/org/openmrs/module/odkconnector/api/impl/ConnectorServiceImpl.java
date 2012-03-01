@@ -21,6 +21,7 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.openmrs.Cohort;
+import org.openmrs.Concept;
 import org.openmrs.Obs;
 import org.openmrs.Patient;
 import org.openmrs.api.APIException;
@@ -40,7 +41,7 @@ public class ConnectorServiceImpl extends BaseOpenmrsService implements Connecto
 	/**
 	 * @param dao the dao to set
 	 */
-	public void setDao(ConnectorDAO dao) {
+	public void setDao(final ConnectorDAO dao) {
 		this.dao = dao;
 	}
 
@@ -68,14 +69,15 @@ public class ConnectorServiceImpl extends BaseOpenmrsService implements Connecto
 	/**
 	 * Service methods to get all observations for all patients in the cohort
 	 *
-	 * @param cohort the cohort
+	 * @param cohort   the cohort
+	 * @param concepts the concepts
 	 * @return all observations for patients in the cohort or empty list when no observations for the patient ids in the cohort exists
 	 * @throws org.openmrs.api.APIException
 	 */
 	@Override
-	public List<Obs> getCohortObservations(final Cohort cohort) throws APIException {
+	public List<Obs> getCohortObservations(final Cohort cohort, final List<Concept> concepts) throws APIException {
 		if (cohort == null || CollectionUtils.isEmpty(cohort.getMemberIds()))
 			return new ArrayList<Obs>();
-		return dao.getCohortObservations(cohort);
+		return dao.getCohortObservations(cohort, concepts);
 	}
 }

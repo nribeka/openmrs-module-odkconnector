@@ -22,6 +22,7 @@ import java.io.DataOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
@@ -30,7 +31,9 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.openmrs.Cohort;
+import org.openmrs.Concept;
 import org.openmrs.api.context.Context;
+import org.openmrs.module.odkconnector.Constants;
 import org.openmrs.module.odkconnector.api.ConnectorService;
 import org.openmrs.module.odkconnector.serialization.Processor;
 import org.openmrs.module.odkconnector.serialization.Serializer;
@@ -100,7 +103,15 @@ public class HttpProcessor implements Processor {
 				ConnectorService service = Context.getService(ConnectorService.class);
 				Cohort cohort = Context.getCohortService().getCohort(cohortId);
 				serializer.write(stream, service.getCohortPatients(cohort));
-				serializer.write(stream, service.getCohortObservations(cohort));
+				// check the concept list
+				List<Concept> concepts = new ArrayList<Concept>();
+				String conceptIds = Context.getAdministrationService().getGlobalProperty(Constants.CLINIC_CONCEPTS);
+				for (String conceptId : StringUtils.split(StringUtils.defaultString(conceptIds), ",")) {
+					Concept concept = Context.getConceptService().getConcept(conceptId);
+					if (concept != null)
+						concepts.add(concept);
+				}
+				serializer.write(stream, service.getCohortObservations(cohort, concepts));
 			} else {
 				serializer.write(stream, Context.getCohortService().getAllCohorts());
 			}

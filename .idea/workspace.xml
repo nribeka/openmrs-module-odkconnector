@@ -1,14 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="a7d324ee-2b1d-4154-82e2-3a99b2abbf41" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/omod/src/main/java/org/openmrs/module/odkconnector/web/controller/AutocompleteConceptController.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/omod/src/main/java/org/openmrs/module/odkconnector/web/controller/ManageConceptController.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/omod/src/main/java/org/openmrs/module/odkconnector/web/controller/DownloadCohortController.java" afterPath="$PROJECT_DIR$/omod/src/main/java/org/openmrs/module/odkconnector/web/controller/serializer/DownloadCohortController.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/omod/src/main/java/org/openmrs/module/odkconnector/web/controller/DownloadPatientsController.java" afterPath="$PROJECT_DIR$/omod/src/main/java/org/openmrs/module/odkconnector/web/controller/serializer/DownloadPatientsController.java" />
+    <list default="true" id="a7d324ee-2b1d-4154-82e2-3a99b2abbf41" name="Default" comment="odkconnector: ui to manage the concepts for obs that should go into the phone interface">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/api/src/main/java/org/openmrs/module/odkconnector/Constants.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/api/src/main/java/org/openmrs/module/odkconnector/api/ConnectorService.java" afterPath="$PROJECT_DIR$/api/src/main/java/org/openmrs/module/odkconnector/api/ConnectorService.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/api/src/main/java/org/openmrs/module/odkconnector/api/db/ConnectorDAO.java" afterPath="$PROJECT_DIR$/api/src/main/java/org/openmrs/module/odkconnector/api/db/ConnectorDAO.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/api/src/main/java/org/openmrs/module/odkconnector/api/db/hibernate/HibernateConnectorDAO.java" afterPath="$PROJECT_DIR$/api/src/main/java/org/openmrs/module/odkconnector/api/db/hibernate/HibernateConnectorDAO.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/api/src/main/java/org/openmrs/module/odkconnector/api/impl/ConnectorServiceImpl.java" afterPath="$PROJECT_DIR$/api/src/main/java/org/openmrs/module/odkconnector/api/impl/ConnectorServiceImpl.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/api/src/main/java/org/openmrs/module/odkconnector/serialization/processor/HttpProcessor.java" afterPath="$PROJECT_DIR$/api/src/main/java/org/openmrs/module/odkconnector/serialization/processor/HttpProcessor.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/api/src/main/java/org/openmrs/module/odkconnector/serialization/serializer/openmrs/ObsSerializer.java" afterPath="$PROJECT_DIR$/api/src/main/java/org/openmrs/module/odkconnector/serialization/serializer/openmrs/ObsSerializer.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/api/src/main/resources/messages.properties" afterPath="$PROJECT_DIR$/api/src/main/resources/messages.properties" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/omod/src/main/java/org/openmrs/module/odkconnector/web/controller/ManageConceptController.java" afterPath="$PROJECT_DIR$/omod/src/main/java/org/openmrs/module/odkconnector/web/controller/ManageConceptController.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/omod/src/main/webapp/manage.jsp" afterPath="$PROJECT_DIR$/omod/src/main/webapp/manage.jsp" />
     </list>
     <ignored path="odkconnector.iws" />
@@ -82,10 +85,40 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="manage.jsp" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="ManageConceptController.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/omod/src/main/java/org/openmrs/module/odkconnector/web/controller/ManageConceptController.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="59" column="74" selection-start="2420" selection-end="2420" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="messages.properties" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/api/src/main/resources/messages.properties">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="4" column="71" selection-start="312" selection-end="312" vertical-scroll-proportion="-2.857143">
+              <folding />
+            </state>
+          </provider>
+          <provider editor-type-id="ResourceBundle">
+            <state />
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ObsSerializer.java" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/api/src/main/java/org/openmrs/module/odkconnector/serialization/serializer/openmrs/ObsSerializer.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="50" column="68" selection-start="1664" selection-end="1664" vertical-scroll-proportion="0.41271347">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="manage.jsp" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/omod/src/main/webapp/manage.jsp">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="45" column="30" selection-start="1214" selection-end="1214" vertical-scroll-proportion="0.42699724">
+            <state line="134" column="6" selection-start="2954" selection-end="2954" vertical-scroll-proportion="-14.166667">
               <folding />
             </state>
           </provider>
@@ -106,22 +139,22 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/api/src/test/java/org/openmrs/module/odkconnector/serialization/web/CohortWebConnectorTest.java" />
-        <option value="$PROJECT_DIR$/api/src/main/java/org/openmrs/module/odkconnector/serialization/serializer/openmrs/ObsSerializer.java" />
-        <option value="$PROJECT_DIR$/api/src/test/java/org/openmrs/module/odkconnector/serialization/web/PatientWebConnectorTest.java" />
-        <option value="$PROJECT_DIR$/api/src/test/java/org/openmrs/module/odkconnector/serialization/serializer/openmrs/PatientSerializerTest.java" />
         <option value="$PROJECT_DIR$/api/src/main/java/org/openmrs/module/odkconnector/serialization/serializer/ListSerializer.java" />
         <option value="$PROJECT_DIR$/api/src/main/java/org/openmrs/module/odkconnector/serialization/serializer/openmrs/PatientSerializer.java" />
         <option value="$PROJECT_DIR$/api/src/main/java/org/openmrs/module/odkconnector/ConnectorActivator.java" />
-        <option value="$PROJECT_DIR$/api/src/main/java/org/openmrs/module/odkconnector/api/ConnectorService.java" />
-        <option value="$PROJECT_DIR$/api/src/main/java/org/openmrs/module/odkconnector/api/db/hibernate/HibernateConnectorDAO.java" />
-        <option value="$PROJECT_DIR$/api/src/main/resources/messages.properties" />
         <option value="$PROJECT_DIR$/omod/src/main/java/org/openmrs/module/odkconnector/web/controller/FilterFinderController.java" />
         <option value="$PROJECT_DIR$/omod/src/main/java/org/openmrs/module/odkconnector/web/controller/ConceptSearchController.java" />
-        <option value="$PROJECT_DIR$/omod/src/main/java/org/openmrs/module/odkconnector/web/controller/ManageConceptController.java" />
         <option value="$PROJECT_DIR$/omod/src/main/java/org/openmrs/module/odkconnector/extension/html/AdminList.java" />
         <option value="$PROJECT_DIR$/omod/src/main/java/org/openmrs/module/odkconnector/web/controller/AutocompleteConceptController.java" />
+        <option value="$PROJECT_DIR$/api/src/main/java/org/openmrs/module/odkconnector/api/ConnectorService.java" />
+        <option value="$PROJECT_DIR$/api/src/main/java/org/openmrs/module/odkconnector/api/db/ConnectorDAO.java" />
+        <option value="$PROJECT_DIR$/api/src/main/java/org/openmrs/module/odkconnector/api/db/hibernate/HibernateConnectorDAO.java" />
+        <option value="$PROJECT_DIR$/api/src/main/java/org/openmrs/module/odkconnector/api/impl/ConnectorServiceImpl.java" />
+        <option value="$PROJECT_DIR$/api/src/main/java/org/openmrs/module/odkconnector/serialization/processor/HttpProcessor.java" />
+        <option value="$PROJECT_DIR$/omod/src/main/java/org/openmrs/module/odkconnector/web/controller/ManageConceptController.java" />
         <option value="$PROJECT_DIR$/omod/src/main/webapp/manage.jsp" />
+        <option value="$PROJECT_DIR$/api/src/main/resources/messages.properties" />
+        <option value="$PROJECT_DIR$/api/src/main/java/org/openmrs/module/odkconnector/serialization/serializer/openmrs/ObsSerializer.java" />
       </list>
     </option>
   </component>
@@ -371,10 +404,6 @@
             <PATH_ELEMENT>
               <option name="myItemId" value="odkconnector" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="External Libraries" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ExternalLibrariesNode" />
             </PATH_ELEMENT>
           </PATH>
           <PATH>
@@ -855,6 +884,188 @@
               <option name="myItemType" value="com.intellij.lang.properties.projectView.ResourceBundleNode" />
             </PATH_ELEMENT>
           </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="odkconnector" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="odkconnector--trunk" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="api" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="odkconnector" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="odkconnector" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="odkconnector--trunk" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="api" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="odkconnector" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="serialization" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="odkconnector" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="odkconnector--trunk" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="api" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="odkconnector" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="serialization" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="serializer" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="odkconnector" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="odkconnector--trunk" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="api" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="odkconnector" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="serialization" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="serializer" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="openmrs" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="odkconnector" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="odkconnector--trunk" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="api" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="odkconnector" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="serialization" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="processor" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
         </subPane>
       </pane>
       <pane id="PackagesPane" />
@@ -900,6 +1111,10 @@
     <key name="ExtractSuperBase.RECENT_KEYS">
       <recent name="org.openmrs.module.odkconnector.serialization" />
       <recent name="org.openmrs.module.odkconnector.serialization.processor" />
+    </key>
+    <key name="MoveMembersDialog.RECENTS_KEY">
+      <recent name="org.openmrs.module.odkconnector.Constants" />
+      <recent name="Constants" />
     </key>
     <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
       <recent name="org.openmrs.module.odkconnector.web.controller.serializer" />
@@ -1301,8 +1516,8 @@
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32852563" sideWeight="0.7185185" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.28148147" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32852563" sideWeight="0.71944445" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.28055555" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32962963" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -1345,7 +1560,7 @@
     <option name="INCLUDE_TEXT_INTO_SHELF" value="false" />
     <option name="CREATE_PATCH_EXPAND_DETAILS_DEFAULT" value="true" />
     <option name="FORCE_NON_EMPTY_COMMENT" value="false" />
-    <option name="LAST_COMMIT_MESSAGE" value="odkconnector: minor fixes when dealing with invalid patient data" />
+    <option name="LAST_COMMIT_MESSAGE" value="odkconnector: ui to manage the concepts for obs that should go into the phone interface" />
     <option name="MAKE_NEW_CHANGELIST_ACTIVE" value="true" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="CHECK_FILES_UP_TO_DATE_BEFORE_COMMIT" value="false" />
@@ -1363,6 +1578,7 @@
     <MESSAGE value="odkconnector: first phase of the connector service to get patient observations" />
     <MESSAGE value="odkconnector: serializer using handler approach, stream writing to the net for the odk, need to streamline the obs query!" />
     <MESSAGE value="odkconnector: minor fixes when dealing with invalid patient data" />
+    <MESSAGE value="odkconnector: ui to manage the concepts for obs that should go into the phone interface" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
@@ -1372,63 +1588,9 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/api/src/test/java/org/openmrs/module/odkconnector/serialization/serializer/openmrs/CohortSerializerTest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="41" column="16" selection-start="1462" selection-end="1462" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/api/src/main/java/org/openmrs/module/odkconnector/serialization/processor/HttpProcessor.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="102" column="32" selection-start="3543" selection-end="3543" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/api/src/main/java/org/openmrs/module/odkconnector/api/db/hibernate/HibernateConnectorDAO.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="57" column="4" selection-start="1726" selection-end="1726" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/api/src/main/java/org/openmrs/module/odkconnector/api/ConnectorService.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="51" column="18" selection-start="1583" selection-end="1583" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/api/src/main/java/org/openmrs/module/odkconnector/api/impl/ConnectorServiceImpl.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="61" column="0" selection-start="1841" selection-end="1841" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/api/src/main/resources/messages_es.properties">
-      <provider editor-type-id="ResourceBundle">
-        <state />
-      </provider>
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/api/src/main/resources/messages_fr.properties">
-      <provider editor-type-id="ResourceBundle">
-        <state />
-      </provider>
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/api/src/main/resources/messages.properties">
-      <provider editor-type-id="ResourceBundle">
-        <state />
-      </provider>
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="39" selection-start="39" selection-end="39" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/omod/src/main/java/org/openmrs/module/odkconnector/extension/html/AdminList.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="46" column="45" selection-start="1425" selection-end="1425" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/omod/src/main/java/org/openmrs/module/odkconnector/web/controller/ManageConceptController.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="28" column="44" selection-start="1085" selection-end="1085" vertical-scroll-proportion="0.0" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/omod/src/main/java/org/openmrs/module/odkconnector/web/controller/serializer/DownloadPatientsController.java">
@@ -1438,38 +1600,100 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/pom.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/omod/src/main/resources/webModuleApplicationContext.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
       <provider editor-type-id="com.intellij.spring.perspectives.SpringBeansStructureEditorProvider">
         <state />
+      </provider>
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/omod/src/main/webapp/template/localHeader.jsp">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="9" column="16" selection-start="300" selection-end="335" vertical-scroll-proportion="-5.625">
+        <state line="9" column="16" selection-start="300" selection-end="335" vertical-scroll-proportion="-5.625" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/api/src/main/java/org/openmrs/module/odkconnector/api/ConnectorService.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="64" column="0" selection-start="2035" selection-end="2035" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/omod/src/main/java/org/openmrs/module/odkconnector/web/controller/AutocompleteConceptController.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="60" column="67" selection-start="2216" selection-end="2216" vertical-scroll-proportion="0.0">
+        <state line="60" column="67" selection-start="2216" selection-end="2216" vertical-scroll-proportion="0.67909455">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/api/src/main/java/org/openmrs/module/odkconnector/Constants.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="16" column="26" selection-start="615" selection-end="615" vertical-scroll-proportion="0.07989348">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/api/src/main/java/org/openmrs/module/odkconnector/api/db/ConnectorDAO.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="39" column="0" selection-start="1162" selection-end="1162" vertical-scroll-proportion="0.4520548">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/api/src/main/java/org/openmrs/module/odkconnector/api/db/hibernate/HibernateConnectorDAO.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="42" column="40" selection-start="1436" selection-end="1436" vertical-scroll-proportion="0.27296937">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/api/src/main/java/org/openmrs/module/odkconnector/api/impl/ConnectorServiceImpl.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="43" column="29" selection-start="1472" selection-end="1472" vertical-scroll-proportion="0.34246576">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/api/src/main/java/org/openmrs/module/odkconnector/serialization/processor/HttpProcessor.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="105" column="41" selection-start="3658" selection-end="3658" vertical-scroll-proportion="0.76431423">
+          <folding>
+            <element signature="e#3701#3710#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/omod/src/main/java/org/openmrs/module/odkconnector/web/controller/ManageConceptController.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="59" column="74" selection-start="2420" selection-end="2420" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/omod/src/main/webapp/manage.jsp">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="45" column="30" selection-start="1214" selection-end="1214" vertical-scroll-proportion="0.42699724">
+        <state line="134" column="6" selection-start="2954" selection-end="2954" vertical-scroll-proportion="-14.166667">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/api/src/main/resources/messages.properties">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="4" column="71" selection-start="312" selection-end="312" vertical-scroll-proportion="-2.857143">
+          <folding />
+        </state>
+      </provider>
+      <provider editor-type-id="ResourceBundle">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/api/src/main/java/org/openmrs/module/odkconnector/serialization/serializer/openmrs/ObsSerializer.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="50" column="68" selection-start="1664" selection-end="1664" vertical-scroll-proportion="0.41271347">
           <folding />
         </state>
       </provider>

@@ -17,6 +17,7 @@ package org.openmrs.module.odkconnector.api;
 import java.util.List;
 
 import org.openmrs.Cohort;
+import org.openmrs.Concept;
 import org.openmrs.Obs;
 import org.openmrs.Patient;
 import org.openmrs.api.APIException;
@@ -54,10 +55,11 @@ public interface ConnectorService extends OpenmrsService {
 	/**
 	 * Service methods to get all observations for all patients in the cohort
 	 *
-	 * @param cohort the cohort
+	 * @param cohort   the cohort
+	 * @param concepts the concepts
 	 * @return all observations for patients in the cohort or empty list when no observations for the patient ids in the cohort exists
 	 * @throws APIException when the process failed
 	 */
 	@Transactional(readOnly = true)
-	List<Obs> getCohortObservations(Cohort cohort) throws APIException;
+	List<Obs> getCohortObservations(Cohort cohort, final List<Concept> concepts) throws APIException;
 }

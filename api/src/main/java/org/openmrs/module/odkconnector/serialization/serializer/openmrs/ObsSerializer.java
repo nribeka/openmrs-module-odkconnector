@@ -58,8 +58,8 @@ public class ObsSerializer implements Serializer {
 			outputStream.writeByte(TYPE_DATE);
 			outputStream.writeLong(obs.getValueDatetime().getTime());
 		} else if (obs.getValueCoded() != null) {
-			outputStream.writeByte(TYPE_INT);
-			outputStream.writeInt(obs.getValueCoded().getConceptId());
+			outputStream.writeByte(TYPE_STRING);
+			outputStream.writeUTF(obs.getValueCoded().getDisplayString());
 		} else if (obs.getValueNumeric() != null) {
 			outputStream.writeByte(TYPE_DOUBLE);
 			outputStream.writeDouble(obs.getValueNumeric());
