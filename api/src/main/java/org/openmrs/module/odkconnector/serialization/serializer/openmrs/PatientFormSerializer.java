@@ -19,14 +19,14 @@ import java.io.OutputStream;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.openmrs.Form;
 import org.openmrs.annotation.Handler;
 import org.openmrs.module.odkconnector.serialization.Serializer;
+import org.openmrs.module.odkconnector.serialization.serializable.PatientForm;
 
-@Handler(supports = Form.class, order = 50)
-public class FormSerializer implements Serializer {
+@Handler(supports = PatientForm.class, order = 50)
+public class PatientFormSerializer implements Serializer {
 
-	private static final Log log = LogFactory.getLog(FormSerializer.class);
+	private static final Log log = LogFactory.getLog(PatientFormSerializer.class);
 
 	/**
 	 * Write the data to the output stream.

@@ -50,7 +50,7 @@ public interface ConnectorService extends OpenmrsService {
 	 * @throws APIException when the process failed
 	 */
 	@Transactional(readOnly = true)
-	List<Patient> getCohortPatients(Cohort cohort) throws APIException;
+	List<Patient> getCohortPatients(final Cohort cohort) throws APIException;
 
 	/**
 	 * Service methods to get all observations for all patients in the cohort
@@ -61,5 +61,5 @@ public interface ConnectorService extends OpenmrsService {
 	 * @throws APIException when the process failed
 	 */
 	@Transactional(readOnly = true)
-	List<Obs> getCohortObservations(Cohort cohort, final List<Concept> concepts) throws APIException;
+	List<Obs> getCohortObservations(final Cohort cohort, final List<Concept> concepts) throws APIException;
 }
