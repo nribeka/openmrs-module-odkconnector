@@ -52,6 +52,13 @@
 			</dependency>
 			-->
 
+			<dependency>
+				<groupId>org.openmrs.module</groupId>
+				<artifactId>reporting</artifactId>
+				<version>0.7.0.DEV</version>
+				<type>jar</type>
+				<scope>provided</scope>
+			</dependency>
 
 			<!-- Begin OpenMRS core -->
 
@@ -93,14 +100,6 @@
 				<version>${openMRSVersion}</version>
 				<type>pom</type>
 				<scope>test</scope>
-			</dependency>
-
-			<dependency>
-				<groupId>org.openmrs.module</groupId>
-				<artifactId>reporting</artifactId>
-				<version>0.7.0.DEV</version>
-				<type>jar</type>
-				<scope>provided</scope>
 			</dependency>
 
 			<!-- End OpenMRS core -->

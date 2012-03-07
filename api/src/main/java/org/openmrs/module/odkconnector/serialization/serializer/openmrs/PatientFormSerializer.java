@@ -14,6 +14,7 @@
 
 package org.openmrs.module.odkconnector.serialization.serializer.openmrs;
 
+import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 
@@ -37,5 +38,11 @@ public class PatientFormSerializer implements Serializer {
 	 */
 	@Override
 	public void write(final OutputStream stream, final Object data) throws IOException {
+
+		PatientForm patientForm = (PatientForm) data;
+
+		DataOutputStream outputStream = new DataOutputStream(stream);
+		outputStream.writeInt(patientForm.getPatientId());
+		outputStream.writeInt(patientForm.getFormId());
 	}
 }

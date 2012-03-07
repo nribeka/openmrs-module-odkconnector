@@ -52,8 +52,11 @@ public class ObsSerializer implements Serializer {
 		Obs obs = (Obs) data;
 
 		DataOutputStream outputStream = new DataOutputStream(stream);
+		// write the person id of the observation
 		outputStream.writeInt(obs.getPersonId());
+		// write the concept name of the observation
 		outputStream.writeUTF(obs.getConcept().getDisplayString());
+		// write the data type and the value of the observation
 		if (obs.getValueDatetime() != null) {
 			outputStream.writeByte(TYPE_DATE);
 			outputStream.writeLong(obs.getValueDatetime().getTime());

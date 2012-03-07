@@ -8,6 +8,7 @@
     </JAVADOC>
     <SOURCES>
       <root url="jar://$MAVEN_REPOSITORY$/org/openmrs/module/reporting/0.7.0.DEV/reporting-0.7.0.DEV-sources.jar!/" />
+      <root url="file://$PROJECT_DIR$/../reporting--trunk/src" />
     </SOURCES>
   </library>
 </component>
