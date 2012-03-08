@@ -4,7 +4,7 @@
 		"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
 
 <hibernate-mapping package="org.openmrs.module.odkconnector.reporting">
-	<class name="org.openmrs.module.odkconnector.reporting.ExtendedDefinition" table="odkconnector_extended_definition">
+	<class name="org.openmrs.module.odkconnector.reporting.metadata.ExtendedDefinition" table="odkconnector_extended_definition">
 		<id name="id" type="int" column="id" unsaved-value="0">
 			<generator class="native"/>
 		</id>
@@ -15,7 +15,7 @@
 
 		<set name="properties" inverse="true" cascade="all" access="field" order-by="id desc">
 			<key column="definition_id"/>
-			<one-to-many class="org.openmrs.module.odkconnector.reporting.property.DefinitionProperty"/>
+			<one-to-many class="org.openmrs.module.odkconnector.reporting.metadata.DefinitionProperty"/>
 		</set>
 
 		<many-to-one name="creator" class="org.openmrs.User" not-null="true">

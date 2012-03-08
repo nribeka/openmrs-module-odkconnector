@@ -20,6 +20,8 @@ import org.openmrs.Cohort;
 import org.openmrs.Concept;
 import org.openmrs.Obs;
 import org.openmrs.Patient;
+import org.openmrs.api.db.DAOException;
+import org.openmrs.module.odkconnector.reporting.metadata.ExtendedDefinition;
 
 /**
  * Database methods for {@link org.openmrs.module.odkconnector.api.ConnectorService}.
@@ -31,21 +33,62 @@ public interface ConnectorDAO {
 		 */
 
 	/**
-	 * Service methods to get all patients inside the cohort
+	 * DAO method to get all patients inside the cohort
 	 *
 	 * @param cohort the cohort
 	 * @return all patients in the cohort or empty list when no patient match the patient id in the cohort
-	 * @throws org.openmrs.api.APIException when the process failed
+	 * @throws org.openmrs.api.db.DAOException
+	 *          when the process failed
 	 */
-	List<Patient> getCohortPatients(final Cohort cohort);
+	List<Patient> getCohortPatients(final Cohort cohort) throws DAOException;
 
 	/**
-	 * Service methods to get all observations for all patients in the cohort
+	 * DAO method to get all observations for all patients in the cohort
 	 *
 	 * @param cohort   the cohort
 	 * @param concepts the concepts
 	 * @return all observations for patients in the cohort or empty list when no observations for the patient ids in the cohort exists
-	 * @throws org.openmrs.api.APIException
+	 * @throws org.openmrs.api.db.DAOException
+	 *          when the process failed
 	 */
-	List<Obs> getCohortObservations(final Cohort cohort, final List<Concept> concepts);
+	List<Obs> getCohortObservations(final Cohort cohort, final List<Concept> concepts) throws DAOException;
+
+	/**
+	 * DAO method to save extended information for the reporting cohort definition
+	 *
+	 * @param extendedDefinition the extended definition
+	 * @return saved extended definition
+	 * @throws org.openmrs.api.db.DAOException
+	 *          when the saving process failed
+	 */
+	ExtendedDefinition saveExtendedDefinition(final ExtendedDefinition extendedDefinition) throws DAOException;
+
+	/**
+	 * DAO method to get extended definition by the extended definition uuid
+	 *
+	 * @param uuid the extended definition uuid
+	 * @return the extended definition
+	 * @throws org.openmrs.api.db.DAOException
+	 *          when retrieving the extended definition failed
+	 */
+	ExtendedDefinition getExtendedDefinitionByUuid(final String uuid) throws DAOException;
+
+	/**
+	 * DAO method to get extended definition by the extended definition id
+	 *
+	 * @param id the extended definition id
+	 * @return the extended definition
+	 * @throws org.openmrs.api.db.DAOException
+	 *          when retrieving the extended definition failed
+	 */
+	ExtendedDefinition getExtendedDefinition(Integer id) throws DAOException;
+
+	/**
+	 * DAO method to get all saved extended definitions
+	 *
+	 * @return alll saved extended definitions
+	 * @throws org.openmrs.api.db.DAOException
+	 *          when retrieving all extended definitions failed
+	 */
+	List<ExtendedDefinition> getAllExtendedDefinition() throws DAOException;
 }

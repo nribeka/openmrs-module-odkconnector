@@ -12,7 +12,7 @@
  * Copyright (C) OpenMRS, LLC.  All Rights Reserved.
  */
 
-package org.openmrs.module.odkconnector.reporting;
+package org.openmrs.module.odkconnector.reporting.metadata;
 
 import java.util.Set;
 
@@ -20,7 +20,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.openmrs.BaseOpenmrsMetadata;
 import org.openmrs.api.db.SerializedObject;
-import org.openmrs.module.odkconnector.reporting.property.DefinitionProperty;
 
 public class ExtendedDefinition extends BaseOpenmrsMetadata {
 

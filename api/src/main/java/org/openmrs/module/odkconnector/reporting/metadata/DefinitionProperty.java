@@ -12,12 +12,11 @@
  * Copyright (C) OpenMRS, LLC.  All Rights Reserved.
  */
 
-package org.openmrs.module.odkconnector.reporting.property;
+package org.openmrs.module.odkconnector.reporting.metadata;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.openmrs.BaseOpenmrsMetadata;
-import org.openmrs.module.odkconnector.reporting.ExtendedDefinition;
 
 public class DefinitionProperty extends BaseOpenmrsMetadata {
 

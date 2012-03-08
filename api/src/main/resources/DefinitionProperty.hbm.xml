@@ -3,8 +3,8 @@
 		"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 		"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
 
-<hibernate-mapping package="org.openmrs.module.odkconnector.reporting.property">
-	<class name="org.openmrs.module.odkconnector.reporting.property.DefinitionProperty" table="odkconnector_definition_property">
+<hibernate-mapping package="org.openmrs.module.odkconnector.reporting.metadata">
+	<class name="org.openmrs.module.odkconnector.reporting.metadata.DefinitionProperty" table="odkconnector_definition_property">
 		<id name="id" type="int" column="id" unsaved-value="0">
 			<generator class="native"/>
 		</id>
@@ -17,7 +17,7 @@
 
 		<property name="propertyDescription" type="java.lang.String" column="property_description" length="255"/>
 
-		<many-to-one name="definition" class="org.openmrs.module.odkconnector.reporting.ExtendedDefinition">
+		<many-to-one name="definition" class="ExtendedDefinition">
 			<column name="definition_id"/>
 		</many-to-one>
 

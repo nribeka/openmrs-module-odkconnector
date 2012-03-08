@@ -26,7 +26,9 @@ import org.openmrs.Cohort;
 import org.openmrs.Concept;
 import org.openmrs.Obs;
 import org.openmrs.Patient;
+import org.openmrs.api.db.DAOException;
 import org.openmrs.module.odkconnector.api.db.ConnectorDAO;
+import org.openmrs.module.odkconnector.reporting.metadata.ExtendedDefinition;
 
 /**
  * It is a default implementation of  {@link org.openmrs.module.odkconnector.api.db.ConnectorDAO}.
@@ -56,7 +58,7 @@ public class HibernateConnectorDAO implements ConnectorDAO {
 	 */
 	@Override
 	@SuppressWarnings("unchecked")
-	public List<Patient> getCohortPatients(final Cohort cohort) {
+	public List<Patient> getCohortPatients(final Cohort cohort) throws DAOException {
 		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(Patient.class);
 		criteria.add(Restrictions.in("patientId", cohort.getMemberIds()));
 		criteria.add(Restrictions.eq("voided", Boolean.FALSE));
@@ -68,13 +70,52 @@ public class HibernateConnectorDAO implements ConnectorDAO {
 	 */
 	@Override
 	@SuppressWarnings("unchecked")
-	public List<Obs> getCohortObservations(final Cohort cohort, final List<Concept> concepts) {
+	public List<Obs> getCohortObservations(final Cohort cohort, final List<Concept> concepts) throws DAOException {
 		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(Obs.class);
 		criteria.add(Restrictions.in("personId", cohort.getMemberIds()));
 		// only put the concepts restriction when they are not empty. otherwise, just return all obs
 		if (CollectionUtils.isNotEmpty(concepts))
 			criteria.add(Restrictions.in("concept", concepts));
 		criteria.add(Restrictions.eq("voided", Boolean.FALSE));
+		return criteria.list();
+	}
+
+	/**
+	 * @see org.openmrs.module.odkconnector.api.ConnectorService#saveExtendedDefinition(org.openmrs.module.odkconnector.reporting.metadata.ExtendedDefinition)
+	 */
+	@Override
+	public ExtendedDefinition saveExtendedDefinition(final ExtendedDefinition extendedDefinition) throws DAOException {
+		sessionFactory.getCurrentSession().saveOrUpdate(extendedDefinition);
+		return extendedDefinition;
+	}
+
+	/**
+	 * @see org.openmrs.module.odkconnector.api.ConnectorService#getExtendedDefinitionByUuid(String)
+	 */
+	@Override
+	public ExtendedDefinition getExtendedDefinitionByUuid(final String uuid) throws DAOException {
+		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(ExtendedDefinition.class);
+		criteria.add(Restrictions.eq("uuid", uuid));
+		criteria.add(Restrictions.eq("retired", Boolean.FALSE));
+		return (ExtendedDefinition) criteria.uniqueResult();
+	}
+
+	/**
+	 * @see org.openmrs.module.odkconnector.api.ConnectorService#getExtendedDefinition(Integer)
+	 */
+	@Override
+	public ExtendedDefinition getExtendedDefinition(final Integer id) throws DAOException {
+		return (ExtendedDefinition) sessionFactory.getCurrentSession().get(ExtendedDefinition.class, id);
+	}
+
+	/**
+	 * @see org.openmrs.module.odkconnector.api.ConnectorService#getAllExtendedDefinition()
+	 */
+	@Override
+	@SuppressWarnings("unchecked")
+	public List<ExtendedDefinition> getAllExtendedDefinition() throws DAOException {
+		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(ExtendedDefinition.class);
+		criteria.add(Restrictions.eq("retired", Boolean.FALSE));
 		return criteria.list();
 	}
 }

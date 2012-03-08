@@ -32,7 +32,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
-@RequestMapping("/module/odkconnector/manage")
+@RequestMapping("/module/odkconnector/manageConcept")
 public class ManageConceptController {
 
 	private static final Log log = LogFactory.getLog(ManageConceptController.class);

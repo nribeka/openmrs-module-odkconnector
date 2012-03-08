@@ -29,6 +29,11 @@
 		<class>${project.parent.groupId}.${project.parent.artifactId}.extension.html.AdminList</class>
 	</extension>
 
+	<privilege>
+		<name>Manage Connector</name>
+		<description>Able to add/edit connector metadata</description>
+	</privilege>
+
 	<!-- Maps hibernate file's, if present -->
 	<mappingFiles>
 

@@ -22,6 +22,7 @@ import org.openmrs.Obs;
 import org.openmrs.Patient;
 import org.openmrs.api.APIException;
 import org.openmrs.api.OpenmrsService;
+import org.openmrs.module.odkconnector.reporting.metadata.ExtendedDefinition;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -43,23 +44,61 @@ public interface ConnectorService extends OpenmrsService {
 	 */
 
 	/**
-	 * Service methods to get all patients inside the cohort
+	 * Service method to get all patients inside the cohort
 	 *
 	 * @param cohort the cohort
 	 * @return all patients in the cohort or empty list when no patient match the patient id in the cohort
-	 * @throws APIException when the process failed
+	 * @throws org.openmrs.api.APIException when the process failed
 	 */
 	@Transactional(readOnly = true)
 	List<Patient> getCohortPatients(final Cohort cohort) throws APIException;
 
 	/**
-	 * Service methods to get all observations for all patients in the cohort
+	 * Service method to get all observations for all patients in the cohort
 	 *
 	 * @param cohort   the cohort
 	 * @param concepts the concepts
 	 * @return all observations for patients in the cohort or empty list when no observations for the patient ids in the cohort exists
-	 * @throws APIException when the process failed
+	 * @throws org.openmrs.api.APIException when the process failed
 	 */
 	@Transactional(readOnly = true)
 	List<Obs> getCohortObservations(final Cohort cohort, final List<Concept> concepts) throws APIException;
+
+	/**
+	 * Service method to save extended information for the reporting cohort definition
+	 *
+	 * @param extendedDefinition the extended definition
+	 * @return saved extended definition
+	 * @throws org.openmrs.api.APIException when the saving process failed
+	 */
+	ExtendedDefinition saveExtendedDefinition(ExtendedDefinition extendedDefinition) throws APIException;
+
+	/**
+	 * Get extended definition by the extended definition uuid
+	 *
+	 * @param uuid the extended definition uuid
+	 * @return the extended definition
+	 * @throws org.openmrs.api.APIException when retrieving the extended definition failed
+	 */
+	@Transactional(readOnly = true)
+	ExtendedDefinition getExtendedDefinitionByUuid(String uuid) throws APIException;
+
+	/**
+	 * Get extended definition by the extended definition id
+	 *
+	 * @param id the extended definition id
+	 * @return the extended definition
+	 * @throws org.openmrs.api.APIException when retrieving the extended definition failed
+	 */
+	@Transactional(readOnly = true)
+	ExtendedDefinition getExtendedDefinition(Integer id) throws APIException;
+
+	/**
+	 * Get all saved extended definitions
+	 *
+	 * @return alll saved extended definitions
+	 * @throws org.openmrs.api.APIException when retrieving all extended definitions failed
+	 */
+	@Transactional(readOnly = true)
+	List<ExtendedDefinition> getAllExtendedDefinition() throws APIException;
 }

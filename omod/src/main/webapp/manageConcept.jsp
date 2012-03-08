@@ -1,6 +1,8 @@
 <%@ include file="/WEB-INF/template/include.jsp" %>
 <%@ include file="/WEB-INF/template/header.jsp" %>
 
+<openmrs:require privilege="Manage Connector" otherwise="/login.htm" redirect="/module/odkconnector/manageConcept.form"/>
+
 <%@ include file="template/localHeader.jsp" %>
 
 <script type="text/javascript">
