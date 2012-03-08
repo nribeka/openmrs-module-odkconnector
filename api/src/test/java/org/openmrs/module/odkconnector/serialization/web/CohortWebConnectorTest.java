@@ -30,7 +30,7 @@ public class CohortWebConnectorTest extends BaseModuleContextSensitiveTest {
 
 	private static final Log log = LogFactory.getLog(CohortWebConnectorTest.class);
 
-	private static final String SERVER_URL = "http://rwinkwavu.cs.washington.edu:8081/openmrs";
+	private static final String SERVER_URL = "http://localhost:8081/openmrs";
 
 	@Test
 	public void serialize_shouldDisplayAllCohortInformation() throws Exception {

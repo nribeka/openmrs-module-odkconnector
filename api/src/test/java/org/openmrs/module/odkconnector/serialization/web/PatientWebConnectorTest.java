@@ -31,7 +31,7 @@ public class PatientWebConnectorTest extends BaseModuleContextSensitiveTest {
 
 	private static final Log log = LogFactory.getLog(PatientWebConnectorTest.class);
 
-	private static final String SERVER_URL = "http://rwinkwavu.cs.washington.edu:8081/openmrs";
+	private static final String SERVER_URL = "http://localhost:8081/openmrs";
 
 	@Test
 	public void serialize_shouldDisplayAllPatientInformation() throws Exception {
@@ -43,15 +43,15 @@ public class PatientWebConnectorTest extends BaseModuleContextSensitiveTest {
 		HttpURLConnection connection = (HttpURLConnection) u.openConnection();
 		connection.setDoOutput(true);
 		connection.setRequestMethod("POST");
-		connection.setConnectTimeout(4000);
-		connection.setReadTimeout(8000);
+		connection.setConnectTimeout(10000);
+		connection.setReadTimeout(10000);
 		connection.addRequestProperty("Content-type", "application/octet-stream");
 
 		// write auth details to connection
 		DataOutputStream outputStream = new DataOutputStream(new GZIPOutputStream(connection.getOutputStream()));
 		outputStream.writeUTF("admin");
 		outputStream.writeUTF("test");
-		outputStream.writeInt(6);
+		outputStream.writeInt(1);
 		outputStream.close();
 
 		DataInputStream inputStream = new DataInputStream(new GZIPInputStream(connection.getInputStream()));

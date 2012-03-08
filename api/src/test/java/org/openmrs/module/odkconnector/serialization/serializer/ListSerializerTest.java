@@ -37,7 +37,6 @@ import org.openmrs.module.odkconnector.serialization.Serializer;
 import org.openmrs.module.odkconnector.serialization.serializer.openmrs.ObsSerializer;
 import org.openmrs.test.BaseModuleContextSensitiveTest;
 import org.openmrs.util.HandlerUtil;
-import org.openmrs.util.OpenmrsUtil;
 
 public class ListSerializerTest extends BaseModuleContextSensitiveTest {
 
@@ -95,14 +94,14 @@ public class ListSerializerTest extends BaseModuleContextSensitiveTest {
 			System.out.println("Patient Id: " + dataInputStream.readInt());
 			System.out.println("Concept Name: " + dataInputStream.readUTF());
 
-			Integer type = dataInputStream.readInt();
-			if (OpenmrsUtil.nullSafeEquals(type, ObsSerializer.TYPE_STRING))
+			byte type = dataInputStream.readByte();
+			if (type == ObsSerializer.TYPE_STRING)
 				System.out.println("Value: " + dataInputStream.readUTF());
-			else if (OpenmrsUtil.nullSafeEquals(type, ObsSerializer.TYPE_INT))
+			else if (type == ObsSerializer.TYPE_INT)
 				System.out.println("Value: " + dataInputStream.readInt());
-			else if (OpenmrsUtil.nullSafeEquals(type, ObsSerializer.TYPE_DOUBLE))
+			else if (type == ObsSerializer.TYPE_DOUBLE)
 				System.out.println("Value: " + dataInputStream.readDouble());
-			else if (OpenmrsUtil.nullSafeEquals(type, ObsSerializer.TYPE_DATE))
+			else if (type == ObsSerializer.TYPE_DATE)
 				System.out.println("Value: " + dataInputStream.readLong());
 			System.out.println("Time: " + dataInputStream.readLong());
 		}
