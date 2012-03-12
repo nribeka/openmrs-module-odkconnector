@@ -11,7 +11,8 @@
 
 		<discriminator column="id" insert="false"/>
 
-		<many-to-one name="serializable" class="org.openmrs.api.db.SerializedObject" column="serializable"/>
+		<property name="definition" type="org.openmrs.module.odkconnector.api.db.hibernate.type.CohortDefinitionType" column="definition"
+		          not-null="true"/>
 
 		<set name="properties" inverse="true" cascade="all" access="field" order-by="id desc">
 			<key column="definition_id"/>

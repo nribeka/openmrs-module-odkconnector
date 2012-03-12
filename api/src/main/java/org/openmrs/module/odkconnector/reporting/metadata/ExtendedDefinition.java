@@ -19,7 +19,7 @@ import java.util.Set;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.openmrs.BaseOpenmrsMetadata;
-import org.openmrs.api.db.SerializedObject;
+import org.openmrs.module.reporting.cohort.definition.CohortDefinition;
 
 public class ExtendedDefinition extends BaseOpenmrsMetadata {
 
@@ -27,7 +27,7 @@ public class ExtendedDefinition extends BaseOpenmrsMetadata {
 
 	private Integer id;
 
-	private SerializedObject serializable;
+	private CohortDefinition definition;
 
 	private Set<DefinitionProperty> properties;
 
@@ -48,21 +48,21 @@ public class ExtendedDefinition extends BaseOpenmrsMetadata {
 	}
 
 	/**
-	 * Get the serializable object
+	 * Get the cohort definition object
 	 *
-	 * @return the serializable object
+	 * @return the cohort definition object
 	 */
-	public SerializedObject getSerializable() {
-		return serializable;
+	public CohortDefinition getDefinition() {
+		return definition;
 	}
 
 	/**
-	 * Set the serializable object
+	 * Set the cohort definition object
 	 *
-	 * @param serializable the serializable object
+	 * @param definition the cohort definition object
 	 */
-	public void setSerializable(final SerializedObject serializable) {
-		this.serializable = serializable;
+	public void setDefinition(final CohortDefinition definition) {
+		this.definition = definition;
 	}
 
 	/**

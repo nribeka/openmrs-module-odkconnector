@@ -51,7 +51,7 @@
 				<constraints primaryKey="true" nullable="false"/>
 			</column>
 
-			<column name="serializable" type="int" defaultValueNumeric="0">
+			<column name="definition" type="int" defaultValueNumeric="0">
 				<constraints nullable="false"/>
 			</column>
 
