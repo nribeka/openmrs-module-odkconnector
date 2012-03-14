@@ -10,49 +10,87 @@
 
 	var $j = jQuery.noConflict();
 
+	function createEditableDiv(propertyId, property, text) {
+		var div = $j(document.createElement("div"));
+		div.attr({
+			class:"edit",
+			property:property,
+			propertyId:propertyId
+		});
+		div.html(text);
+		return div;
+	}
+
+	function createElement(name) {
+		return $j(document.createElement(name));
+	}
+
+	function search(uuid) {
+		jQuery.ajax({
+			url:"searchProperty.form",
+			type:"POST",
+			dataType:"json",
+			data:{
+				uuid:uuid
+			},
+			success:function (data, status, jqXHR) {
+				$j("#properties").children().remove();
+				jQuery.each(data, function (index, element) {
+					var property = createElement("td");
+					var propertyDiv = createEditableDiv(element.propertyId, "property", element.property);
+					property.append(propertyDiv);
+
+					var value = createElement("td");
+					var valueDiv = createEditableDiv(element.propertyId, "propertyValue", element.propertyValue);
+					value.append(valueDiv);
+
+					var description = createElement("td");
+					var descriptionDiv = createEditableDiv(element.propertyId, "propertyDescription", element.propertyDescription);
+					description.append(descriptionDiv);
+
+					var row = createElement("tr");
+					row.append(property);
+					row.append(value);
+					row.append(description);
+
+					$j("#properties").append(row);
+				});
+			},
+			error:function (jqXHR, status, error) {
+				$j("#properties").children().remove();
+			}
+		});
+	}
+
 	$j(document).ready(function () {
 
-		$j("#definitionList").change(
-				function () {
-					var selectedUuid = $j(this).val();
-					jQuery.ajax({
-						url:"searchProperty.form",
-						type:"POST",
-						dataType:"json",
-						data:{
-							uuid:selectedUuid
-						},
-						success:function (data, status, jqXHR) {
-							jQuery.each(data, function (index, element) {
-								console.log(element.property);
-								console.log(element.propertyValue);
-								console.log(element.propertyDescription);
-							});
-						},
-						error:function (jqXHR, status, error) {
-							console.log(status);
-						}
-					});
-				}
-		);
+		$j("#definitionList").change(function () {
+			search($j(this).val());
+		});
 
-		$j('.edit').editable(
-				function (value, settings) {
-					jQuery.post("saveProperty.form", { id:"some id", value:value });
-					console.log(this);
-					console.log(value);
-					console.log(settings);
-					return value;
-				},
-				{
-					indicator:'Saving...',
-					tooltip:'Click to edit...',
-					callback:function (value, settings) {
-						console.log(this);
-						console.log(value);
-						console.log(settings);
-					}
-				});
+		$j("#definitionList").ajaxComplete(function () {
+			$j('.edit').editable(
+					function (value, settings) {
+						var property = $j(this).attr("property");
+						var propertyId = $j(this).attr("propertyId");
+						jQuery.ajax({
+							url:"saveProperty.form",
+							type:"POST",
+							dataType:"json",
+							data:{
+								id:propertyId,
+								property:property,
+								value:value
+							}
+						});
+						return value;
+					},
+					{
+						indicator:'Saving...',
+						tooltip:'Click to edit...'
+					});
+
+		});
 	});
 
 </script>
@@ -105,7 +143,7 @@
 <div>
 	<form action="" method="post">
 		<fieldset>
-			<legend>Select Cohort Definition</legend>
+			<legend><span><spring:message code="odkconnector.definition.header"/></span></legend>
 			<ol>
 				<li>
 					<label for="definitionList"><spring:message code="odkconnector.definition.definitionList"/></label>
@@ -121,24 +159,21 @@
 	</form>
 
 	<fieldset>
-		<legend>Cohort Definition Extended Property</legend>
-		<table width="80%" cellpadding="5px">
+		<legend><span><spring:message code="odkconnector.definition.property.header"/></span></legend>
+		<table cellpadding="5px">
+			<thead>
 			<tr>
 				<th class="header"><span><spring:message code="odkconnector.definition.property"/></span></th>
 				<th class="header"><span><spring:message code="odkconnector.definition.propertyValue"/></span></th>
 				<th class="header"><span><spring:message code="odkconnector.definition.propertyDescription"/></span></th>
 			</tr>
+			</thead>
+			<tbody id="properties"></tbody>
+			<tfoot>
 			<tr>
-				<td>
-					<div class="edit" name="property"></div>
-				</td>
-				<td>
-					<div class="edit" name="value"></div>
-				</td>
-				<td>
-					<div class="edit" name="description"></div>
-				</td>
+				<td><input type="button" value="Add New Property"/></td>
 			</tr>
+			</tfoot>
 		</table>
 	</fieldset>
 </div>

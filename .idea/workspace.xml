@@ -2,15 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="a7d324ee-2b1d-4154-82e2-3a99b2abbf41" name="Default" comment="">
-      <change type="MOVED" beforePath="$PROJECT_DIR$/omod/src/main/java/org/openmrs/module/odkconnector/web/controller/reporting/SavePropertyController.java" afterPath="$PROJECT_DIR$/omod/src/main/java/org/openmrs/module/odkconnector/web/controller/reporting/AjaxPropertyController.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/api/src/main/java/org/openmrs/module/odkconnector/api/ConnectorService.java" afterPath="$PROJECT_DIR$/api/src/main/java/org/openmrs/module/odkconnector/api/ConnectorService.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/api/src/main/java/org/openmrs/module/odkconnector/api/db/ConnectorDAO.java" afterPath="$PROJECT_DIR$/api/src/main/java/org/openmrs/module/odkconnector/api/db/ConnectorDAO.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/api/src/main/java/org/openmrs/module/odkconnector/api/db/hibernate/HibernateConnectorDAO.java" afterPath="$PROJECT_DIR$/api/src/main/java/org/openmrs/module/odkconnector/api/db/hibernate/HibernateConnectorDAO.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/api/src/main/java/org/openmrs/module/odkconnector/api/impl/ConnectorServiceImpl.java" afterPath="$PROJECT_DIR$/api/src/main/java/org/openmrs/module/odkconnector/api/impl/ConnectorServiceImpl.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/api/src/main/java/org/openmrs/module/odkconnector/reporting/metadata/ExtendedDefinition.java" afterPath="$PROJECT_DIR$/api/src/main/java/org/openmrs/module/odkconnector/reporting/metadata/ExtendedDefinition.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/api/src/main/resources/liquibase.xml" afterPath="$PROJECT_DIR$/api/src/main/resources/liquibase.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/omod/src/main/java/org/openmrs/module/odkconnector/web/controller/reporting/ManagePropertyController.java" afterPath="$PROJECT_DIR$/omod/src/main/java/org/openmrs/module/odkconnector/web/controller/reporting/ManagePropertyController.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/omod/src/main/java/org/openmrs/module/odkconnector/web/controller/reporting/AjaxPropertyController.java" afterPath="$PROJECT_DIR$/omod/src/main/java/org/openmrs/module/odkconnector/web/controller/reporting/AjaxPropertyController.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/omod/src/main/webapp/reporting/manageProperty.jsp" afterPath="$PROJECT_DIR$/omod/src/main/webapp/reporting/manageProperty.jsp" />
     </list>
     <ignored path="odkconnector.iws" />
@@ -69,19 +62,19 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="AjaxPropertyController.java" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="AjaxPropertyController.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/omod/src/main/java/org/openmrs/module/odkconnector/web/controller/reporting/AjaxPropertyController.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="58" column="18" selection-start="2465" selection-end="2465" vertical-scroll-proportion="0.39848197">
+            <state line="47" column="52" selection-start="2230" selection-end="2230" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="manageProperty.jsp" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="manageProperty.jsp" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/omod/src/main/webapp/reporting/manageProperty.jsp">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="36" column="34" selection-start="1062" selection-end="1500" vertical-scroll-proportion="-13.75">
+            <state line="72" column="92" selection-start="2051" selection-end="2051" vertical-scroll-proportion="0.39320388">
               <folding />
             </state>
           </provider>
@@ -116,8 +109,8 @@
         <option value="$PROJECT_DIR$/api/src/main/java/org/openmrs/module/odkconnector/api/db/hibernate/HibernateConnectorDAO.java" />
         <option value="$PROJECT_DIR$/api/src/main/java/org/openmrs/module/odkconnector/api/ConnectorService.java" />
         <option value="$PROJECT_DIR$/api/src/main/java/org/openmrs/module/odkconnector/reporting/metadata/ExtendedDefinition.java" />
-        <option value="$PROJECT_DIR$/omod/src/main/webapp/reporting/manageProperty.jsp" />
         <option value="$PROJECT_DIR$/omod/src/main/java/org/openmrs/module/odkconnector/web/controller/reporting/AjaxPropertyController.java" />
+        <option value="$PROJECT_DIR$/omod/src/main/webapp/reporting/manageProperty.jsp" />
       </list>
     </option>
   </component>
@@ -1608,6 +1601,7 @@
           <MavenRunnerParameters>
             <option name="goals">
               <list>
+                <option value="-o" />
                 <option value="clean" />
                 <option value="install" />
                 <option value="-DskipTests" />
@@ -1713,6 +1707,7 @@
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="IDEtalk" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32962963" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32962963" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32962963" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -1722,7 +1717,6 @@
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32962963" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32962963" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.6703704" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
     </layout>
@@ -1761,7 +1755,7 @@
     <option name="INCLUDE_TEXT_INTO_SHELF" value="false" />
     <option name="CREATE_PATCH_EXPAND_DETAILS_DEFAULT" value="true" />
     <option name="FORCE_NON_EMPTY_COMMENT" value="false" />
-    <option name="LAST_COMMIT_MESSAGE" value="odkconnector: cohort definition custom type, working on the ui for the custom property and the handler!" />
+    <option name="LAST_COMMIT_MESSAGE" value="odkconnector: ui for the cohort definition extended custom property" />
     <option name="MAKE_NEW_CHANGELIST_ACTIVE" value="true" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="CHECK_FILES_UP_TO_DATE_BEFORE_COMMIT" value="false" />
@@ -1786,6 +1780,7 @@
     <MESSAGE value="odkconnector: initial implementation of extending the cohort definition with properties" />
     <MESSAGE value="odkconnector: adding more dependencies to make sure the reporting doesn't complain about missing classes from the serialization module" />
     <MESSAGE value="odkconnector: cohort definition custom type, working on the ui for the custom property and the handler!" />
+    <MESSAGE value="odkconnector: ui for the cohort definition extended custom property" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
@@ -1887,16 +1882,16 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/omod/src/main/webapp/reporting/manageProperty.jsp">
+    <entry file="file://$PROJECT_DIR$/omod/src/main/java/org/openmrs/module/odkconnector/web/controller/reporting/AjaxPropertyController.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="36" column="34" selection-start="1062" selection-end="1500" vertical-scroll-proportion="-13.75">
+        <state line="47" column="52" selection-start="2230" selection-end="2230" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/omod/src/main/java/org/openmrs/module/odkconnector/web/controller/reporting/AjaxPropertyController.java">
+    <entry file="file://$PROJECT_DIR$/omod/src/main/webapp/reporting/manageProperty.jsp">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="58" column="18" selection-start="2465" selection-end="2465" vertical-scroll-proportion="0.39848197">
+        <state line="72" column="92" selection-start="2051" selection-end="2051" vertical-scroll-proportion="0.39320388">
           <folding />
         </state>
       </provider>

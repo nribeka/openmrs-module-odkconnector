@@ -41,10 +41,11 @@ public class AjaxPropertyController {
 
 	@RequestMapping(value = "/module/odkconnector/reporting/saveProperty.form", method = RequestMethod.POST)
 	public void processSave(final @RequestParam(value = "id", required = true) String id,
+	                        final @RequestParam(value = "property", required = true) String property,
 	                        final @RequestParam(value = "value", required = true) String value,
 	                        final HttpServletResponse response) throws IOException {
 
-		System.out.println("id: " + id + ", value: " + value);
+		System.out.println("id: " + id + ", property: " + property + ", value: " + value);
 		OutputStream stream = response.getOutputStream();
 
 		JsonFactory f = new JsonFactory();
@@ -73,13 +74,15 @@ public class AjaxPropertyController {
 		g.useDefaultPrettyPrinter();
 
 		g.writeStartArray();
-		for (DefinitionProperty property : extendedDefinition.getProperties()) {
-			g.writeStartObject();
-			g.writeStringField("property", property.getProperty());
-			g.writeStringField("propertyValue", property.getPropertyValue());
-			g.writeStringField("propertyDescription", property.getPropertyDescription());
-			g.writeEndObject();
-		}
+		if (extendedDefinition != null)
+			for (DefinitionProperty property : extendedDefinition.getProperties()) {
+				g.writeStartObject();
+				g.writeNumberField("propertyId", property.getId());
+				g.writeStringField("property", property.getProperty());
+				g.writeStringField("propertyValue", property.getPropertyValue());
+				g.writeStringField("propertyDescription", property.getPropertyDescription());
+				g.writeEndObject();
+			}
 		g.writeEndArray();
 
 		g.close();
