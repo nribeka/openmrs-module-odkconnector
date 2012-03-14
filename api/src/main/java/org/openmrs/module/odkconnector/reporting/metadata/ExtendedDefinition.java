@@ -14,6 +14,7 @@
 
 package org.openmrs.module.odkconnector.reporting.metadata;
 
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 import org.apache.commons.logging.Log;
@@ -71,6 +72,8 @@ public class ExtendedDefinition extends BaseOpenmrsMetadata {
 	 * @return the properties
 	 */
 	public Set<DefinitionProperty> getProperties() {
+		if (properties == null)
+			return new LinkedHashSet<DefinitionProperty>();
 		return properties;
 	}
 

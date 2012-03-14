@@ -22,6 +22,7 @@ import org.openmrs.Obs;
 import org.openmrs.Patient;
 import org.openmrs.api.db.DAOException;
 import org.openmrs.module.odkconnector.reporting.metadata.ExtendedDefinition;
+import org.openmrs.module.reporting.cohort.definition.CohortDefinition;
 
 /**
  * Database methods for {@link org.openmrs.module.odkconnector.api.ConnectorService}.
@@ -72,6 +73,16 @@ public interface ConnectorDAO {
 	 *          when retrieving the extended definition failed
 	 */
 	ExtendedDefinition getExtendedDefinitionByUuid(final String uuid) throws DAOException;
+
+	/**
+	 * DAO method to get extended definition by the definition
+	 *
+	 * @param definition the definition
+	 * @return the extended definition
+	 * @throws org.openmrs.api.db.DAOException
+	 *          when retrieving the extended definition failed
+	 */
+	ExtendedDefinition getExtendedDefinitionByDefinition(final CohortDefinition definition) throws DAOException;
 
 	/**
 	 * DAO method to get extended definition by the extended definition id

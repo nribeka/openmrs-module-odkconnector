@@ -31,8 +31,8 @@ public class ManagePropertyController {
 
 	@RequestMapping(method = RequestMethod.GET)
 	public void preparePage(final Model model) {
-		CohortDefinitionService service = Context.getService(CohortDefinitionService.class);
-		model.addAttribute("definitions", service.getAllDefinitions(Boolean.FALSE));
+		CohortDefinitionService definitionService = Context.getService(CohortDefinitionService.class);
+		model.addAttribute("definitions", definitionService.getAllDefinitions(Boolean.FALSE));
 	}
 
 }

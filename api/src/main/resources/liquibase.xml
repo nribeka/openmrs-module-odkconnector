@@ -101,4 +101,12 @@
 		                         referencedColumnNames="user_id" referencedTableName="users"/>
 	</changeSet>
 
+	<changeSet id="20120313125858" author="nribeka">
+		<addAutoIncrement tableName="odkconnector_extended_definition" columnName="id" columnDataType="int"/>
+	</changeSet>
+
+	<changeSet id="20120313125859" author="nribeka">
+		<addAutoIncrement tableName="odkconnector_definition_property" columnName="id" columnDataType="int"/>
+	</changeSet>
+
 </databaseChangeLog>

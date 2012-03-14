@@ -29,6 +29,7 @@ import org.openmrs.Patient;
 import org.openmrs.api.db.DAOException;
 import org.openmrs.module.odkconnector.api.db.ConnectorDAO;
 import org.openmrs.module.odkconnector.reporting.metadata.ExtendedDefinition;
+import org.openmrs.module.reporting.cohort.definition.CohortDefinition;
 
 /**
  * It is a default implementation of  {@link org.openmrs.module.odkconnector.api.db.ConnectorDAO}.
@@ -96,6 +97,17 @@ public class HibernateConnectorDAO implements ConnectorDAO {
 	public ExtendedDefinition getExtendedDefinitionByUuid(final String uuid) throws DAOException {
 		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(ExtendedDefinition.class);
 		criteria.add(Restrictions.eq("uuid", uuid));
+		criteria.add(Restrictions.eq("retired", Boolean.FALSE));
+		return (ExtendedDefinition) criteria.uniqueResult();
+	}
+
+	/**
+	 * @see org.openmrs.module.odkconnector.api.ConnectorService#getExtendedDefinitionByDefinition(org.openmrs.module.reporting.cohort.definition.CohortDefinition)
+	 */
+	@Override
+	public ExtendedDefinition getExtendedDefinitionByDefinition(final CohortDefinition definition) throws DAOException {
+		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(ExtendedDefinition.class);
+		criteria.add(Restrictions.eq("definition", definition));
 		criteria.add(Restrictions.eq("retired", Boolean.FALSE));
 		return (ExtendedDefinition) criteria.uniqueResult();
 	}

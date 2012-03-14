@@ -11,15 +11,48 @@
 	var $j = jQuery.noConflict();
 
 	$j(document).ready(function () {
-		$j('.edit').editable(function (value, settings) {
-			console.log(this);
-			console.log(value);
-			console.log(settings);
-			return value;
-		}, {
-			indicator:'Saving...',
-			tooltip:'Click to edit...'
-		});
+
+		$j("#definitionList").change(
+				function () {
+					var selectedUuid = $j(this).val();
+					jQuery.ajax({
+						url:"searchProperty.form",
+						type:"POST",
+						dataType:"json",
+						data:{
+							uuid:selectedUuid
+						},
+						success:function (data, status, jqXHR) {
+							jQuery.each(data, function (index, element) {
+								console.log(element.property);
+								console.log(element.propertyValue);
+								console.log(element.propertyDescription);
+							});
+						},
+						error:function (jqXHR, status, error) {
+							console.log(status);
+						}
+					});
+				}
+		);
+
+		$j('.edit').editable(
+				function (value, settings) {
+					jQuery.post("saveProperty.form", { id:"some id", value:value });
+					console.log(this);
+					console.log(value);
+					console.log(settings);
+					return value;
+				},
+				{
+					indicator:'Saving...',
+					tooltip:'Click to edit...',
+					callback:function (value, settings) {
+						console.log(this);
+						console.log(value);
+						console.log(settings);
+					}
+				});
 	});
 
 </script>
@@ -79,7 +112,7 @@
 					<select id="definitionList" class="largeWidth">
 						<option value="-1"></option>
 						<c:forEach items="${definitions}" var="definition">
-							<option value="${definition.id}">${definition.name}</option>
+							<option value="${definition.uuid}">${definition.name}</option>
 						</c:forEach>
 					</select>
 				</li>

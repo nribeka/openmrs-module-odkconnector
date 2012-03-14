@@ -23,6 +23,7 @@ import org.openmrs.Patient;
 import org.openmrs.api.APIException;
 import org.openmrs.api.OpenmrsService;
 import org.openmrs.module.odkconnector.reporting.metadata.ExtendedDefinition;
+import org.openmrs.module.reporting.cohort.definition.CohortDefinition;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -71,7 +72,7 @@ public interface ConnectorService extends OpenmrsService {
 	 * @return saved extended definition
 	 * @throws org.openmrs.api.APIException when the saving process failed
 	 */
-	ExtendedDefinition saveExtendedDefinition(ExtendedDefinition extendedDefinition) throws APIException;
+	ExtendedDefinition saveExtendedDefinition(final ExtendedDefinition extendedDefinition) throws APIException;
 
 	/**
 	 * Get extended definition by the extended definition uuid
@@ -81,7 +82,17 @@ public interface ConnectorService extends OpenmrsService {
 	 * @throws org.openmrs.api.APIException when retrieving the extended definition failed
 	 */
 	@Transactional(readOnly = true)
-	ExtendedDefinition getExtendedDefinitionByUuid(String uuid) throws APIException;
+	ExtendedDefinition getExtendedDefinitionByUuid(final String uuid) throws APIException;
+
+	/**
+	 * Get extended definition by the definition
+	 *
+	 * @param definition the definition
+	 * @return the extended definition
+	 * @throws org.openmrs.api.APIException when retrieving the extended definition failed
+	 */
+	@Transactional(readOnly = true)
+	ExtendedDefinition getExtendedDefinitionByDefinition(final CohortDefinition definition) throws APIException;
 
 	/**
 	 * Get extended definition by the extended definition id
@@ -91,7 +102,7 @@ public interface ConnectorService extends OpenmrsService {
 	 * @throws org.openmrs.api.APIException when retrieving the extended definition failed
 	 */
 	@Transactional(readOnly = true)
-	ExtendedDefinition getExtendedDefinition(Integer id) throws APIException;
+	ExtendedDefinition getExtendedDefinition(final Integer id) throws APIException;
 
 	/**
 	 * Get all saved extended definitions

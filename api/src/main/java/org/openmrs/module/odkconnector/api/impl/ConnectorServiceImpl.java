@@ -29,6 +29,7 @@ import org.openmrs.api.impl.BaseOpenmrsService;
 import org.openmrs.module.odkconnector.api.ConnectorService;
 import org.openmrs.module.odkconnector.api.db.ConnectorDAO;
 import org.openmrs.module.odkconnector.reporting.metadata.ExtendedDefinition;
+import org.openmrs.module.reporting.cohort.definition.CohortDefinition;
 
 /**
  * It is a default implementation of {@link org.openmrs.module.odkconnector.api.ConnectorService}.
@@ -104,6 +105,18 @@ public class ConnectorServiceImpl extends BaseOpenmrsService implements Connecto
 	@Override
 	public ExtendedDefinition getExtendedDefinitionByUuid(final String uuid) throws APIException {
 		return dao.getExtendedDefinitionByUuid(uuid);
+	}
+
+	/**
+	 * Service method to get extended definition by the definition
+	 *
+	 * @param definition the definition
+	 * @return the extended definition
+	 * @throws org.openmrs.api.APIException when retrieving the extended definition failed
+	 */
+	@Override
+	public ExtendedDefinition getExtendedDefinitionByDefinition(final CohortDefinition definition) throws APIException {
+		return dao.getExtendedDefinitionByDefinition(definition);
 	}
 
 	/**
