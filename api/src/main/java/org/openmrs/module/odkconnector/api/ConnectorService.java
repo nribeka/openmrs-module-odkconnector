@@ -22,6 +22,7 @@ import org.openmrs.Obs;
 import org.openmrs.Patient;
 import org.openmrs.api.APIException;
 import org.openmrs.api.OpenmrsService;
+import org.openmrs.module.odkconnector.reporting.metadata.DefinitionProperty;
 import org.openmrs.module.odkconnector.reporting.metadata.ExtendedDefinition;
 import org.openmrs.module.reporting.cohort.definition.CohortDefinition;
 import org.springframework.transaction.annotation.Transactional;
@@ -75,7 +76,7 @@ public interface ConnectorService extends OpenmrsService {
 	ExtendedDefinition saveExtendedDefinition(final ExtendedDefinition extendedDefinition) throws APIException;
 
 	/**
-	 * Get extended definition by the extended definition uuid
+	 * Service method to get extended definition by the extended definition uuid
 	 *
 	 * @param uuid the extended definition uuid
 	 * @return the extended definition
@@ -85,7 +86,7 @@ public interface ConnectorService extends OpenmrsService {
 	ExtendedDefinition getExtendedDefinitionByUuid(final String uuid) throws APIException;
 
 	/**
-	 * Get extended definition by the definition
+	 * Service method to get extended definition by the definition
 	 *
 	 * @param definition the definition
 	 * @return the extended definition
@@ -95,7 +96,7 @@ public interface ConnectorService extends OpenmrsService {
 	ExtendedDefinition getExtendedDefinitionByDefinition(final CohortDefinition definition) throws APIException;
 
 	/**
-	 * Get extended definition by the extended definition id
+	 * Service method to get extended definition by the extended definition id
 	 *
 	 * @param id the extended definition id
 	 * @return the extended definition
@@ -105,11 +106,29 @@ public interface ConnectorService extends OpenmrsService {
 	ExtendedDefinition getExtendedDefinition(final Integer id) throws APIException;
 
 	/**
-	 * Get all saved extended definitions
+	 * Service method to get all saved extended definitions
 	 *
 	 * @return alll saved extended definitions
 	 * @throws org.openmrs.api.APIException when retrieving all extended definitions failed
 	 */
 	@Transactional(readOnly = true)
 	List<ExtendedDefinition> getAllExtendedDefinition() throws APIException;
+
+	/**
+	 * Service method to save or update a definition property
+	 *
+	 * @param definitionProperty the definition property
+	 * @return the saved definition property
+	 * @throws org.openmrs.api.APIException when saving the definition property failed
+	 */
+	DefinitionProperty saveDefinitionProperty(final DefinitionProperty definitionProperty) throws APIException;
+
+	/**
+	 * Service method to get the definition property by the definition property id
+	 *
+	 * @param id the definition property id
+	 * @return the definition property or null
+	 * @throws org.openmrs.api.APIException when getting the definition property failed
+	 */
+	DefinitionProperty getDefinitionProperty(final Integer id) throws APIException;
 }

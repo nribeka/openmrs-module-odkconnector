@@ -30,7 +30,26 @@ public class DefinitionProperty extends BaseOpenmrsMetadata {
 
 	private String propertyDescription;
 
-	private ExtendedDefinition definition;
+	private ExtendedDefinition extendedDefinition;
+
+	/**
+	 * Default constructor to create definition property
+	 */
+	public DefinitionProperty() {
+	}
+
+	/**
+	 * Constructor to create definition property
+	 *
+	 * @param property            the property
+	 * @param propertyValue       the property value
+	 * @param propertyDescription the property description
+	 */
+	public DefinitionProperty(final String property, final String propertyValue, final String propertyDescription) {
+		this.property = property;
+		this.propertyValue = propertyValue;
+		this.propertyDescription = propertyDescription;
+	}
 
 	/**
 	 * @return id - The unique Identifier for the object
@@ -49,7 +68,7 @@ public class DefinitionProperty extends BaseOpenmrsMetadata {
 	}
 
 	/**
-	 * Get the property of the cohort definition
+	 * Get the property of the definition property
 	 *
 	 * @return the property
 	 */
@@ -58,7 +77,7 @@ public class DefinitionProperty extends BaseOpenmrsMetadata {
 	}
 
 	/**
-	 * Set the property of the cohort definition
+	 * Set the property of the definition property
 	 *
 	 * @param property the property
 	 */
@@ -67,7 +86,7 @@ public class DefinitionProperty extends BaseOpenmrsMetadata {
 	}
 
 	/**
-	 * Get the property value of the cohort definition
+	 * Get the property value of the definition property
 	 *
 	 * @return the property value
 	 */
@@ -76,7 +95,7 @@ public class DefinitionProperty extends BaseOpenmrsMetadata {
 	}
 
 	/**
-	 * Set the property value of the cohort definition
+	 * Set the property value of the definition property
 	 *
 	 * @param propertyValue the property value
 	 */
@@ -85,7 +104,7 @@ public class DefinitionProperty extends BaseOpenmrsMetadata {
 	}
 
 	/**
-	 * Set the property description of the cohort definition
+	 * Set the property description of the definition property
 	 *
 	 * @return the property description
 	 */
@@ -94,7 +113,7 @@ public class DefinitionProperty extends BaseOpenmrsMetadata {
 	}
 
 	/**
-	 * Set the property description of the cohort definition
+	 * Set the property description of the definition property
 	 *
 	 * @param propertyDescription the property description
 	 */
@@ -103,20 +122,20 @@ public class DefinitionProperty extends BaseOpenmrsMetadata {
 	}
 
 	/**
-	 * The inverse reference to the cohort definition
+	 * The inverse reference to the definition property
 	 *
-	 * @return the cohort definition
+	 * @return the definition property
 	 */
-	public ExtendedDefinition getDefinition() {
-		return definition;
+	public ExtendedDefinition getExtendedDefinition() {
+		return extendedDefinition;
 	}
 
 	/**
-	 * Set the inverse reference to the cohort definition
+	 * Set the inverse reference to the definition property
 	 *
-	 * @param definition the cohort definition
+	 * @param extendedDefinition the definition property
 	 */
-	public void setDefinition(final ExtendedDefinition definition) {
-		this.definition = definition;
+	public void setExtendedDefinition(final ExtendedDefinition extendedDefinition) {
+		this.extendedDefinition = extendedDefinition;
 	}
 }

@@ -11,10 +11,10 @@
 
 		<discriminator column="id" insert="false"/>
 
-		<property name="definition" type="org.openmrs.module.odkconnector.api.db.hibernate.type.CohortDefinitionType" column="definition"
+		<property name="cohortDefinition" type="org.openmrs.module.odkconnector.api.db.hibernate.type.CohortDefinitionType" column="definition"
 		          not-null="true"/>
 
-		<set name="properties" inverse="true" cascade="all" access="field" order-by="id desc">
+		<set name="properties" inverse="true" cascade="all" access="field" order-by="id asc">
 			<key column="definition_id"/>
 			<one-to-many class="org.openmrs.module.odkconnector.reporting.metadata.DefinitionProperty"/>
 		</set>

@@ -26,6 +26,17 @@ public class PatientForm {
 	private Integer formId;
 
 	/**
+	 * Create new patient form information
+	 *
+	 * @param patientId the patient id
+	 * @param formId    the form id
+	 */
+	public PatientForm(final Integer patientId, final Integer formId) {
+		this.patientId = patientId;
+		this.formId = formId;
+	}
+
+	/**
 	 * Get the patient id for which the form is applicable to
 	 *
 	 * @return the patient id

@@ -16,7 +16,7 @@
 	<li
 	<c:if test='<%= request.getRequestURI().contains("/manageProperty") %>'>class="active"</c:if>>
 	<a href="${pageContext.request.contextPath}/module/odkconnector/reporting/manageProperty.form">
-		<spring:message code="odkconnector.definition"/>
+		<spring:message code="odkconnector.cohortDefinition"/>
 	</a>
 	</li>
 </ul>

@@ -28,6 +28,7 @@ import org.openmrs.api.APIException;
 import org.openmrs.api.impl.BaseOpenmrsService;
 import org.openmrs.module.odkconnector.api.ConnectorService;
 import org.openmrs.module.odkconnector.api.db.ConnectorDAO;
+import org.openmrs.module.odkconnector.reporting.metadata.DefinitionProperty;
 import org.openmrs.module.odkconnector.reporting.metadata.ExtendedDefinition;
 import org.openmrs.module.reporting.cohort.definition.CohortDefinition;
 
@@ -140,5 +141,29 @@ public class ConnectorServiceImpl extends BaseOpenmrsService implements Connecto
 	@Override
 	public List<ExtendedDefinition> getAllExtendedDefinition() throws APIException {
 		return dao.getAllExtendedDefinition();
+	}
+
+	/**
+	 * Service method to save or update a definition property
+	 *
+	 * @param definitionProperty the definition property
+	 * @return the saved definition property
+	 * @throws org.openmrs.api.APIException when saving the definition property failed
+	 */
+	@Override
+	public DefinitionProperty saveDefinitionProperty(final DefinitionProperty definitionProperty) throws APIException {
+		return dao.saveDefinitionProperty(definitionProperty);
+	}
+
+	/**
+	 * Service method to get the definition property by the definition property id
+	 *
+	 * @param id the definition property id
+	 * @return the definition property or null
+	 * @throws org.openmrs.api.APIException when getting the definition property failed
+	 */
+	@Override
+	public DefinitionProperty getDefinitionProperty(final Integer id) throws APIException {
+		return dao.getDefinitionProperty(id);
 	}
 }

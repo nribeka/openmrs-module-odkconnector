@@ -21,6 +21,7 @@ import org.openmrs.Concept;
 import org.openmrs.Obs;
 import org.openmrs.Patient;
 import org.openmrs.api.db.DAOException;
+import org.openmrs.module.odkconnector.reporting.metadata.DefinitionProperty;
 import org.openmrs.module.odkconnector.reporting.metadata.ExtendedDefinition;
 import org.openmrs.module.reporting.cohort.definition.CohortDefinition;
 
@@ -102,4 +103,26 @@ public interface ConnectorDAO {
 	 *          when retrieving all extended definitions failed
 	 */
 	List<ExtendedDefinition> getAllExtendedDefinition() throws DAOException;
+
+
+	/**
+	 * DAO method to save or update a definition property
+	 *
+	 * @param definitionProperty the definition property
+	 * @return the saved definition property
+	 * @throws org.openmrs.api.db.DAOException
+	 *          when saving the definition property failed
+	 */
+	DefinitionProperty saveDefinitionProperty(DefinitionProperty definitionProperty) throws DAOException;
+
+
+	/**
+	 * DAO method to get the definition property by the definition property id
+	 *
+	 * @param id the definition property id
+	 * @return the definition property or null
+	 * @throws org.openmrs.api.db.DAOException
+	 *          when getting the definition property failed
+	 */
+	DefinitionProperty getDefinitionProperty(Integer id) throws DAOException;
 }

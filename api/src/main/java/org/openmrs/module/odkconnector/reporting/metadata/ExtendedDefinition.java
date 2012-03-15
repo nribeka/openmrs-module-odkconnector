@@ -17,6 +17,7 @@ package org.openmrs.module.odkconnector.reporting.metadata;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.openmrs.BaseOpenmrsMetadata;
@@ -28,7 +29,7 @@ public class ExtendedDefinition extends BaseOpenmrsMetadata {
 
 	private Integer id;
 
-	private CohortDefinition definition;
+	private CohortDefinition cohortDefinition;
 
 	private Set<DefinitionProperty> properties;
 
@@ -49,25 +50,25 @@ public class ExtendedDefinition extends BaseOpenmrsMetadata {
 	}
 
 	/**
-	 * Get the cohort definition object
+	 * Get the cohort cohortDefinition object
 	 *
-	 * @return the cohort definition object
+	 * @return the cohort cohortDefinition object
 	 */
-	public CohortDefinition getDefinition() {
-		return definition;
+	public CohortDefinition getCohortDefinition() {
+		return cohortDefinition;
 	}
 
 	/**
-	 * Set the cohort definition object
+	 * Set the cohort cohortDefinition object
 	 *
-	 * @param definition the cohort definition object
+	 * @param cohortDefinition the cohort cohortDefinition object
 	 */
-	public void setDefinition(final CohortDefinition definition) {
-		this.definition = definition;
+	public void setCohortDefinition(final CohortDefinition cohortDefinition) {
+		this.cohortDefinition = cohortDefinition;
 	}
 
 	/**
-	 * Get the properties for the cohort definition
+	 * Get the properties for the cohort cohortDefinition
 	 *
 	 * @return the properties
 	 */
@@ -78,11 +79,35 @@ public class ExtendedDefinition extends BaseOpenmrsMetadata {
 	}
 
 	/**
-	 * Set the properties for the cohort definition
+	 * Search for a certain property from all properties for the extended cohortDefinition
+	 *
+	 * @param property the property
+	 * @return the matching cohortDefinition property element
+	 */
+	public DefinitionProperty getProperty(String property) {
+		for (DefinitionProperty definitionProperty : properties) {
+			if (StringUtils.equalsIgnoreCase(definitionProperty.getProperty(), property))
+				return definitionProperty;
+		}
+		return null;
+	}
+
+	/**
+	 * Set the properties for the cohort cohortDefinition
 	 *
 	 * @param properties the properties
 	 */
 	public void setProperties(final Set<DefinitionProperty> properties) {
 		this.properties = properties;
+	}
+
+	/**
+	 * Add a cohortDefinition property to the extended cohortDefinition
+	 *
+	 * @param definitionProperty the cohortDefinition property
+	 */
+	public void addDefinitionProperty(final DefinitionProperty definitionProperty) {
+		definitionProperty.setExtendedDefinition(this);
+		getProperties().add(definitionProperty);
 	}
 }

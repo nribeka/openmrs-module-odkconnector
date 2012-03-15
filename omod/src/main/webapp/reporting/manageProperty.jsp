@@ -91,6 +91,26 @@
 					});
 
 		});
+
+		$j("#saveProperty").click(function () {
+			var uuid = $j("#definitionList").val();
+			var request = $j("#newProperty").serialize();
+			jQuery.ajax({
+				url:"newProperty.form",
+				type:"POST",
+				data:request + "&uuid=" + uuid,
+				complete:function () {
+					$j("#definitionList").trigger("change");
+					$j("#newPropertyRow").hide();
+					$j("#addPropertyRow").show();
+				}
+			});
+		});
+
+		$j("#addPropertyRow").click(function () {
+			$j("#newPropertyRow").show();
+			$j(this).hide();
+		});
 	});
 
 </script>
@@ -143,14 +163,14 @@
 <div>
 	<form action="" method="post">
 		<fieldset>
-			<legend><span><spring:message code="odkconnector.definition.header"/></span></legend>
+			<legend><span><spring:message code="odkconnector.cohortDefinition.header"/></span></legend>
 			<ol>
 				<li>
-					<label for="definitionList"><spring:message code="odkconnector.definition.definitionList"/></label>
+					<label for="definitionList"><spring:message code="odkconnector.cohortDefinition.definitionList"/></label>
 					<select id="definitionList" class="largeWidth">
 						<option value="-1"></option>
-						<c:forEach items="${definitions}" var="definition">
-							<option value="${definition.uuid}">${definition.name}</option>
+						<c:forEach items="${cohortDefinitions}" var="cohortDefinition">
+							<option value="${cohortDefinition.uuid}">${cohortDefinition.name}</option>
 						</c:forEach>
 					</select>
 				</li>
@@ -159,19 +179,27 @@
 	</form>
 
 	<fieldset>
-		<legend><span><spring:message code="odkconnector.definition.property.header"/></span></legend>
+		<legend><span><spring:message code="odkconnector.cohortDefinition.property.header"/></span></legend>
 		<table cellpadding="5px">
 			<thead>
 			<tr>
-				<th class="header"><span><spring:message code="odkconnector.definition.property"/></span></th>
-				<th class="header"><span><spring:message code="odkconnector.definition.propertyValue"/></span></th>
-				<th class="header"><span><spring:message code="odkconnector.definition.propertyDescription"/></span></th>
+				<th class="header"><span><spring:message code="odkconnector.cohortDefinition.property"/></span></th>
+				<th class="header"><span><spring:message code="odkconnector.cohortDefinition.propertyValue"/></span></th>
+				<th class="header"><span><spring:message code="odkconnector.cohortDefinition.propertyDescription"/></span></th>
 			</tr>
 			</thead>
 			<tbody id="properties"></tbody>
 			<tfoot>
-			<tr>
-				<td><input type="button" value="Add New Property"/></td>
+			<tr id="newPropertyRow" style='display: none;'>
+				<form id="newProperty" method="post" action="">
+					<td><input type="text" name="property"/></td>
+					<td><input type="text" name="propertyValue"/></td>
+					<td><input type="text" name="propertyDescription"/></td>
+					<td><input type="button" id="saveProperty" value="Save Property"/></td>
+				</form>
+			</tr>
+			<tr id="addPropertyRow">
+				<td><input type="button" id="addNew" value="Add New Property"/></td>
 			</tr>
 			</tfoot>
 		</table>

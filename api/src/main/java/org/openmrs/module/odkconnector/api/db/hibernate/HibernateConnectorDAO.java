@@ -28,6 +28,7 @@ import org.openmrs.Obs;
 import org.openmrs.Patient;
 import org.openmrs.api.db.DAOException;
 import org.openmrs.module.odkconnector.api.db.ConnectorDAO;
+import org.openmrs.module.odkconnector.reporting.metadata.DefinitionProperty;
 import org.openmrs.module.odkconnector.reporting.metadata.ExtendedDefinition;
 import org.openmrs.module.reporting.cohort.definition.CohortDefinition;
 
@@ -107,7 +108,7 @@ public class HibernateConnectorDAO implements ConnectorDAO {
 	@Override
 	public ExtendedDefinition getExtendedDefinitionByDefinition(final CohortDefinition definition) throws DAOException {
 		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(ExtendedDefinition.class);
-		criteria.add(Restrictions.eq("definition", definition));
+		criteria.add(Restrictions.eq("cohortDefinition", definition));
 		criteria.add(Restrictions.eq("retired", Boolean.FALSE));
 		return (ExtendedDefinition) criteria.uniqueResult();
 	}
@@ -129,5 +130,22 @@ public class HibernateConnectorDAO implements ConnectorDAO {
 		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(ExtendedDefinition.class);
 		criteria.add(Restrictions.eq("retired", Boolean.FALSE));
 		return criteria.list();
+	}
+
+	/**
+	 * @see org.openmrs.module.odkconnector.api.ConnectorService#saveDefinitionProperty(org.openmrs.module.odkconnector.reporting.metadata.DefinitionProperty)
+	 */
+	@Override
+	public DefinitionProperty saveDefinitionProperty(final DefinitionProperty definitionProperty) throws DAOException {
+		sessionFactory.getCurrentSession().saveOrUpdate(definitionProperty);
+		return definitionProperty;
+	}
+
+	/**
+	 * @see org.openmrs.module.odkconnector.api.ConnectorService#getDefinitionProperty(Integer)
+	 */
+	@Override
+	public DefinitionProperty getDefinitionProperty(final Integer id) throws DAOException {
+		return (DefinitionProperty) sessionFactory.getCurrentSession().get(DefinitionProperty.class, id);
 	}
 }

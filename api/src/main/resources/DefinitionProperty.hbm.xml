@@ -17,7 +17,7 @@
 
 		<property name="propertyDescription" type="java.lang.String" column="property_description" length="255"/>
 
-		<many-to-one name="definition" class="ExtendedDefinition">
+		<many-to-one name="extendedDefinition" class="ExtendedDefinition">
 			<column name="definition_id"/>
 		</many-to-one>
 

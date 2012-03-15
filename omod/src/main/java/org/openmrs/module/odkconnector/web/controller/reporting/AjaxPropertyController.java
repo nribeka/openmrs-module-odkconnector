@@ -18,6 +18,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.codehaus.jackson.JsonEncoding;
@@ -40,22 +41,36 @@ public class AjaxPropertyController {
 	private static final Log log = LogFactory.getLog(AjaxPropertyController.class);
 
 	@RequestMapping(value = "/module/odkconnector/reporting/saveProperty.form", method = RequestMethod.POST)
-	public void processSave(final @RequestParam(value = "id", required = true) String id,
+	public void processSave(final @RequestParam(value = "id", required = true) Integer id,
 	                        final @RequestParam(value = "property", required = true) String property,
-	                        final @RequestParam(value = "value", required = true) String value,
-	                        final HttpServletResponse response) throws IOException {
+	                        final @RequestParam(value = "value", required = true) String value) throws Exception {
+		ConnectorService connectorService = Context.getService(ConnectorService.class);
+		// search the definition property
+		DefinitionProperty definitionProperty = connectorService.getDefinitionProperty(id);
+		// update the definition property and then save it
+		BeanUtils.setProperty(definitionProperty, property, value);
+		connectorService.saveDefinitionProperty(definitionProperty);
+	}
 
-		System.out.println("id: " + id + ", property: " + property + ", value: " + value);
-		OutputStream stream = response.getOutputStream();
+	@RequestMapping(value = "/module/odkconnector/reporting/newProperty.form", method = RequestMethod.POST)
+	public void processNew(final @RequestParam(value = "uuid", required = true) String uuid,
+	                       final @RequestParam(value = "property", required = true) String property,
+	                       final @RequestParam(value = "propertyValue", required = true) String propertyValue,
+	                       final @RequestParam(value = "propertyDescription", required = true) String propertyDescription) throws Exception {
 
-		JsonFactory f = new JsonFactory();
-		JsonGenerator g = f.createJsonGenerator(stream, JsonEncoding.UTF8);
-		g.useDefaultPrettyPrinter();
-		g.writeStartObject();
-		g.writeStringField("id", id);
-		g.writeStringField("value", value);
-		g.writeEndObject();
-		g.close();
+		CohortDefinitionService definitionService = Context.getService(CohortDefinitionService.class);
+		ConnectorService connectorService = Context.getService(ConnectorService.class);
+		// create the new definition property
+		DefinitionProperty definitionProperty = new DefinitionProperty(property, propertyValue, propertyDescription);
+		// check if the extended definition for this cohort definition already exist or not
+		CohortDefinition definition = definitionService.getDefinitionByUuid(uuid);
+		ExtendedDefinition extendedDefinition = connectorService.getExtendedDefinitionByDefinition(definition);
+		if (extendedDefinition == null) {
+			extendedDefinition = new ExtendedDefinition();
+			extendedDefinition.setCohortDefinition(definition);
+		}
+		extendedDefinition.addDefinitionProperty(definitionProperty);
+		connectorService.saveExtendedDefinition(extendedDefinition);
 	}
 
 	@RequestMapping(value = "/module/odkconnector/reporting/searchProperty.form", method = RequestMethod.POST)
