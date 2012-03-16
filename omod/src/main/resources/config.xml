@@ -13,7 +13,7 @@
 	</description>
 	<updateURL>https://dev.openmrs.org/modules/download/${project.parent.artifactId}/update.rdf</updateURL>
 	<require_modules>
-		<require_module version="0.7.0.DEV">org.openmrs.module.reporting</require_module>
+		<require_module version="0.7.0">org.openmrs.module.reporting</require_module>
 	</require_modules>
 	<require_version>1.8.0</require_version>
 	<!-- / Module Properties -->

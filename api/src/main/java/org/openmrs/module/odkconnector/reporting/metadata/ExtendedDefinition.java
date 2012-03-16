@@ -27,6 +27,8 @@ public class ExtendedDefinition extends BaseOpenmrsMetadata {
 
 	private static final Log log = LogFactory.getLog(ExtendedDefinition.class);
 
+	public static final String DEFINITION_PROPERTY_FORM = "odkconnector.property.form";
+
 	private Integer id;
 
 	private CohortDefinition cohortDefinition;
@@ -84,12 +86,12 @@ public class ExtendedDefinition extends BaseOpenmrsMetadata {
 	 * @param property the property
 	 * @return the matching cohortDefinition property element
 	 */
-	public DefinitionProperty getProperty(String property) {
+	public Boolean containsProperty(String property) {
 		for (DefinitionProperty definitionProperty : properties) {
 			if (StringUtils.equalsIgnoreCase(definitionProperty.getProperty(), property))
-				return definitionProperty;
+				return Boolean.TRUE;
 		}
-		return null;
+		return Boolean.FALSE;
 	}
 
 	/**

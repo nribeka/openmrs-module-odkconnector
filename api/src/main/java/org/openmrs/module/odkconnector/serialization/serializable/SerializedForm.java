@@ -17,9 +17,9 @@ package org.openmrs.module.odkconnector.serialization.serializable;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-public class PatientForm {
+public class SerializedForm {
 
-	private static final Log log = LogFactory.getLog(PatientForm.class);
+	private static final Log log = LogFactory.getLog(SerializedForm.class);
 
 	private Integer patientId;
 
@@ -31,7 +31,7 @@ public class PatientForm {
 	 * @param patientId the patient id
 	 * @param formId    the form id
 	 */
-	public PatientForm(final Integer patientId, final Integer formId) {
+	public SerializedForm(final Integer patientId, final Integer formId) {
 		this.patientId = patientId;
 		this.formId = formId;
 	}

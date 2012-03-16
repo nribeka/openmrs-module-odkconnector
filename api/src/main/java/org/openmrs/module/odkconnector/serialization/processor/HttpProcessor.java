@@ -42,7 +42,7 @@ import org.openmrs.module.odkconnector.reporting.metadata.DefinitionProperty;
 import org.openmrs.module.odkconnector.reporting.metadata.ExtendedDefinition;
 import org.openmrs.module.odkconnector.serialization.Processor;
 import org.openmrs.module.odkconnector.serialization.Serializer;
-import org.openmrs.module.odkconnector.serialization.serializable.PatientForm;
+import org.openmrs.module.odkconnector.serialization.serializable.SerializedForm;
 import org.openmrs.module.reporting.cohort.EvaluatedCohort;
 import org.openmrs.module.reporting.cohort.definition.CohortDefinition;
 import org.openmrs.module.reporting.cohort.definition.service.CohortDefinitionService;
@@ -56,8 +56,6 @@ public class HttpProcessor implements Processor {
 	public static final String PROCESS_COHORT = "download.cohort";
 
 	public static final String PROCESS_PATIENTS = "download.patients";
-
-	public static final String DEFINITION_PROPERTY_FORM = "odkconnector.property.form";
 
 	private String action;
 
@@ -127,23 +125,24 @@ public class HttpProcessor implements Processor {
 
 				// evaluate and get the applicable form for the patients
 				EvaluationContext context = new EvaluationContext();
-				List<PatientForm> patientForms = new ArrayList<PatientForm>();
+				List<SerializedForm> serializedForms = new ArrayList<SerializedForm>();
 				List<ExtendedDefinition> definitions = service.getAllExtendedDefinition();
 				for (ExtendedDefinition definition : definitions) {
-					DefinitionProperty property = definition.getProperty(DEFINITION_PROPERTY_FORM);
-					if (property != null) {
-						// get the form id
-						Integer formId = NumberUtils.toInt(property.getPropertyValue());
+					if (definition.containsProperty(ExtendedDefinition.DEFINITION_PROPERTY_FORM)) {
 						// get the cohort definition and evaluate it
 						CohortDefinition cohortDefinition = definition.getCohortDefinition();
 						EvaluatedCohort evaluatedCohort = Context.getService(CohortDefinitionService.class).evaluate(cohortDefinition, context);
 						// intersect it with the big cohort
-						Collection collection = CollectionUtils.intersection(evaluatedCohort.getMemberIds(), cohort.getMemberIds());
-						for (Object patientId : collection)
-							patientForms.add(new PatientForm(NumberUtils.toInt(String.valueOf(patientId)), formId));
+						Collection intersection = CollectionUtils.intersection(evaluatedCohort.getMemberIds(), cohort.getMemberIds());
+						for (DefinitionProperty definitionProperty : definition.getProperties()) {
+							// get the form id
+							Integer formId = NumberUtils.toInt(definitionProperty.getPropertyValue());
+							for (Object patientId : intersection)
+								serializedForms.add(new SerializedForm(NumberUtils.toInt(String.valueOf(patientId)), formId));
+						}
 					}
 				}
-				serializer.write(stream, patientForms);
+				serializer.write(stream, serializedForms);
 			} else {
 				serializer.write(stream, Context.getCohortService().getAllCohorts());
 			}

@@ -46,7 +46,7 @@ public class AdminList extends AdministrationSectionExt {
 	public Map<String, String> getLinks() {
 		LinkedHashMap<String, String> map = new LinkedHashMap<String, String>();
 		map.put("/module/odkconnector/manageConcept.form", "odkconnector.manage");
-		map.put("/module/odkconnector/reporting/manageProperty.form", "odkconnector.definition");
+		map.put("/module/odkconnector/reporting/manageProperty.form", "odkconnector.cohortDefinition.manage");
 		return map;
 	}
 

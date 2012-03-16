@@ -195,11 +195,11 @@
 					<td><input type="text" name="property"/></td>
 					<td><input type="text" name="propertyValue"/></td>
 					<td><input type="text" name="propertyDescription"/></td>
-					<td><input type="button" id="saveProperty" value="Save Property"/></td>
+					<td><input type="button" id="saveProperty" value="<spring:message code='odkconnector.cohortDefinition.saveProperty' />"/></td>
 				</form>
 			</tr>
 			<tr id="addPropertyRow">
-				<td><input type="button" id="addNew" value="Add New Property"/></td>
+				<td><input type="button" id="addNew" value="<spring:message code='odkconnector.cohortDefinition.newProperty' />"/></td>
 			</tr>
 			</tfoot>
 		</table>

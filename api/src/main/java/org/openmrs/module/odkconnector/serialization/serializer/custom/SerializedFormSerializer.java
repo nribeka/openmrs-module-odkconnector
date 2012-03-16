@@ -12,22 +12,26 @@
  * Copyright (C) OpenMRS, LLC.  All Rights Reserved.
  */
 
-package org.openmrs.module.odkconnector.serialization.serializer.openmrs;
+package org.openmrs.module.odkconnector.serialization.serializer.custom;
 
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.Date;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.openmrs.annotation.Handler;
+import org.openmrs.module.odkconnector.reporting.metadata.ExtendedDefinition;
 import org.openmrs.module.odkconnector.serialization.Serializer;
-import org.openmrs.module.odkconnector.serialization.serializable.PatientForm;
+import org.openmrs.module.odkconnector.serialization.serializable.SerializedForm;
 
-@Handler(supports = PatientForm.class, order = 50)
-public class PatientFormSerializer implements Serializer {
+@Handler(supports = SerializedForm.class, order = 50)
+public class SerializedFormSerializer implements Serializer {
 
-	private static final Log log = LogFactory.getLog(PatientFormSerializer.class);
+	private static final Log log = LogFactory.getLog(SerializedFormSerializer.class);
+
+	public static final Integer TYPE_INT = 2;
 
 	/**
 	 * Write the data to the output stream.
@@ -39,10 +43,13 @@ public class PatientFormSerializer implements Serializer {
 	@Override
 	public void write(final OutputStream stream, final Object data) throws IOException {
 
-		PatientForm patientForm = (PatientForm) data;
+		SerializedForm serializedForm = (SerializedForm) data;
 
 		DataOutputStream outputStream = new DataOutputStream(stream);
-		outputStream.writeInt(patientForm.getPatientId());
-		outputStream.writeInt(patientForm.getFormId());
+		outputStream.writeInt(serializedForm.getPatientId());
+		outputStream.writeUTF(ExtendedDefinition.DEFINITION_PROPERTY_FORM);
+		outputStream.writeByte(TYPE_INT);
+		outputStream.writeInt(serializedForm.getFormId());
+		outputStream.writeLong(new Date().getTime());
 	}
 }
