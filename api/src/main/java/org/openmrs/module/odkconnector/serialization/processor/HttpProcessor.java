@@ -36,13 +36,14 @@ import org.apache.commons.logging.LogFactory;
 import org.openmrs.Cohort;
 import org.openmrs.Concept;
 import org.openmrs.api.context.Context;
-import org.openmrs.module.odkconnector.Constants;
-import org.openmrs.module.odkconnector.api.ConnectorService;
+import org.openmrs.module.odkconnector.api.service.ConnectorService;
 import org.openmrs.module.odkconnector.reporting.metadata.DefinitionProperty;
 import org.openmrs.module.odkconnector.reporting.metadata.ExtendedDefinition;
+import org.openmrs.module.odkconnector.reporting.service.ReportingConnectorService;
 import org.openmrs.module.odkconnector.serialization.Processor;
 import org.openmrs.module.odkconnector.serialization.Serializer;
 import org.openmrs.module.odkconnector.serialization.serializable.SerializedForm;
+import org.openmrs.module.odkconnector.serialization.utils.SerializationConstants;
 import org.openmrs.module.reporting.cohort.EvaluatedCohort;
 import org.openmrs.module.reporting.cohort.definition.CohortDefinition;
 import org.openmrs.module.reporting.cohort.definition.service.CohortDefinitionService;
@@ -110,23 +111,24 @@ public class HttpProcessor implements Processor {
 			ByteArrayOutputStream stream = new ByteArrayOutputStream();
 			Serializer serializer = HandlerUtil.getPreferredHandler(Serializer.class, List.class);
 			if (StringUtils.equalsIgnoreCase(getAction(), HttpProcessor.PROCESS_PATIENTS)) {
-				ConnectorService service = Context.getService(ConnectorService.class);
+				ConnectorService connectorService = Context.getService(ConnectorService.class);
 				Cohort cohort = Context.getCohortService().getCohort(cohortId);
-				serializer.write(stream, service.getCohortPatients(cohort));
+				serializer.write(stream, connectorService.getCohortPatients(cohort));
 				// check the concept list
 				List<Concept> concepts = new ArrayList<Concept>();
-				String conceptIds = Context.getAdministrationService().getGlobalProperty(Constants.CLINIC_CONCEPTS);
+				String conceptIds = Context.getAdministrationService().getGlobalProperty(SerializationConstants.CLINIC_CONCEPTS);
 				for (String conceptId : StringUtils.split(StringUtils.defaultString(conceptIds), ",")) {
 					Concept concept = Context.getConceptService().getConcept(conceptId);
 					if (concept != null)
 						concepts.add(concept);
 				}
-				serializer.write(stream, service.getCohortObservations(cohort, concepts));
+				serializer.write(stream, connectorService.getCohortObservations(cohort, concepts));
 
 				// evaluate and get the applicable form for the patients
+				ReportingConnectorService reportingConnectorService = Context.getService(ReportingConnectorService.class);
 				EvaluationContext context = new EvaluationContext();
 				List<SerializedForm> serializedForms = new ArrayList<SerializedForm>();
-				List<ExtendedDefinition> definitions = service.getAllExtendedDefinition();
+				List<ExtendedDefinition> definitions = reportingConnectorService.getAllExtendedDefinition();
 				for (ExtendedDefinition definition : definitions) {
 					if (definition.containsProperty(ExtendedDefinition.DEFINITION_PROPERTY_FORM)) {
 						// get the cohort definition and evaluate it

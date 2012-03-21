@@ -7,7 +7,38 @@
 	<!--
 			See http://www.liquibase.org/manual/home#available_database_refactorings
 			for a list of supported elements and attributes
-		-->
+	-->
+
+	<changeSet id="20120306160606" author="nribeka">
+		<createTable tableName="odkconnector_definition_property_type">
+			<column name="id" type="int">
+				<constraints primaryKey="true" nullable="false"/>
+			</column>
+
+			<column name="name" type="varchar(255)"/>
+			<column name="description" type="varchar(255)"/>
+
+			<column name="creator" type="int" defaultValueNumeric="0">
+				<constraints nullable="false"/>
+			</column>
+			<column name="date_created" type="datetime" defaultValueDate="0002-11-30T00:00:00.0">
+				<constraints nullable="false"/>
+			</column>
+
+			<column name="retired" type="tinyint" defaultValueNumeric="0">
+				<constraints nullable="false"/>
+			</column>
+			<column name="retired_by" type="int"/>
+			<column name="date_retired" type="datetime"/>
+
+			<column name="uuid" type="varchar(38)">
+				<constraints unique="true" nullable="false"/>
+			</column>
+		</createTable>
+		<rollback>
+			<dropTable tableName="odkconnector_definition_property_type"/>
+		</rollback>
+	</changeSet>
 
 	<changeSet id="20120306160606" author="nribeka">
 		<createTable tableName="odkconnector_definition_property">

@@ -28,9 +28,6 @@ import org.openmrs.Obs;
 import org.openmrs.Patient;
 import org.openmrs.api.db.DAOException;
 import org.openmrs.module.odkconnector.api.db.ConnectorDAO;
-import org.openmrs.module.odkconnector.reporting.metadata.DefinitionProperty;
-import org.openmrs.module.odkconnector.reporting.metadata.ExtendedDefinition;
-import org.openmrs.module.reporting.cohort.definition.CohortDefinition;
 
 /**
  * It is a default implementation of  {@link org.openmrs.module.odkconnector.api.db.ConnectorDAO}.
@@ -56,7 +53,7 @@ public class HibernateConnectorDAO implements ConnectorDAO {
 	}
 
 	/**
-	 * @see org.openmrs.module.odkconnector.api.ConnectorService#getCohortPatients(org.openmrs.Cohort)
+	 * @see org.openmrs.module.odkconnector.api.service.ConnectorService#getCohortPatients(org.openmrs.Cohort)
 	 */
 	@Override
 	@SuppressWarnings("unchecked")
@@ -68,7 +65,7 @@ public class HibernateConnectorDAO implements ConnectorDAO {
 	}
 
 	/**
-	 * @see org.openmrs.module.odkconnector.api.ConnectorService#getCohortObservations(org.openmrs.Cohort, java.util.List
+	 * @see org.openmrs.module.odkconnector.api.service.ConnectorService#getCohortObservations(org.openmrs.Cohort, java.util.List
 	 */
 	@Override
 	@SuppressWarnings("unchecked")
@@ -80,72 +77,5 @@ public class HibernateConnectorDAO implements ConnectorDAO {
 			criteria.add(Restrictions.in("concept", concepts));
 		criteria.add(Restrictions.eq("voided", Boolean.FALSE));
 		return criteria.list();
-	}
-
-	/**
-	 * @see org.openmrs.module.odkconnector.api.ConnectorService#saveExtendedDefinition(org.openmrs.module.odkconnector.reporting.metadata.ExtendedDefinition)
-	 */
-	@Override
-	public ExtendedDefinition saveExtendedDefinition(final ExtendedDefinition extendedDefinition) throws DAOException {
-		sessionFactory.getCurrentSession().saveOrUpdate(extendedDefinition);
-		return extendedDefinition;
-	}
-
-	/**
-	 * @see org.openmrs.module.odkconnector.api.ConnectorService#getExtendedDefinitionByUuid(String)
-	 */
-	@Override
-	public ExtendedDefinition getExtendedDefinitionByUuid(final String uuid) throws DAOException {
-		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(ExtendedDefinition.class);
-		criteria.add(Restrictions.eq("uuid", uuid));
-		criteria.add(Restrictions.eq("retired", Boolean.FALSE));
-		return (ExtendedDefinition) criteria.uniqueResult();
-	}
-
-	/**
-	 * @see org.openmrs.module.odkconnector.api.ConnectorService#getExtendedDefinitionByDefinition(org.openmrs.module.reporting.cohort.definition.CohortDefinition)
-	 */
-	@Override
-	public ExtendedDefinition getExtendedDefinitionByDefinition(final CohortDefinition definition) throws DAOException {
-		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(ExtendedDefinition.class);
-		criteria.add(Restrictions.eq("cohortDefinition", definition));
-		criteria.add(Restrictions.eq("retired", Boolean.FALSE));
-		return (ExtendedDefinition) criteria.uniqueResult();
-	}
-
-	/**
-	 * @see org.openmrs.module.odkconnector.api.ConnectorService#getExtendedDefinition(Integer)
-	 */
-	@Override
-	public ExtendedDefinition getExtendedDefinition(final Integer id) throws DAOException {
-		return (ExtendedDefinition) sessionFactory.getCurrentSession().get(ExtendedDefinition.class, id);
-	}
-
-	/**
-	 * @see org.openmrs.module.odkconnector.api.ConnectorService#getAllExtendedDefinition()
-	 */
-	@Override
-	@SuppressWarnings("unchecked")
-	public List<ExtendedDefinition> getAllExtendedDefinition() throws DAOException {
-		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(ExtendedDefinition.class);
-		criteria.add(Restrictions.eq("retired", Boolean.FALSE));
-		return criteria.list();
-	}
-
-	/**
-	 * @see org.openmrs.module.odkconnector.api.ConnectorService#saveDefinitionProperty(org.openmrs.module.odkconnector.reporting.metadata.DefinitionProperty)
-	 */
-	@Override
-	public DefinitionProperty saveDefinitionProperty(final DefinitionProperty definitionProperty) throws DAOException {
-		sessionFactory.getCurrentSession().saveOrUpdate(definitionProperty);
-		return definitionProperty;
-	}
-
-	/**
-	 * @see org.openmrs.module.odkconnector.api.ConnectorService#getDefinitionProperty(Integer)
-	 */
-	@Override
-	public DefinitionProperty getDefinitionProperty(final Integer id) throws DAOException {
-		return (DefinitionProperty) sessionFactory.getCurrentSession().get(DefinitionProperty.class, id);
 	}
 }

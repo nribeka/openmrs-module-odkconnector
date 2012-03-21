@@ -12,9 +12,9 @@
  * Copyright (C) OpenMRS, LLC.  All Rights Reserved.
  */
 
-package org.openmrs.module.odkconnector;
+package org.openmrs.module.odkconnector.serialization.utils;
 
-public interface Constants {
+public interface SerializationConstants {
 
 	String CLINIC_CONCEPTS = "odkconnector.concepts";
 }

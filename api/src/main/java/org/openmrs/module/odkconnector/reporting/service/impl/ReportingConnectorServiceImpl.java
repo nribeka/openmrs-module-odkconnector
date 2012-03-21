@@ -12,76 +12,38 @@
  * Copyright (C) OpenMRS, LLC.  All Rights Reserved.
  */
 
-package org.openmrs.module.odkconnector.api.impl;
+package org.openmrs.module.odkconnector.reporting.service.impl;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.openmrs.Cohort;
-import org.openmrs.Concept;
-import org.openmrs.Obs;
-import org.openmrs.Patient;
 import org.openmrs.api.APIException;
 import org.openmrs.api.impl.BaseOpenmrsService;
-import org.openmrs.module.odkconnector.api.ConnectorService;
-import org.openmrs.module.odkconnector.api.db.ConnectorDAO;
+import org.openmrs.module.odkconnector.reporting.db.ReportingConnectorDAO;
 import org.openmrs.module.odkconnector.reporting.metadata.DefinitionProperty;
 import org.openmrs.module.odkconnector.reporting.metadata.ExtendedDefinition;
+import org.openmrs.module.odkconnector.reporting.service.ReportingConnectorService;
 import org.openmrs.module.reporting.cohort.definition.CohortDefinition;
 
-/**
- * It is a default implementation of {@link org.openmrs.module.odkconnector.api.ConnectorService}.
- */
-public class ConnectorServiceImpl extends BaseOpenmrsService implements ConnectorService {
+public class ReportingConnectorServiceImpl extends BaseOpenmrsService implements ReportingConnectorService {
 
-	protected final Log log = LogFactory.getLog(ConnectorServiceImpl.class);
+	private static final Log log = LogFactory.getLog(ReportingConnectorServiceImpl.class);
 
-	private ConnectorDAO dao;
+	private ReportingConnectorDAO dao;
 
 	/**
 	 * @param dao the dao to set
 	 */
-	public void setDao(final ConnectorDAO dao) {
+	public void setDao(final ReportingConnectorDAO dao) {
 		this.dao = dao;
 	}
 
 	/**
 	 * @return the dao
 	 */
-	public ConnectorDAO getDao() {
+	public ReportingConnectorDAO getDao() {
 		return dao;
-	}
-
-	/**
-	 * Service method to get all patients inside the cohort
-	 *
-	 * @param cohort the cohort
-	 * @return all patients in the cohort or empty list when no patient match the patient id in the cohort
-	 * @throws org.openmrs.api.APIException when the process failed
-	 */
-	@Override
-	public List<Patient> getCohortPatients(final Cohort cohort) throws APIException {
-		if (cohort == null || CollectionUtils.isEmpty(cohort.getMemberIds()))
-			return new ArrayList<Patient>();
-		return dao.getCohortPatients(cohort);
-	}
-
-	/**
-	 * Service method to get all observations for all patients in the cohort
-	 *
-	 * @param cohort   the cohort
-	 * @param concepts the concepts
-	 * @return all observations for patients in the cohort or empty list when no observations for the patient ids in the cohort exists
-	 * @throws org.openmrs.api.APIException when the process failed
-	 */
-	@Override
-	public List<Obs> getCohortObservations(final Cohort cohort, final List<Concept> concepts) throws APIException {
-		if (cohort == null || CollectionUtils.isEmpty(cohort.getMemberIds()))
-			return new ArrayList<Obs>();
-		return dao.getCohortObservations(cohort, concepts);
 	}
 
 	/**
@@ -166,4 +128,5 @@ public class ConnectorServiceImpl extends BaseOpenmrsService implements Connecto
 	public DefinitionProperty getDefinitionProperty(final Integer id) throws APIException {
 		return dao.getDefinitionProperty(id);
 	}
+
 }

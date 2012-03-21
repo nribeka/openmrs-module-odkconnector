@@ -24,7 +24,7 @@ import org.openmrs.Concept;
 import org.openmrs.GlobalProperty;
 import org.openmrs.api.AdministrationService;
 import org.openmrs.api.context.Context;
-import org.openmrs.module.odkconnector.Constants;
+import org.openmrs.module.odkconnector.serialization.utils.SerializationConstants;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -40,7 +40,7 @@ public class ManageConceptController {
 	@RequestMapping(method = RequestMethod.GET)
 	public void preparePage(final Model model) {
 		AdministrationService service = Context.getAdministrationService();
-		String conceptIds = service.getGlobalProperty(Constants.CLINIC_CONCEPTS);
+		String conceptIds = service.getGlobalProperty(SerializationConstants.CLINIC_CONCEPTS);
 		model.addAttribute("concepts", searchConcept(conceptIds));
 		model.addAttribute("conceptIds", conceptIds);
 	}
@@ -50,7 +50,7 @@ public class ManageConceptController {
 	                    final Model model) {
 
 		GlobalProperty property = new GlobalProperty();
-		property.setProperty(Constants.CLINIC_CONCEPTS);
+		property.setProperty(SerializationConstants.CLINIC_CONCEPTS);
 		property.setDescription("Global property for concepts of observations which will be transferred to the ODK Clinic.");
 		property.setPropertyValue(conceptIds);
 

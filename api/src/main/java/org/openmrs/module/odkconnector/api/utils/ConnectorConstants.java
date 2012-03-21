@@ -14,11 +14,6 @@
 
 package org.openmrs.module.odkconnector.api.utils;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
-public class ConnectorUtils {
-
-	private static final Log log = LogFactory.getLog(ConnectorUtils.class);
+public interface ConnectorConstants {
 
 }

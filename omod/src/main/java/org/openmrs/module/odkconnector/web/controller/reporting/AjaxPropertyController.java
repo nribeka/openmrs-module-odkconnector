@@ -25,9 +25,9 @@ import org.codehaus.jackson.JsonEncoding;
 import org.codehaus.jackson.JsonFactory;
 import org.codehaus.jackson.JsonGenerator;
 import org.openmrs.api.context.Context;
-import org.openmrs.module.odkconnector.api.ConnectorService;
 import org.openmrs.module.odkconnector.reporting.metadata.DefinitionProperty;
 import org.openmrs.module.odkconnector.reporting.metadata.ExtendedDefinition;
+import org.openmrs.module.odkconnector.reporting.service.ReportingConnectorService;
 import org.openmrs.module.reporting.cohort.definition.CohortDefinition;
 import org.openmrs.module.reporting.cohort.definition.service.CohortDefinitionService;
 import org.springframework.stereotype.Controller;
@@ -44,12 +44,12 @@ public class AjaxPropertyController {
 	public void processSave(final @RequestParam(value = "id", required = true) Integer id,
 	                        final @RequestParam(value = "property", required = true) String property,
 	                        final @RequestParam(value = "value", required = true) String value) throws Exception {
-		ConnectorService connectorService = Context.getService(ConnectorService.class);
+		ReportingConnectorService reportingConnectorService = Context.getService(ReportingConnectorService.class);
 		// search the definition property
-		DefinitionProperty definitionProperty = connectorService.getDefinitionProperty(id);
+		DefinitionProperty definitionProperty = reportingConnectorService.getDefinitionProperty(id);
 		// update the definition property and then save it
 		BeanUtils.setProperty(definitionProperty, property, value);
-		connectorService.saveDefinitionProperty(definitionProperty);
+		reportingConnectorService.saveDefinitionProperty(definitionProperty);
 	}
 
 	@RequestMapping(value = "/module/odkconnector/reporting/newProperty.form", method = RequestMethod.POST)
@@ -59,28 +59,28 @@ public class AjaxPropertyController {
 	                       final @RequestParam(value = "propertyDescription", required = true) String propertyDescription) throws Exception {
 
 		CohortDefinitionService definitionService = Context.getService(CohortDefinitionService.class);
-		ConnectorService connectorService = Context.getService(ConnectorService.class);
+		ReportingConnectorService reportingConnectorService = Context.getService(ReportingConnectorService.class);
 		// create the new definition property
 		DefinitionProperty definitionProperty = new DefinitionProperty(property, propertyValue, propertyDescription);
 		// check if the extended definition for this cohort definition already exist or not
 		CohortDefinition definition = definitionService.getDefinitionByUuid(uuid);
-		ExtendedDefinition extendedDefinition = connectorService.getExtendedDefinitionByDefinition(definition);
+		ExtendedDefinition extendedDefinition = reportingConnectorService.getExtendedDefinitionByDefinition(definition);
 		if (extendedDefinition == null) {
 			extendedDefinition = new ExtendedDefinition();
 			extendedDefinition.setCohortDefinition(definition);
 		}
 		extendedDefinition.addDefinitionProperty(definitionProperty);
-		connectorService.saveExtendedDefinition(extendedDefinition);
+		reportingConnectorService.saveExtendedDefinition(extendedDefinition);
 	}
 
 	@RequestMapping(value = "/module/odkconnector/reporting/searchProperty.form", method = RequestMethod.POST)
 	public void processSearch(final @RequestParam(value = "uuid", required = true) String uuid,
 	                          final HttpServletResponse response) throws IOException {
 		CohortDefinitionService definitionService = Context.getService(CohortDefinitionService.class);
-		ConnectorService connectorService = Context.getService(ConnectorService.class);
+		ReportingConnectorService reportingConnectorService = Context.getService(ReportingConnectorService.class);
 
 		CohortDefinition definition = definitionService.getDefinitionByUuid(uuid);
-		ExtendedDefinition extendedDefinition = connectorService.getExtendedDefinitionByDefinition(definition);
+		ExtendedDefinition extendedDefinition = reportingConnectorService.getExtendedDefinitionByDefinition(definition);
 
 		OutputStream stream = response.getOutputStream();
 
