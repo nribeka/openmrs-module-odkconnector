@@ -17,6 +17,8 @@ package org.openmrs.module.odkconnector.serialization.serializer.openmrs;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -51,6 +53,8 @@ public class ObsSerializer implements Serializer {
 
 		Obs obs = (Obs) data;
 
+		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
+
 		DataOutputStream outputStream = new DataOutputStream(stream);
 		// write the person id of the observation
 		outputStream.writeInt(obs.getPersonId());
@@ -59,7 +63,7 @@ public class ObsSerializer implements Serializer {
 		// write the data type and the value of the observation
 		if (obs.getValueDatetime() != null) {
 			outputStream.writeByte(TYPE_DATE);
-			outputStream.writeLong(obs.getValueDatetime().getTime());
+			outputStream.writeUTF(dateFormat.format(obs.getValueDatetime()));
 		} else if (obs.getValueCoded() != null) {
 			outputStream.writeByte(TYPE_STRING);
 			outputStream.writeUTF(obs.getValueCoded().getDisplayString());
@@ -71,6 +75,6 @@ public class ObsSerializer implements Serializer {
 			outputStream.writeUTF(obs.getValueAsString(Context.getLocale()));
 		}
 		// write the datetime of the observation
-		outputStream.writeLong(obs.getObsDatetime().getTime());
+		outputStream.writeUTF(dateFormat.format(obs.getObsDatetime()));
 	}
 }

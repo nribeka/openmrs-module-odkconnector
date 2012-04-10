@@ -17,6 +17,8 @@ package org.openmrs.module.odkconnector.serialization.serializer.custom;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import org.apache.commons.logging.Log;
@@ -45,11 +47,13 @@ public class SerializedFormSerializer implements Serializer {
 
 		SerializedForm serializedForm = (SerializedForm) data;
 
+		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
+
 		DataOutputStream outputStream = new DataOutputStream(stream);
 		outputStream.writeInt(serializedForm.getPatientId());
 		outputStream.writeUTF(ExtendedDefinition.DEFINITION_PROPERTY_FORM);
 		outputStream.writeByte(TYPE_INT);
 		outputStream.writeInt(serializedForm.getFormId());
-		outputStream.writeLong(new Date().getTime());
+		outputStream.writeUTF(dateFormat.format(new Date()));
 	}
 }

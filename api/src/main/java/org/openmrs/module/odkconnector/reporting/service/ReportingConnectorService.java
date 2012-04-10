@@ -23,6 +23,7 @@ import org.openmrs.module.odkconnector.reporting.metadata.ExtendedDefinition;
 import org.openmrs.module.reporting.cohort.definition.CohortDefinition;
 import org.springframework.transaction.annotation.Transactional;
 
+@Transactional
 public interface ReportingConnectorService extends OpenmrsService {
 
 	/**

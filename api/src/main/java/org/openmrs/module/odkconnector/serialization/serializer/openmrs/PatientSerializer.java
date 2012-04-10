@@ -17,6 +17,8 @@ package org.openmrs.module.odkconnector.serialization.serializer.openmrs;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import org.apache.commons.lang.StringUtils;
@@ -44,6 +46,8 @@ public class PatientSerializer implements Serializer {
 
 		Patient patient = (Patient) data;
 
+		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
+
 		DataOutputStream outputStream = new DataOutputStream(stream);
 		// skip if the patient is an invalid patient
 		if (patient == null || patient.getPersonName() == null || patient.getPatientIdentifier() == null)
@@ -59,7 +63,7 @@ public class PatientSerializer implements Serializer {
 		outputStream.writeUTF(StringUtils.defaultString(patient.getGender()));
 
 		Date birthDate = patient.getBirthdate();
-		outputStream.writeLong(birthDate != null ? birthDate.getTime() : 0);
+		outputStream.writeUTF(birthDate != null ? dateFormat.format(birthDate.getTime()) : StringUtils.EMPTY);
 
 		PatientIdentifier patientIdentifier = patient.getPatientIdentifier();
 		outputStream.writeUTF(StringUtils.defaultString(patientIdentifier.getIdentifier()));

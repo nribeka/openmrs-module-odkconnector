@@ -23,12 +23,10 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
-import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.NumberUtils;
 import org.apache.commons.logging.Log;
@@ -45,7 +43,6 @@ import org.openmrs.module.odkconnector.serialization.Serializer;
 import org.openmrs.module.odkconnector.serialization.serializable.SerializedForm;
 import org.openmrs.module.odkconnector.serialization.utils.SerializationConstants;
 import org.openmrs.module.reporting.cohort.EvaluatedCohort;
-import org.openmrs.module.reporting.cohort.definition.CohortDefinition;
 import org.openmrs.module.reporting.cohort.definition.service.CohortDefinitionService;
 import org.openmrs.module.reporting.evaluation.EvaluationContext;
 import org.openmrs.util.HandlerUtil;
@@ -125,21 +122,20 @@ public class HttpProcessor implements Processor {
 				serializer.write(stream, connectorService.getCohortObservations(cohort, concepts));
 
 				// evaluate and get the applicable form for the patients
+				CohortDefinitionService cohortDefinitionService = Context.getService(CohortDefinitionService.class);
 				ReportingConnectorService reportingConnectorService = Context.getService(ReportingConnectorService.class);
-				EvaluationContext context = new EvaluationContext();
-				List<SerializedForm> serializedForms = new ArrayList<SerializedForm>();
 				List<ExtendedDefinition> definitions = reportingConnectorService.getAllExtendedDefinition();
+
+				EvaluationContext context = new EvaluationContext();
+				context.setBaseCohort(cohort);
+
+				List<SerializedForm> serializedForms = new ArrayList<SerializedForm>();
 				for (ExtendedDefinition definition : definitions) {
 					if (definition.containsProperty(ExtendedDefinition.DEFINITION_PROPERTY_FORM)) {
-						// get the cohort definition and evaluate it
-						CohortDefinition cohortDefinition = definition.getCohortDefinition();
-						EvaluatedCohort evaluatedCohort = Context.getService(CohortDefinitionService.class).evaluate(cohortDefinition, context);
-						// intersect it with the big cohort
-						Collection intersection = CollectionUtils.intersection(evaluatedCohort.getMemberIds(), cohort.getMemberIds());
+						EvaluatedCohort evaluatedCohort = cohortDefinitionService.evaluate(definition.getCohortDefinition(), context);
 						for (DefinitionProperty definitionProperty : definition.getProperties()) {
-							// get the form id
 							Integer formId = NumberUtils.toInt(definitionProperty.getPropertyValue());
-							for (Object patientId : intersection)
+							for (Object patientId : evaluatedCohort.getMemberIds())
 								serializedForms.add(new SerializedForm(NumberUtils.toInt(String.valueOf(patientId)), formId));
 						}
 					}
