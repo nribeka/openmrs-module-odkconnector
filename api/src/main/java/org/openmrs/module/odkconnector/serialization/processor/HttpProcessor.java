@@ -23,6 +23,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
@@ -34,14 +35,15 @@ import org.apache.commons.logging.LogFactory;
 import org.openmrs.Cohort;
 import org.openmrs.Concept;
 import org.openmrs.api.context.Context;
+import org.openmrs.module.odkconnector.api.ConceptConfiguration;
 import org.openmrs.module.odkconnector.api.service.ConnectorService;
+import org.openmrs.module.odkconnector.api.utils.ConnectorUtils;
 import org.openmrs.module.odkconnector.reporting.metadata.DefinitionProperty;
 import org.openmrs.module.odkconnector.reporting.metadata.ExtendedDefinition;
 import org.openmrs.module.odkconnector.reporting.service.ReportingConnectorService;
 import org.openmrs.module.odkconnector.serialization.Processor;
 import org.openmrs.module.odkconnector.serialization.Serializer;
 import org.openmrs.module.odkconnector.serialization.serializable.SerializedForm;
-import org.openmrs.module.odkconnector.serialization.utils.SerializationConstants;
 import org.openmrs.module.reporting.cohort.EvaluatedCohort;
 import org.openmrs.module.reporting.cohort.definition.service.CohortDefinitionService;
 import org.openmrs.module.reporting.evaluation.EvaluationContext;
@@ -95,8 +97,11 @@ public class HttpProcessor implements Processor {
 		String username = dataInputStream.readUTF();
 		String password = dataInputStream.readUTF();
 		Integer cohortId = 0;
-		if (StringUtils.equalsIgnoreCase(getAction(), HttpProcessor.PROCESS_PATIENTS))
+		Integer programId = 0;
+		if (StringUtils.equalsIgnoreCase(getAction(), HttpProcessor.PROCESS_PATIENTS)) {
 			cohortId = dataInputStream.readInt();
+			programId = dataInputStream.readInt();
+		}
 		dataInputStream.close();
 
 		GZIPOutputStream gzipOutputStream = new GZIPOutputStream(new BufferedOutputStream(outputStream));
@@ -109,16 +114,15 @@ public class HttpProcessor implements Processor {
 			Serializer serializer = HandlerUtil.getPreferredHandler(Serializer.class, List.class);
 			if (StringUtils.equalsIgnoreCase(getAction(), HttpProcessor.PROCESS_PATIENTS)) {
 				ConnectorService connectorService = Context.getService(ConnectorService.class);
+
 				Cohort cohort = Context.getCohortService().getCohort(cohortId);
 				serializer.write(stream, connectorService.getCohortPatients(cohort));
+
 				// check the concept list
-				List<Concept> concepts = new ArrayList<Concept>();
-				String conceptIds = Context.getAdministrationService().getGlobalProperty(SerializationConstants.CLINIC_CONCEPTS);
-				for (String conceptId : StringUtils.split(StringUtils.defaultString(conceptIds), ",")) {
-					Concept concept = Context.getConceptService().getConcept(conceptId);
-					if (concept != null)
-						concepts.add(concept);
-				}
+				Collection<Concept> concepts = null;
+				ConceptConfiguration conceptConfiguration = connectorService.getConceptConfiguration(programId);
+				if (conceptConfiguration != null)
+					concepts = ConnectorUtils.getConcepts(conceptConfiguration.getConfiguredConcepts());
 				serializer.write(stream, connectorService.getCohortObservations(cohort, concepts));
 
 				// evaluate and get the applicable form for the patients

@@ -8,7 +8,7 @@
 
 	<li
 	<c:if test='<%= request.getRequestURI().contains("/manageConcept") %>'>class="active"</c:if>>
-	<a href="${pageContext.request.contextPath}/module/odkconnector/manageConcept.form">
+	<a href="${pageContext.request.contextPath}/module/odkconnector/concept/configurationList.form">
 		<spring:message code="odkconnector.manage"/>
 	</a>
 	</li>

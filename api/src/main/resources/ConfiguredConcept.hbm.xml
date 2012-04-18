@@ -4,16 +4,16 @@
 		"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
 
 <hibernate-mapping>
-	<class name="org.openmrs.module.odkconnector.reporting.metadata.DefinitionProperty" table="odkconnector_definition_property">
+	<class name="org.openmrs.module.odkconnector.api.ConfiguredConcept" table="odkconnector_configured_concept">
 		<id name="id" type="int" column="id" unsaved-value="0">
 			<generator class="native"/>
 		</id>
 
 		<discriminator column="id" insert="false"/>
 
-		<property name="name" type="java.lang.String" column="property" length="255"/>
+		<many-to-one name="concept" class="org.openmrs.Concept" column="concept_id" not-null="true" />
 
-		<property name="description" type="java.lang.String" column="property_value" length="255"/>
+		<many-to-one name="conceptConfiguration" class="org.openmrs.module.odkconnector.api.ConceptConfiguration" column="configuration_id" />
 
 		<many-to-one name="creator" class="org.openmrs.User" not-null="true">
 			<column name="creator"/>

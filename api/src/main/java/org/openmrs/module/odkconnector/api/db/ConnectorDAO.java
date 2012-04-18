@@ -14,6 +14,7 @@
 
 package org.openmrs.module.odkconnector.api.db;
 
+import java.util.Collection;
 import java.util.List;
 
 import org.openmrs.Cohort;
@@ -21,6 +22,7 @@ import org.openmrs.Concept;
 import org.openmrs.Obs;
 import org.openmrs.Patient;
 import org.openmrs.api.db.DAOException;
+import org.openmrs.module.odkconnector.api.ConceptConfiguration;
 
 /**
  * Database methods for {@link org.openmrs.module.odkconnector.api.service.ConnectorService}.
@@ -44,11 +46,52 @@ public interface ConnectorDAO {
 	/**
 	 * DAO method to get all observations for all patients in the cohort
 	 *
+	 *
 	 * @param cohort   the cohort
 	 * @param concepts the concepts
 	 * @return all observations for patients in the cohort or empty list when no observations for the patient ids in the cohort exists
 	 * @throws org.openmrs.api.db.DAOException
 	 *          when the process failed
 	 */
-	List<Obs> getCohortObservations(final Cohort cohort, final List<Concept> concepts) throws DAOException;
+	List<Obs> getCohortObservations(final Cohort cohort, final Collection<Concept> concepts) throws DAOException;
+
+	/**
+	 * DAO method to save the concept configuration to the database
+	 *
+	 * @param conceptConfiguration the concept configuration
+	 * @return saved concept configuration
+	 * @throws org.openmrs.api.db.DAOException
+	 *          when saving failed
+	 */
+	ConceptConfiguration saveConceptConfiguration(final ConceptConfiguration conceptConfiguration) throws DAOException;
+
+	/**
+	 * Get concept configuration based on the configuration id
+	 *
+	 *
+	 * @param id the concept configuration id
+	 * @return the matching concept configuration or null if no matching record found in the database
+	 * @throws org.openmrs.api.db.DAOException
+	 *          when fetching failed
+	 */
+	ConceptConfiguration getConceptConfiguration(final Integer id) throws DAOException;
+
+	/**
+	 * Get concept configuration based on the configuration uuid
+	 *
+	 *
+	 * @param uuid the concept configuration id
+	 * @return the matching concept configuration or null if no matching record found in the database
+	 * @throws org.openmrs.api.db.DAOException
+	 *          when fetching failed
+	 */
+	ConceptConfiguration getConceptConfigurationByUuid(final String uuid) throws DAOException;
+
+	/**
+	 * Get all saved concept configuration
+	 *
+	 * @return all saved concept configuration or empty list when there's no saved concept configuration
+	 * @throws org.openmrs.api.APIException when fetching failed
+	 */
+	List<ConceptConfiguration> getConceptConfigurations();
 }

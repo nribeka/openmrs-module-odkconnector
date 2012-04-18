@@ -86,7 +86,7 @@ public class PatientSerializerTest extends BaseModuleContextSensitiveTest {
 			System.out.println("Middle Name: " + dataInputStream.readUTF());
 			System.out.println("Last Name: " + dataInputStream.readUTF());
 			System.out.println("Gender: " + dataInputStream.readUTF());
-			System.out.println("Birth Date: " + dataInputStream.readLong());
+			System.out.println("Birth Date: " + dataInputStream.readUTF());
 			System.out.println("Identifier" + dataInputStream.readUTF());
 		}
 
@@ -104,8 +104,8 @@ public class PatientSerializerTest extends BaseModuleContextSensitiveTest {
 			else if (type == ObsSerializer.TYPE_DOUBLE)
 				System.out.println("Value: " + dataInputStream.readDouble());
 			else if (type == ObsSerializer.TYPE_DATE)
-				System.out.println("Value: " + dataInputStream.readLong());
-			System.out.println("Time: " + dataInputStream.readLong());
+				System.out.println("Value: " + dataInputStream.readUTF());
+			System.out.println("Time: " + dataInputStream.readUTF());
 		}
 
 		Integer formCounter = dataInputStream.readInt();

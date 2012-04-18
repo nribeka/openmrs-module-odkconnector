@@ -31,7 +31,7 @@ public class PatientWebConnectorTest extends BaseModuleContextSensitiveTest {
 
 	private static final Log log = LogFactory.getLog(PatientWebConnectorTest.class);
 
-	private static final String SERVER_URL = "http://localhost:8081/openmrs";
+	private static final String SERVER_URL = "http://rwinkwavu.cs.washington.edu:8081/openmrs";
 
 	@Test
 	public void serialize_shouldDisplayAllPatientInformation() throws Exception {
@@ -51,6 +51,7 @@ public class PatientWebConnectorTest extends BaseModuleContextSensitiveTest {
 		DataOutputStream outputStream = new DataOutputStream(new GZIPOutputStream(connection.getOutputStream()));
 		outputStream.writeUTF("admin");
 		outputStream.writeUTF("test");
+		outputStream.writeInt(6);
 		outputStream.writeInt(1);
 		outputStream.close();
 
@@ -69,7 +70,7 @@ public class PatientWebConnectorTest extends BaseModuleContextSensitiveTest {
 				System.out.println("Middle Name: " + inputStream.readUTF());
 				System.out.println("Last Name: " + inputStream.readUTF());
 				System.out.println("Gender: " + inputStream.readUTF());
-				System.out.println("Birth Date: " + inputStream.readLong());
+				System.out.println("Birth Date: " + inputStream.readUTF());
 				System.out.println("Identifier: " + inputStream.readUTF());
 			}
 
@@ -88,8 +89,26 @@ public class PatientWebConnectorTest extends BaseModuleContextSensitiveTest {
 				else if (type == ObsSerializer.TYPE_DOUBLE)
 					System.out.println("Value: " + inputStream.readDouble());
 				else if (type == ObsSerializer.TYPE_DATE)
-					System.out.println("Value: " + inputStream.readLong());
-				System.out.println("Time: " + inputStream.readLong());
+					System.out.println("Value: " + inputStream.readUTF());
+				System.out.println("Time: " + inputStream.readUTF());
+			}
+			Integer formCounter = inputStream.readInt();
+			System.out.println("Form Counter: " + formCounter);
+			for (int j = 0; j < formCounter; j++) {
+				System.out.println("==================Observation=================");
+				System.out.println("Patient Id: " + inputStream.readInt());
+				System.out.println("Concept Name: " + inputStream.readUTF());
+
+				byte type = inputStream.readByte();
+				if (type == ObsSerializer.TYPE_STRING)
+					System.out.println("Value: " + inputStream.readUTF());
+				else if (type == ObsSerializer.TYPE_INT)
+					System.out.println("Value: " + inputStream.readInt());
+				else if (type == ObsSerializer.TYPE_DOUBLE)
+					System.out.println("Value: " + inputStream.readDouble());
+				else if (type == ObsSerializer.TYPE_DATE)
+					System.out.println("Value: " + inputStream.readUTF());
+				System.out.println("Time: " + inputStream.readUTF());
 			}
 		}
 		inputStream.close();

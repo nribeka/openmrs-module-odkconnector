@@ -12,7 +12,7 @@
  * Copyright (C) OpenMRS, LLC.  All Rights Reserved.
  */
 
-package org.openmrs.module.odkconnector.web.controller;
+package org.openmrs.module.odkconnector.web.controller.concept;
 
 import java.io.OutputStream;
 import java.util.List;
@@ -57,7 +57,7 @@ public class AutocompleteConceptController {
 
 		for (Concept concept : concepts) {
 			g.writeStartObject();
-			g.writeNumberField("id", concept.getConceptId());
+			g.writeStringField("uuid", concept.getUuid());
 			g.writeStringField("name", concept.getDisplayString());
 			g.writeEndObject();
 		}
