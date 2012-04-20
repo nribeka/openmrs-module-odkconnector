@@ -1,7 +1,7 @@
 <%@ include file="/WEB-INF/template/include.jsp" %>
 <%@ include file="/WEB-INF/template/header.jsp" %>
 
-<openmrs:require privilege="Manage Connector" otherwise="/login.htm" redirect="/module/odkconnector/manageConcept.form"/>
+<openmrs:require privilege="Manage Connector" otherwise="/login.htm" redirect="/module/odkconnector/concept/conceptConfiguration.form"/>
 
 <%@ include file="../template/localHeader.jsp" %>
 
@@ -51,14 +51,14 @@
 		<fieldset>
 			<ol>
 				<li>
-					<label for="configurationName"><spring:message code="odkconnector.manage.configurationName"/></label>
-					<input name="name" type="text" id="configurationName" />
+					<label for="configurationName"><spring:message code="odkconnector.conceptConfiguration.name"/></label>
+					<input name="name" type="text" id="configurationName" value="${configuration.name}"/>
 				</li>
 				<li>
-					<label for="configurationDescription"><spring:message code="odkconnector.manage.configurationDescription"/></label>
-					<textarea name="description" id="configurationDescription" rows="20" cols="30"></textarea>
+					<label for="configurationDescription"><spring:message code="odkconnector.conceptConfiguration.description"/></label>
+					<textarea name="description" id="configurationDescription" rows="20" cols="50">${configuration.description}</textarea>
 				</li>
-				<li><input type="submit" value="<spring:message code='odkconnector.manage.configurationSave' />"/></li>
+				<li><input type="submit" value="<spring:message code='odkconnector.conceptConfiguration.save' />"/></li>
 			</ol>
 		</fieldset>
 	</form>

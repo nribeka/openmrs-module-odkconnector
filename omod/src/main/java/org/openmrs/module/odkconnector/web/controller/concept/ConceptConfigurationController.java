@@ -32,7 +32,11 @@ public class ConceptConfigurationController {
 	private static final Log log = LogFactory.getLog(ConceptConfigurationController.class);
 
 	@RequestMapping(method = RequestMethod.GET)
-	public void preparePage(final Model model) {
+	public void preparePage(final @RequestParam(value = "uuid", required = false) String uuid,
+	                        final Model model) {
+		ConnectorService service = Context.getService(ConnectorService.class);
+		ConceptConfiguration conceptConfiguration = service.getConceptConfigurationByUuid(uuid);
+		model.addAttribute("configuration", conceptConfiguration);
 	}
 
 	@RequestMapping(method = RequestMethod.POST)

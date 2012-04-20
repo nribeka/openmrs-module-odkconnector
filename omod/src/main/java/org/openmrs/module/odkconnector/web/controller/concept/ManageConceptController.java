@@ -40,7 +40,6 @@ public class ManageConceptController {
 	@RequestMapping(method = RequestMethod.GET)
 	public void preparePage(final @RequestParam(value = "uuid", required = true) String uuid,
 	                        final Model model) {
-
 		ConnectorService service = Context.getService(ConnectorService.class);
 		ConceptConfiguration conceptConfiguration = service.getConceptConfigurationByUuid(uuid);
 		Set<Concept> concepts = ConnectorUtils.getConcepts(conceptConfiguration.getConfiguredConcepts());
@@ -53,7 +52,7 @@ public class ManageConceptController {
 
 	@RequestMapping(method = RequestMethod.POST)
 	public void process(final @RequestParam(value = "conceptUuids", required = true) String conceptUuids,
-	                    final @RequestParam(value = "configurationUuid", required = true) String uuid,
+	                    final @RequestParam(value = "uuid", required = true) String uuid,
 	                    final Model model) {
 
 		ConnectorService service = Context.getService(ConnectorService.class);

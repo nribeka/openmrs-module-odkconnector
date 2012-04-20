@@ -1,7 +1,7 @@
 <%@ include file="/WEB-INF/template/include.jsp" %>
 <%@ include file="/WEB-INF/template/header.jsp" %>
 
-<openmrs:require privilege="Manage Connector" otherwise="/login.htm" redirect="/module/odkconnector/manageConcept.form"/>
+<openmrs:require privilege="Manage Connector" otherwise="/login.htm" redirect="/module/odkconnector/concept/manageConcept.form"/>
 
 <%@ include file="../template/localHeader.jsp" %>
 
@@ -96,13 +96,21 @@
 </script>
 
 <style type="text/css">
+	#conceptConfiguration {
+		border: 1px solid black;
+		clear: both;
+		margin: 5px auto;
+		width: 100%;
+		padding: 3px 3px;
+		font-size: small;
+	}
 
 	#message {
 		background-color: lightyellow;
 	}
 
 	fieldset {
-		padding: 0;
+		padding: 5px;
 		margin-bottom: 1em;
 	}
 
@@ -136,38 +144,56 @@
 	<div id="message"><spring:message code="${message}" text="${message}"/></div>
 </c:if>
 
-<div>
-	<form method="post">
-		<fieldset>
-			<ol>
-				<li>
-					<label for="configurationName"><spring:message code="odkconnector.manage.configurationName"/></label>
-					<input name="name" type="text" id="configurationName" value="${configuration.name}" readonly="readonly"/>
-				</li>
-				<li>
-					<label for="configurationDescription"><spring:message code="odkconnector.manage.configurationDescription"/></label>
-					<textarea name="description" id="configurationDescription" rows="20" cols="30" readonly="readonly">${configuration.description}</textarea>
-				</li>
-				<li>
-					<input type="hidden" id="configurationUuid" name="configurationUuid" value="${configuration.uuid}" />
-					<label for="conceptList"><spring:message code="odkconnector.manage.conceptList"/></label>
-					<select id="conceptList" class="largeWidth" size="6" multiple="multiple">
-						<c:forEach items="${concepts}" var="concept">
-							<option value="${concept.uuid}">${concept.name}</option>
-						</c:forEach>
-					</select>
-					<input type="button" id="removeConcept" value="remove"/>
-				</li>
-				<li>
-					<label for="searchConcept"><spring:message code="odkconnector.manage.conceptSearch"/></label>
-					<input type="hidden" id="conceptUuids" name="conceptUuids" value="${conceptUuids}"/>
-					<input type="text" id="searchConcept" class="search" size="43"/>
-				</li>
-				<li><input type="submit" value="<spring:message code='odkconnector.manage.conceptSave' />"/></li>
-			</ol>
-		</fieldset>
-	</form>
-</div>
-
+<table id="conceptConfiguration">
+	<tbody>
+	<tr>
+		<td>
+			<fieldset>
+				<legend><spring:message code="odkconnector.conceptConfiguration.conceptConfiguration"/></legend>
+				<ol>
+					<li>
+						<label for="configurationName"><spring:message code="odkconnector.conceptConfiguration.name"/></label>
+						<input name="name" type="text" id="configurationName" value="${configuration.name}" readonly="readonly"/>
+					</li>
+					<li>
+						<label for="configurationDescription"><spring:message code="odkconnector.conceptConfiguration.description"/></label>
+						<textarea name="description" id="configurationDescription" rows="20" cols="50" readonly="readonly">${configuration.description}</textarea>
+					</li>
+					<li>
+						<a href="conceptConfiguration.form?uuid=${configuration.uuid}" >
+							<spring:message code="odkconnector.conceptConfiguration.edit"/>
+						</a>
+					</li>
+				</ol>
+			</fieldset>
+		</td>
+		<td style="width: 100%; vertical-align: top;">
+			<form method="post">
+				<fieldset>
+					<legend><spring:message code="odkconnector.conceptConfiguration.concepts"/></legend>
+					<ol>
+						<li>
+							<input type="hidden" id="uuid" name="uuid" value="${configuration.uuid}" />
+							<label for="conceptList"><spring:message code="odkconnector.conceptConfiguration.conceptList"/></label>
+							<select id="conceptList" class="largeWidth" size="6" multiple="multiple">
+								<c:forEach items="${concepts}" var="concept">
+									<option value="${concept.uuid}">${concept.name}</option>
+								</c:forEach>
+							</select>
+							<input type="button" id="removeConcept" value="remove"/>
+						</li>
+						<li>
+							<label for="searchConcept"><spring:message code="odkconnector.conceptConfiguration.conceptSearch"/></label>
+							<input type="hidden" id="conceptUuids" name="conceptUuids" value="${conceptUuids}"/>
+							<input type="text" id="searchConcept" class="search" size="43"/>
+						</li>
+						<li><input type="submit" value="<spring:message code='odkconnector.conceptConfiguration.conceptSave' />"/></li>
+					</ol>
+				</fieldset>
+			</form>
+		</td>
+	</tr>
+	</tbody>
+</table>
 
 <%@ include file="/WEB-INF/template/footer.jsp" %>
