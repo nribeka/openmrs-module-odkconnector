@@ -86,7 +86,7 @@ public class ExtendedDefinition extends BaseOpenmrsMetadata {
 	 * @param property the property
 	 * @return the matching cohortDefinition property element
 	 */
-	public Boolean containsProperty(String property) {
+	public Boolean containsProperty(final String property) {
 		for (DefinitionProperty definitionProperty : properties) {
 			if (StringUtils.equalsIgnoreCase(definitionProperty.getProperty(), property))
 				return Boolean.TRUE;

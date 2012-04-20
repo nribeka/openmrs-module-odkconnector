@@ -41,7 +41,7 @@ public class ConceptConfigurationController {
 
 	@RequestMapping(method = RequestMethod.POST)
 	public String process(final @RequestParam(value = "name", required = true) String name,
-	                    final @RequestParam(value = "description", required = true) String description) {
+	                      final @RequestParam(value = "description", required = true) String description) {
 
 		ConceptConfiguration conceptConfiguration = new ConceptConfiguration();
 		conceptConfiguration.setName(name);

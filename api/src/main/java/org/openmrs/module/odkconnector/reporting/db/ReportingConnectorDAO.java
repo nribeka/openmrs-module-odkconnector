@@ -61,7 +61,7 @@ public interface ReportingConnectorDAO {
 	 * @throws org.openmrs.api.db.DAOException
 	 *          when retrieving the extended definition failed
 	 */
-	ExtendedDefinition getExtendedDefinition(Integer id) throws DAOException;
+	ExtendedDefinition getExtendedDefinition(final Integer id) throws DAOException;
 
 	/**
 	 * DAO method to get all saved extended definitions
@@ -81,7 +81,7 @@ public interface ReportingConnectorDAO {
 	 * @throws org.openmrs.api.db.DAOException
 	 *          when saving the definition property failed
 	 */
-	DefinitionProperty saveDefinitionProperty(DefinitionProperty definitionProperty) throws DAOException;
+	DefinitionProperty saveDefinitionProperty(final DefinitionProperty definitionProperty) throws DAOException;
 
 
 	/**
@@ -92,6 +92,6 @@ public interface ReportingConnectorDAO {
 	 * @throws org.openmrs.api.db.DAOException
 	 *          when getting the definition property failed
 	 */
-	DefinitionProperty getDefinitionProperty(Integer id) throws DAOException;
+	DefinitionProperty getDefinitionProperty(final Integer id) throws DAOException;
 
 }
