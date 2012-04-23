@@ -160,7 +160,7 @@
 						<textarea name="description" id="configurationDescription" rows="20" cols="50" readonly="readonly">${configuration.description}</textarea>
 					</li>
 					<li>
-						<a href="conceptConfiguration.form?uuid=${configuration.uuid}" >
+						<a href="conceptConfiguration.form?configurationUuid=${configuration.uuid}" >
 							<spring:message code="odkconnector.conceptConfiguration.edit"/>
 						</a>
 					</li>
@@ -173,7 +173,7 @@
 					<legend><spring:message code="odkconnector.conceptConfiguration.concepts"/></legend>
 					<ol>
 						<li>
-							<input type="hidden" id="uuid" name="uuid" value="${configuration.uuid}" />
+							<input type="hidden" name="configurationUuid" value="${configuration.uuid}" />
 							<label for="conceptList"><spring:message code="odkconnector.conceptConfiguration.conceptList"/></label>
 							<select id="conceptList" class="largeWidth" size="6" multiple="multiple">
 								<c:forEach items="${concepts}" var="concept">

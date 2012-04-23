@@ -16,6 +16,8 @@ package org.openmrs.module.odkconnector.web.controller.concept;
 
 import java.util.Set;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -32,12 +34,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
-@RequestMapping("/module/odkconnector/concept/manageConcept")
 public class ManageConceptController {
 
 	private static final Log log = LogFactory.getLog(ManageConceptController.class);
 
-	@RequestMapping(method = RequestMethod.GET)
+	@RequestMapping(value = "/module/odkconnector/concept/manageConcept", method = RequestMethod.GET)
 	public void preparePage(final @RequestParam(value = "uuid", required = true) String uuid,
 	                        final Model model) {
 		ConnectorService service = Context.getService(ConnectorService.class);
@@ -50,13 +51,13 @@ public class ManageConceptController {
 		model.addAttribute("conceptUuids", ConnectorUtils.convertString(conceptUuids));
 	}
 
-	@RequestMapping(method = RequestMethod.POST)
+	@RequestMapping(value = "/module/odkconnector/concept/manageConcept", method = RequestMethod.POST)
 	public void process(final @RequestParam(value = "conceptUuids", required = true) String conceptUuids,
-	                    final @RequestParam(value = "uuid", required = true) String uuid,
-	                    final Model model) {
+	                    final @RequestParam(value = "configurationUuid", required = true) String configurationUuid,
+	                    final Model model, final HttpServletRequest request) {
 
 		ConnectorService service = Context.getService(ConnectorService.class);
-		ConceptConfiguration conceptConfiguration = service.getConceptConfigurationByUuid(uuid);
+		ConceptConfiguration conceptConfiguration = service.getConceptConfigurationByUuid(configurationUuid);
 		for (String conceptUuid : StringUtils.split(StringUtils.defaultString(conceptUuids), ",")) {
 			Concept concept = Context.getConceptService().getConceptByUuid(conceptUuid);
 			if (concept != null) {
@@ -72,6 +73,4 @@ public class ManageConceptController {
 		model.addAttribute("concepts", ConnectorUtils.getConcepts(conceptConfiguration.getConfiguredConcepts()));
 		model.addAttribute("conceptUuids", conceptUuids);
 	}
-
-
 }

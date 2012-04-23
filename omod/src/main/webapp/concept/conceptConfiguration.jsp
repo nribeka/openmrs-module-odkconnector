@@ -58,7 +58,10 @@
 					<label for="configurationDescription"><spring:message code="odkconnector.conceptConfiguration.description"/></label>
 					<textarea name="description" id="configurationDescription" rows="20" cols="50">${configuration.description}</textarea>
 				</li>
-				<li><input type="submit" value="<spring:message code='odkconnector.conceptConfiguration.save' />"/></li>
+				<li>
+					<input type="hidden" id="configurationUuid" name="configurationUuid" value="${configuration.uuid}" />
+					<input type="submit" value="<spring:message code='odkconnector.conceptConfiguration.save' />"/>
+				</li>
 			</ol>
 		</fieldset>
 	</form>
