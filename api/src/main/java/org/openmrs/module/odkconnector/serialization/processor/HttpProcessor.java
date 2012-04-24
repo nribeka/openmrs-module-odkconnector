@@ -35,6 +35,7 @@ import org.apache.commons.logging.LogFactory;
 import org.openmrs.Cohort;
 import org.openmrs.Concept;
 import org.openmrs.api.context.Context;
+import org.openmrs.cohort.CohortSearchHistory;
 import org.openmrs.module.odkconnector.api.ConceptConfiguration;
 import org.openmrs.module.odkconnector.api.service.ConnectorService;
 import org.openmrs.module.odkconnector.api.utils.ConnectorUtils;
@@ -43,11 +44,16 @@ import org.openmrs.module.odkconnector.reporting.metadata.ExtendedDefinition;
 import org.openmrs.module.odkconnector.reporting.service.ReportingConnectorService;
 import org.openmrs.module.odkconnector.serialization.Processor;
 import org.openmrs.module.odkconnector.serialization.Serializer;
+import org.openmrs.module.odkconnector.serialization.serializable.SerializedCohort;
 import org.openmrs.module.odkconnector.serialization.serializable.SerializedForm;
 import org.openmrs.module.reporting.cohort.EvaluatedCohort;
 import org.openmrs.module.reporting.cohort.definition.service.CohortDefinitionService;
 import org.openmrs.module.reporting.evaluation.EvaluationContext;
+import org.openmrs.reporting.AbstractReportObject;
+import org.openmrs.reporting.PatientSearch;
+import org.openmrs.reporting.PatientSearchReportObject;
 import org.openmrs.util.HandlerUtil;
+import org.openmrs.util.OpenmrsConstants;
 
 public class HttpProcessor implements Processor {
 
@@ -96,6 +102,7 @@ public class HttpProcessor implements Processor {
 		DataInputStream dataInputStream = new DataInputStream(gzipInputStream);
 		String username = dataInputStream.readUTF();
 		String password = dataInputStream.readUTF();
+		Boolean savedSearch = dataInputStream.readBoolean();
 		Integer cohortId = 0;
 		Integer programId = 0;
 		if (StringUtils.equalsIgnoreCase(getAction(), HttpProcessor.PROCESS_PATIENTS)) {
@@ -115,38 +122,64 @@ public class HttpProcessor implements Processor {
 			if (StringUtils.equalsIgnoreCase(getAction(), HttpProcessor.PROCESS_PATIENTS)) {
 				ConnectorService connectorService = Context.getService(ConnectorService.class);
 
-				Cohort cohort = Context.getCohortService().getCohort(cohortId);
-				serializer.write(stream, connectorService.getCohortPatients(cohort));
+				Cohort cohort = null;
+				if (!savedSearch) {
+					CohortSearchHistory history = new CohortSearchHistory();
+					PatientSearchReportObject patientSearchReportObject = (PatientSearchReportObject) Context.getReportObjectService().getReportObject(cohortId);
+					if (patientSearchReportObject != null) {
+						history.addSearchItem(PatientSearch.createSavedSearchReference(cohortId));
+						cohort = history.getPatientSet(0, null);
+					}
+				} else {
+					cohort = Context.getCohortService().getCohort(cohortId);
+				}
 
-				// check the concept list
-				Collection<Concept> concepts = null;
-				ConceptConfiguration conceptConfiguration = connectorService.getConceptConfiguration(programId);
-				if (conceptConfiguration != null)
-					concepts = ConnectorUtils.getConcepts(conceptConfiguration.getConfiguredConcepts());
-				serializer.write(stream, connectorService.getCohortObservations(cohort, concepts));
+				if (cohort != null) {
+					serializer.write(stream, connectorService.getCohortPatients(cohort));
 
-				// evaluate and get the applicable form for the patients
-				CohortDefinitionService cohortDefinitionService = Context.getService(CohortDefinitionService.class);
-				ReportingConnectorService reportingConnectorService = Context.getService(ReportingConnectorService.class);
-				List<ExtendedDefinition> definitions = reportingConnectorService.getAllExtendedDefinition();
+					// check the concept list
+					Collection<Concept> concepts = null;
+					ConceptConfiguration conceptConfiguration = connectorService.getConceptConfiguration(programId);
+					if (conceptConfiguration != null)
+						concepts = ConnectorUtils.getConcepts(conceptConfiguration.getConfiguredConcepts());
+					serializer.write(stream, connectorService.getCohortObservations(cohort, concepts));
 
-				EvaluationContext context = new EvaluationContext();
-				context.setBaseCohort(cohort);
+					// evaluate and get the applicable form for the patients
+					CohortDefinitionService cohortDefinitionService = Context.getService(CohortDefinitionService.class);
+					ReportingConnectorService reportingConnectorService = Context.getService(ReportingConnectorService.class);
+					List<ExtendedDefinition> definitions = reportingConnectorService.getAllExtendedDefinition();
 
-				List<SerializedForm> serializedForms = new ArrayList<SerializedForm>();
-				for (ExtendedDefinition definition : definitions) {
-					if (definition.containsProperty(ExtendedDefinition.DEFINITION_PROPERTY_FORM)) {
-						EvaluatedCohort evaluatedCohort = cohortDefinitionService.evaluate(definition.getCohortDefinition(), context);
-						for (DefinitionProperty definitionProperty : definition.getProperties()) {
-							Integer formId = NumberUtils.toInt(definitionProperty.getPropertyValue());
-							for (Object patientId : evaluatedCohort.getMemberIds())
-								serializedForms.add(new SerializedForm(NumberUtils.toInt(String.valueOf(patientId)), formId));
+					EvaluationContext context = new EvaluationContext();
+					context.setBaseCohort(cohort);
+
+					List<SerializedForm> serializedForms = new ArrayList<SerializedForm>();
+					for (ExtendedDefinition definition : definitions) {
+						if (definition.containsProperty(ExtendedDefinition.DEFINITION_PROPERTY_FORM)) {
+							EvaluatedCohort evaluatedCohort = cohortDefinitionService.evaluate(definition.getCohortDefinition(), context);
+							for (DefinitionProperty definitionProperty : definition.getProperties()) {
+								Integer formId = NumberUtils.toInt(definitionProperty.getPropertyValue());
+								for (Object patientId : evaluatedCohort.getMemberIds())
+									serializedForms.add(new SerializedForm(NumberUtils.toInt(String.valueOf(patientId)), formId));
+							}
 						}
 					}
+					serializer.write(stream, serializedForms);
 				}
-				serializer.write(stream, serializedForms);
 			} else {
-				serializer.write(stream, Context.getCohortService().getAllCohorts());
+				if (savedSearch) {
+					List<SerializedCohort> serializedCohorts = new ArrayList<SerializedCohort>();
+					List<AbstractReportObject> objects = Context.getReportObjectService().getReportObjectsByType(OpenmrsConstants.REPORT_OBJECT_TYPE_PATIENTSEARCH);
+					for (AbstractReportObject object : objects) {
+						SerializedCohort serializedCohort = new SerializedCohort();
+						serializedCohort.setId(object.getReportObjectId());
+						serializedCohort.setName(object.getName());
+						serializedCohorts.add(serializedCohort);
+					}
+					serializer.write(stream, serializedCohorts);
+
+				} else {
+					serializer.write(stream, Context.getCohortService().getAllCohorts());
+				}
 			}
 
 			dataOutputStream.writeInt(HttpURLConnection.HTTP_OK);

@@ -50,6 +50,7 @@ public class CohortWebConnectorTest extends BaseModuleContextSensitiveTest {
 		DataOutputStream outputStream = new DataOutputStream(new GZIPOutputStream(connection.getOutputStream()));
 		outputStream.writeUTF("admin");
 		outputStream.writeUTF("test");
+		outputStream.writeBoolean(false);
 		outputStream.close();
 
 		DataInputStream inputStream = new DataInputStream(new GZIPInputStream(connection.getInputStream()));
