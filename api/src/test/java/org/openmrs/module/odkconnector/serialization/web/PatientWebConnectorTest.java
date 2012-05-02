@@ -51,8 +51,8 @@ public class PatientWebConnectorTest extends BaseModuleContextSensitiveTest {
 		DataOutputStream outputStream = new DataOutputStream(new GZIPOutputStream(connection.getOutputStream()));
 		outputStream.writeUTF("admin");
 		outputStream.writeUTF("test");
-		outputStream.writeBoolean(true);
-		outputStream.writeInt(6);
+		outputStream.writeBoolean(false);
+		outputStream.writeInt(9);
 		outputStream.writeInt(1);
 		outputStream.close();
 

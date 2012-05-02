@@ -70,8 +70,8 @@
 
 			<dependency>
 				<groupId>org.openmrs.module</groupId>
-				<artifactId>htmlwidget</artifactId>
-				<version>1.5.7.1</version>
+				<artifactId>htmlwidgets</artifactId>
+				<version>1.6.0</version>
 				<type>jar</type>
 				<scope>provided</scope>
 			</dependency>

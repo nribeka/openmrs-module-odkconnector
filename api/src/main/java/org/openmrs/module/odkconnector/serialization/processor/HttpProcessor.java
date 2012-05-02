@@ -122,8 +122,8 @@ public class HttpProcessor implements Processor {
 			if (StringUtils.equalsIgnoreCase(getAction(), HttpProcessor.PROCESS_PATIENTS)) {
 				ConnectorService connectorService = Context.getService(ConnectorService.class);
 
-				Cohort cohort = null;
-				if (!savedSearch) {
+				Cohort cohort = new Cohort();
+				if (savedSearch) {
 					CohortSearchHistory history = new CohortSearchHistory();
 					PatientSearchReportObject patientSearchReportObject = (PatientSearchReportObject) Context.getReportObjectService().getReportObject(cohortId);
 					if (patientSearchReportObject != null) {
@@ -134,37 +134,37 @@ public class HttpProcessor implements Processor {
 					cohort = Context.getCohortService().getCohort(cohortId);
 				}
 
-				if (cohort != null) {
-					serializer.write(stream, connectorService.getCohortPatients(cohort));
 
-					// check the concept list
-					Collection<Concept> concepts = null;
-					ConceptConfiguration conceptConfiguration = connectorService.getConceptConfiguration(programId);
-					if (conceptConfiguration != null)
-						concepts = ConnectorUtils.getConcepts(conceptConfiguration.getConfiguredConcepts());
-					serializer.write(stream, connectorService.getCohortObservations(cohort, concepts));
+				serializer.write(stream, connectorService.getCohortPatients(cohort));
 
-					// evaluate and get the applicable form for the patients
-					CohortDefinitionService cohortDefinitionService = Context.getService(CohortDefinitionService.class);
-					ReportingConnectorService reportingConnectorService = Context.getService(ReportingConnectorService.class);
-					List<ExtendedDefinition> definitions = reportingConnectorService.getAllExtendedDefinition();
+				// check the concept list
+				Collection<Concept> concepts = null;
+				ConceptConfiguration conceptConfiguration = connectorService.getConceptConfiguration(programId);
+				if (conceptConfiguration != null)
+					concepts = ConnectorUtils.getConcepts(conceptConfiguration.getConfiguredConcepts());
+				serializer.write(stream, connectorService.getCohortObservations(cohort, concepts));
 
-					EvaluationContext context = new EvaluationContext();
-					context.setBaseCohort(cohort);
+				// evaluate and get the applicable form for the patients
+				CohortDefinitionService cohortDefinitionService = Context.getService(CohortDefinitionService.class);
+				ReportingConnectorService reportingConnectorService = Context.getService(ReportingConnectorService.class);
+				List<ExtendedDefinition> definitions = reportingConnectorService.getAllExtendedDefinition();
 
-					List<SerializedForm> serializedForms = new ArrayList<SerializedForm>();
-					for (ExtendedDefinition definition : definitions) {
-						if (definition.containsProperty(ExtendedDefinition.DEFINITION_PROPERTY_FORM)) {
-							EvaluatedCohort evaluatedCohort = cohortDefinitionService.evaluate(definition.getCohortDefinition(), context);
-							for (DefinitionProperty definitionProperty : definition.getProperties()) {
-								Integer formId = NumberUtils.toInt(definitionProperty.getPropertyValue());
-								for (Object patientId : evaluatedCohort.getMemberIds())
-									serializedForms.add(new SerializedForm(NumberUtils.toInt(String.valueOf(patientId)), formId));
-							}
+				EvaluationContext context = new EvaluationContext();
+				context.setBaseCohort(cohort);
+
+				List<SerializedForm> serializedForms = new ArrayList<SerializedForm>();
+				for (ExtendedDefinition definition : definitions) {
+					if (definition.containsProperty(ExtendedDefinition.DEFINITION_PROPERTY_FORM)) {
+						EvaluatedCohort evaluatedCohort = cohortDefinitionService.evaluate(definition.getCohortDefinition(), context);
+						for (DefinitionProperty definitionProperty : definition.getProperties()) {
+							Integer formId = NumberUtils.toInt(definitionProperty.getPropertyValue());
+							for (Object patientId : evaluatedCohort.getMemberIds())
+								serializedForms.add(new SerializedForm(NumberUtils.toInt(String.valueOf(patientId)), formId));
 						}
 					}
-					serializer.write(stream, serializedForms);
 				}
+				serializer.write(stream, serializedForms);
+
 			} else {
 				if (savedSearch) {
 					List<SerializedCohort> serializedCohorts = new ArrayList<SerializedCohort>();
