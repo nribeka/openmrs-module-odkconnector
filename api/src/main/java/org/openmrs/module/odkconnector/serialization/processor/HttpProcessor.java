@@ -24,6 +24,7 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
@@ -155,11 +156,14 @@ public class HttpProcessor implements Processor {
 				EvaluationContext context = new EvaluationContext();
 				context.setBaseCohort(cohort);
 
+                Collection intersectedMemberIds = Collections.emptyList();
 				List<SerializedForm> serializedForms = new ArrayList<SerializedForm>();
 				for (ExtendedDefinition definition : definitions) {
 					if (definition.containsProperty(ExtendedDefinition.DEFINITION_PROPERTY_FORM)) {
 						EvaluatedCohort evaluatedCohort = cohortDefinitionService.evaluate(definition.getCohortDefinition(), context);
-                        Collection intersectedMemberIds = CollectionUtils.intersection(evaluatedCohort.getMemberIds(), cohort.getMemberIds());
+                        // the cohort could be null, so we don't want to get exception during the intersection process
+                        if (cohort != null)
+                            intersectedMemberIds = CollectionUtils.intersection(cohort.getMemberIds(), evaluatedCohort.getMemberIds());
 						for (DefinitionProperty definitionProperty : definition.getProperties()) {
 							Integer formId = NumberUtils.toInt(definitionProperty.getPropertyValue());
 							for (Object patientId : intersectedMemberIds)

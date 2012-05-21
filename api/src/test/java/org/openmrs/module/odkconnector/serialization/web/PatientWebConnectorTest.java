@@ -64,7 +64,7 @@ public class PatientWebConnectorTest extends BaseModuleContextSensitiveTest {
 			// total number of patients
 			Integer patientCounter = inputStream.readInt();
 			System.out.println("Patient Counter: " + patientCounter);
-			for (int i = 0; i < patientCounter; i++) {
+			for (int j = 0; j < patientCounter; j++) {
 				System.out.println("=================Patient=====================");
 				System.out.println("Patient Id: " + inputStream.readInt());
 				System.out.println("Family Name: " + inputStream.readUTF());
@@ -73,7 +73,7 @@ public class PatientWebConnectorTest extends BaseModuleContextSensitiveTest {
 				System.out.println("Gender: " + inputStream.readUTF());
 				System.out.println("Birth Date: " + inputStream.readUTF());
 				System.out.println("Identifier: " + inputStream.readUTF());
-                System.out.println("Patients: " + i + " out of " + patientCounter);
+                System.out.println("Patients: " + j + " out of " + patientCounter);
 			}
 
 			Integer obsCounter = inputStream.readInt();
@@ -93,6 +93,7 @@ public class PatientWebConnectorTest extends BaseModuleContextSensitiveTest {
 				else if (type == ObsSerializer.TYPE_DATE)
 					System.out.println("Value: " + inputStream.readUTF());
 				System.out.println("Time: " + inputStream.readUTF());
+                System.out.println("Obs: " + j + " out of: " + obsCounter);
 			}
 			Integer formCounter = inputStream.readInt();
 			System.out.println("Form Counter: " + formCounter);
@@ -111,6 +112,7 @@ public class PatientWebConnectorTest extends BaseModuleContextSensitiveTest {
 				else if (type == ObsSerializer.TYPE_DATE)
 					System.out.println("Value: " + inputStream.readUTF());
 				System.out.println("Time: " + inputStream.readUTF());
+                System.out.println("Form: " + j + " out of: " + formCounter);
 			}
 		}
 		inputStream.close();
