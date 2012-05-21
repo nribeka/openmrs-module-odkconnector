@@ -28,6 +28,7 @@ import java.util.List;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.NumberUtils;
 import org.apache.commons.logging.Log;
@@ -117,7 +118,8 @@ public class HttpProcessor implements Processor {
 			Context.openSession();
 			Context.authenticate(username, password);
 
-			ByteArrayOutputStream stream = new ByteArrayOutputStream();
+            dataOutputStream.writeInt(HttpURLConnection.HTTP_OK);
+
 			Serializer serializer = HandlerUtil.getPreferredHandler(Serializer.class, List.class);
 			if (StringUtils.equalsIgnoreCase(getAction(), HttpProcessor.PROCESS_PATIENTS)) {
 				ConnectorService connectorService = Context.getService(ConnectorService.class);
@@ -134,15 +136,16 @@ public class HttpProcessor implements Processor {
 					cohort = Context.getCohortService().getCohort(cohortId);
 				}
 
-
-				serializer.write(stream, connectorService.getCohortPatients(cohort));
+                System.out.println("Writing patients information!");
+				serializer.write(dataOutputStream, connectorService.getCohortPatients(cohort));
 
 				// check the concept list
 				Collection<Concept> concepts = null;
 				ConceptConfiguration conceptConfiguration = connectorService.getConceptConfiguration(programId);
 				if (conceptConfiguration != null)
 					concepts = ConnectorUtils.getConcepts(conceptConfiguration.getConfiguredConcepts());
-				serializer.write(stream, connectorService.getCohortObservations(cohort, concepts));
+                System.out.println("Writing observations information!");
+				serializer.write(dataOutputStream, connectorService.getCohortObservations(cohort, concepts));
 
 				// evaluate and get the applicable form for the patients
 				CohortDefinitionService cohortDefinitionService = Context.getService(CohortDefinitionService.class);
@@ -156,14 +159,16 @@ public class HttpProcessor implements Processor {
 				for (ExtendedDefinition definition : definitions) {
 					if (definition.containsProperty(ExtendedDefinition.DEFINITION_PROPERTY_FORM)) {
 						EvaluatedCohort evaluatedCohort = cohortDefinitionService.evaluate(definition.getCohortDefinition(), context);
+                        Collection intersectedMemberIds = CollectionUtils.intersection(evaluatedCohort.getMemberIds(), cohort.getMemberIds());
 						for (DefinitionProperty definitionProperty : definition.getProperties()) {
 							Integer formId = NumberUtils.toInt(definitionProperty.getPropertyValue());
-							for (Object patientId : evaluatedCohort.getMemberIds())
+							for (Object patientId : intersectedMemberIds)
 								serializedForms.add(new SerializedForm(NumberUtils.toInt(String.valueOf(patientId)), formId));
 						}
 					}
 				}
-				serializer.write(stream, serializedForms);
+                System.out.println("Writing forms information!");
+				serializer.write(dataOutputStream, serializedForms);
 
 			} else {
 				if (savedSearch) {
@@ -175,15 +180,13 @@ public class HttpProcessor implements Processor {
 						serializedCohort.setName(object.getName());
 						serializedCohorts.add(serializedCohort);
 					}
-					serializer.write(stream, serializedCohorts);
+					serializer.write(dataOutputStream, serializedCohorts);
 
 				} else {
-					serializer.write(stream, Context.getCohortService().getAllCohorts());
+					serializer.write(dataOutputStream, Context.getCohortService().getAllCohorts());
 				}
 			}
 
-			dataOutputStream.writeInt(HttpURLConnection.HTTP_OK);
-			dataOutputStream.write(stream.toByteArray());
 			dataOutputStream.close();
 		} catch (Exception e) {
 			log.error("Processing stream failed!", e);

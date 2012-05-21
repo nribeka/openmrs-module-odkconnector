@@ -16,26 +16,36 @@ package org.openmrs.module.odkconnector.reporting;
 
 import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.junit.Before;
 import org.junit.Test;
-import org.openmrs.Cohort;
 import org.openmrs.PatientIdentifier;
+import org.openmrs.PersonName;
 import org.openmrs.api.EncounterService;
 import org.openmrs.api.PatientService;
+import org.openmrs.api.PatientSetService;
 import org.openmrs.api.context.Context;
-import org.openmrs.module.reporting.common.DateUtil;
-import org.openmrs.module.reporting.common.SortCriteria;
+import org.openmrs.module.reporting.common.Age;
 import org.openmrs.module.reporting.common.TimeQualifier;
 import org.openmrs.module.reporting.data.converter.AgeConverter;
 import org.openmrs.module.reporting.data.converter.BirthdateConverter;
 import org.openmrs.module.reporting.data.converter.DateConverter;
 import org.openmrs.module.reporting.data.converter.ListConverter;
 import org.openmrs.module.reporting.data.converter.ObjectFormatter;
+import org.openmrs.module.reporting.data.converter.PropertyConverter;
 import org.openmrs.module.reporting.data.encounter.definition.EncounterDatetimeDataDefinition;
 import org.openmrs.module.reporting.data.encounter.definition.EncounterIdDataDefinition;
+import org.openmrs.module.reporting.data.encounter.definition.EncounterLocationDataDefinition;
+import org.openmrs.module.reporting.data.encounter.definition.EncounterProviderDataDefinition;
 import org.openmrs.module.reporting.data.encounter.definition.EncounterTypeDataDefinition;
+import org.openmrs.module.reporting.data.obs.definition.ObsConceptDataDefinition;
+import org.openmrs.module.reporting.data.obs.definition.ObsDatetimeDataDefinition;
+import org.openmrs.module.reporting.data.obs.definition.ObsIdDataDefinition;
+import org.openmrs.module.reporting.data.obs.definition.ObsNumericDataDefinition;
 import org.openmrs.module.reporting.data.patient.definition.PatientIdDataDefinition;
 import org.openmrs.module.reporting.data.patient.definition.PatientIdentifierDataDefinition;
 import org.openmrs.module.reporting.data.person.definition.AgeDataDefinition;
@@ -45,94 +55,103 @@ import org.openmrs.module.reporting.data.person.definition.PreferredNameDataDefi
 import org.openmrs.module.reporting.dataset.DataSetUtil;
 import org.openmrs.module.reporting.dataset.SimpleDataSet;
 import org.openmrs.module.reporting.dataset.definition.EncounterDataSetDefinition;
+import org.openmrs.module.reporting.dataset.definition.ObsDataSetDefinition;
 import org.openmrs.module.reporting.dataset.definition.PatientDataSetDefinition;
 import org.openmrs.module.reporting.dataset.definition.service.DataSetDefinitionService;
 import org.openmrs.module.reporting.evaluation.EvaluationContext;
 import org.openmrs.module.reporting.evaluation.parameter.Parameter;
-import org.openmrs.module.reporting.query.encounter.definition.AllEncounterQuery;
-import org.openmrs.module.reporting.query.encounter.definition.MostRecentEncounterForPatientQuery;
+import org.openmrs.module.reporting.query.encounter.definition.BasePatientEncounterQuery;
+import org.openmrs.module.reporting.query.obs.definition.DateObsQuery;
+import org.openmrs.module.reporting.query.obs.definition.NumericObsQuery;
+import org.openmrs.module.reporting.report.ReportData;
+import org.openmrs.module.reporting.report.definition.ReportDefinition;
+import org.openmrs.module.reporting.report.definition.service.ReportDefinitionService;
+import org.openmrs.module.reporting.report.renderer.CsvReportRenderer;
 import org.openmrs.test.BaseModuleContextSensitiveTest;
 
 public class PatientSummaryDataDefinitionTest extends BaseModuleContextSensitiveTest {
 
-	private static final Log log = LogFactory.getLog(PatientSummaryDataDefinitionTest.class);
+    private static final Log log = LogFactory.getLog(PatientDataSetDefinition.class);
 
-	@Test
-	public void generateSummary() throws Exception {
+    @Before
+    public void setup() throws Exception {
+        executeDataSet("org/openmrs/module/reporting/include/ReportTestDataset.xml");
+    }
 
-		PatientService patientService = Context.getPatientService();
-		EncounterService encounterService = Context.getEncounterService();
+    private EvaluationContext prepareEvaluationContext() {
+        PatientService patientService = Context.getPatientService();
+        EncounterService encounterService = Context.getEncounterService();
 
-		EvaluationContext context = new EvaluationContext();
-		context.addParameterValue("startDate", DateUtil.getDateTime(2010, 7, 1));
-		context.addParameterValue("identifierTypes", Arrays.asList(patientService.getPatientIdentifierType(1),
-				patientService.getPatientIdentifierType(2)));
-		context.addParameterValue("encounterTypes", Arrays.asList(encounterService.getEncounterType(1),
-				encounterService.getEncounterType(2)));
-		context.addParameterValue("firstTimeQualifier", TimeQualifier.FIRST);
-		context.addParameterValue("lastTimeQualifier", TimeQualifier.LAST);
+        EvaluationContext context = new EvaluationContext();
+        context.addParameterValue("currentDate", new Date());
+        context.addParameterValue("identifierTypes",
+                Arrays.asList(patientService.getPatientIdentifierType(1), patientService.getPatientIdentifierType(2)));
+        context.addParameterValue("encounterTypes",
+                Arrays.asList(encounterService.getEncounterType(1), encounterService.getEncounterType(2), encounterService.getEncounterType(6)));
 
-		Cohort c = new Cohort("2,6,7");
-		context.setBaseCohort(c);
+        return context;
+    }
 
-		PatientDataSetDefinition definition = new PatientDataSetDefinition();
+    @Test
+    public void generateSummary() throws Exception {
 
-		definition.addColumn("id", new PatientIdDataDefinition(), null);
+        PatientDataSetDefinition definition = new PatientDataSetDefinition();
 
-		ListConverter listConverter = new ListConverter();
-		listConverter.setMaxNumberOfItems(1);
+        definition.addColumn("id", new PatientIdDataDefinition(), StringUtils.EMPTY, new ObjectFormatter());
 
-		PatientIdentifierDataDefinition preferredIdentifier = new PatientIdentifierDataDefinition();
-		preferredIdentifier.addParameter(new Parameter("types", "Identifier Types", PatientIdentifier.class));
-		definition.addColumn("identifier", preferredIdentifier, "types=${identifierTypes}", listConverter);
+        ListConverter listConverter = new ListConverter();
+        listConverter.setMaxNumberOfItems(1);
 
-		definition.addColumn("name", new PreferredNameDataDefinition(), null, new ObjectFormatter("{familyName}, {givenName}"));
+        PatientIdentifierDataDefinition preferredIdentifier = new PatientIdentifierDataDefinition();
+        preferredIdentifier.addParameter(new Parameter("types", "identifier types", PatientIdentifier.class));
+        definition.addColumn("identifier", preferredIdentifier, "types=${identifierTypes}", listConverter);
 
-		AgeDataDefinition ageOnDate = new AgeDataDefinition();
-		ageOnDate.addParameter(new Parameter("effectiveDate", "Effective Date", Date.class));
-		definition.addColumn("age", ageOnDate, "effectiveDate=${startDate}", new AgeConverter());
+        definition.addColumn("name", new PreferredNameDataDefinition(), StringUtils.EMPTY, new ObjectFormatter("{familyName}, {givenName}"));
 
-		definition.addColumn("birthdate", new BirthdateDataDefinition(), null, new BirthdateConverter("dd-MMM-yyyy"));
-		definition.addColumn("gender", new GenderDataDefinition(), null);
+        AgeDataDefinition ageOnDate = new AgeDataDefinition();
+        ageOnDate.addParameter(new Parameter("effectiveDate", "effective date", Date.class));
+        definition.addColumn("age", ageOnDate, "effectiveDate=${currentDate}", new AgeConverter());
 
-		EncounterDataSetDefinition encounterDataSet = new EncounterDataSetDefinition();
-		encounterDataSet.addParameter(new Parameter("effectiveDate", "Effective Date", Date.class));
+        definition.addColumn("birthdate", new BirthdateDataDefinition(), StringUtils.EMPTY, new BirthdateConverter("dd-MMM-yyyy"));
+        definition.addColumn("gender", new GenderDataDefinition(), StringUtils.EMPTY, new ObjectFormatter());
 
-		MostRecentEncounterForPatientQuery encounterQuery = new MostRecentEncounterForPatientQuery();
-		encounterQuery.addParameter(new Parameter("onOrBefore", "On or Before Date", Date.class));
-		encounterDataSet.addRowFilter(encounterQuery, "onOrBefore=${startDate}");
+        DateObsQuery returnVisitQuery = new DateObsQuery();
+        returnVisitQuery.setTimeModifier(PatientSetService.TimeModifier.LAST);
+        returnVisitQuery.addConcept(Context.getConceptService().getConcept(20));
 
-		encounterDataSet.addColumn("Last Encounter ID", new EncounterIdDataDefinition(), null, new ObjectFormatter());
-		encounterDataSet.addColumn("Last Encounter Type", new EncounterTypeDataDefinition(), null, new ObjectFormatter());
-		encounterDataSet.addColumn("Last Encounter Date", new EncounterDatetimeDataDefinition(), null, new DateConverter("dd-MMM-yyyy"));
+        ObsDataSetDefinition returnVisit = new ObsDataSetDefinition();
+        returnVisit.addRowFilter(returnVisitQuery, null);
+        returnVisit.addColumn("return-visit-date", new ObsDatetimeDataDefinition(), null, new DateConverter("dd-MMM-yyyy"));
+        definition.addColumns("return-visit", returnVisit, null);
 
-		definition.addColumns("Last Scheduled Visit", encounterDataSet, "effectiveDate=${startDate}", new ObjectFormatter());
-		definition.addSortCriteria("Last Encounter Date", SortCriteria.SortDirection.ASC);
+        BasePatientEncounterQuery recentEncounterQuery = new BasePatientEncounterQuery();
+        recentEncounterQuery.setTimeModifier(PatientSetService.TimeModifier.LAST);
+        recentEncounterQuery.addParameter(new Parameter("encounterTypes", "encounter types", List.class));
 
-		SimpleDataSet dataset = (SimpleDataSet) Context.getService(DataSetDefinitionService.class).evaluate(definition, context);
+        EncounterDataSetDefinition recentEncounterDataSet = new EncounterDataSetDefinition();
+        recentEncounterDataSet.addRowFilter(recentEncounterQuery, "encounterTypes=${encounterTypes}");
+        recentEncounterDataSet.addColumn("last-encounter-id", new EncounterIdDataDefinition(), null, new ObjectFormatter());
+        recentEncounterDataSet.addColumn("last-encounter-type", new EncounterTypeDataDefinition(), null, new ObjectFormatter());
+        recentEncounterDataSet.addColumn("last-encounter-location", new EncounterLocationDataDefinition(), null, new ObjectFormatter());
+        recentEncounterDataSet.addColumn("last-encounter-provider", new EncounterProviderDataDefinition(), null, new PropertyConverter(PersonName.class, "personName"), new ObjectFormatter("{familyName}, {givenName}"));
+        recentEncounterDataSet.addColumn("last-encounter-provider-age", new EncounterProviderDataDefinition(), null, new PropertyConverter(Age.class, "age"), new ObjectFormatter());
+        recentEncounterDataSet.addColumn("last-encounter-date", new EncounterDatetimeDataDefinition(), null, new DateConverter("dd-MMM-yyyy"));
 
-		DataSetUtil.printDataSet(dataset, System.out);
-	}
+        definition.addColumns("last-visit", recentEncounterDataSet, null);
 
-	@Test
-	public void generateEncounter() throws Exception {
+        BasePatientEncounterQuery firstEncounterQuery = new BasePatientEncounterQuery();
+        firstEncounterQuery.setTimeModifier(PatientSetService.TimeModifier.FIRST);
+        firstEncounterQuery.addParameter(new Parameter("encounterTypes", "encounter types", List.class));
 
+        EncounterDataSetDefinition firstEncounterDataSet = new EncounterDataSetDefinition();
+        firstEncounterDataSet.addRowFilter(firstEncounterQuery, "encounterTypes=${encounterTypes}");
+        firstEncounterDataSet.addColumn("first-encounter-id", new EncounterIdDataDefinition(), null, new ObjectFormatter());
+        firstEncounterDataSet.addColumn("first-encounter-type", new EncounterTypeDataDefinition(), null, new ObjectFormatter());
+        firstEncounterDataSet.addColumn("first-encounter-date", new EncounterDatetimeDataDefinition(), null, new DateConverter("dd-MMM-yyyy"));
 
-		EvaluationContext context = new EvaluationContext();
+        definition.addColumns("first-visit", firstEncounterDataSet, null);
 
-		PatientDataSetDefinition d = new PatientDataSetDefinition();
-		d.addColumn("patientId", new PatientIdDataDefinition(), null);
-
-		EncounterDataSetDefinition encounterDataSet = new EncounterDataSetDefinition();
-		encounterDataSet.addRowFilter(new AllEncounterQuery(), "");
-		encounterDataSet.addColumn("Encounter Type", new EncounterTypeDataDefinition(), null, new ObjectFormatter());
-		encounterDataSet.addColumn("Encounter Date", new EncounterDatetimeDataDefinition(), null, new DateConverter("dd-MMM-yyyy"));
-
-		d.addColumns("Last 4 Encounters", encounterDataSet, null, TimeQualifier.ANY, 4);
-
-		SimpleDataSet dataset = (SimpleDataSet)Context.getService(DataSetDefinitionService.class).evaluate(d, context);
-		DataSetUtil.printDataSet(dataset, System.out);
-
-	}
-
+        SimpleDataSet dataset = (SimpleDataSet)Context.getService(DataSetDefinitionService.class).evaluate(definition, prepareEvaluationContext());
+        DataSetUtil.printDataSet(dataset, System.out);
+    }
 }

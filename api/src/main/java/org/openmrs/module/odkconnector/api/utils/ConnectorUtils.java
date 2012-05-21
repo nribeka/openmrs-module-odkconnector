@@ -14,39 +14,40 @@
 
 package org.openmrs.module.odkconnector.api.utils;
 
-import java.util.Collection;
-import java.util.LinkedHashSet;
-import java.util.Set;
+import java.util.*;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.openmrs.Concept;
+import org.openmrs.OpenmrsMetadata;
 import org.openmrs.OpenmrsObject;
 import org.openmrs.module.odkconnector.api.ConfiguredConcept;
 
 public class ConnectorUtils {
 
-	private static final Log log = LogFactory.getLog(ConnectorUtils.class);
+    private static final Log log = LogFactory.getLog(ConnectorUtils.class);
 
-	public static Set<Concept> getConcepts(Collection<ConfiguredConcept> configuredConcepts) {
-		Set<Concept> concepts = new LinkedHashSet<Concept>();
-		for (ConfiguredConcept configuredConcept : configuredConcepts)
-			concepts.add(configuredConcept.getConcept());
-		return concepts;
-	}
+    public static Set<Concept> getConcepts(Collection<ConfiguredConcept> configuredConcepts) {
+        Set<Concept> concepts = new LinkedHashSet<Concept>();
+        for (ConfiguredConcept configuredConcept : configuredConcepts)
+            if (!configuredConcept.isRetired())
+                concepts.add(configuredConcept.getConcept());
+        return concepts;
+    }
 
-	public static Set<String> getInternalUuids(Collection<? extends OpenmrsObject> openmrsObjects) {
-		Set<String> uuids = new LinkedHashSet<String>();
-		for (OpenmrsObject openmrsObject : openmrsObjects)
-			uuids.add(openmrsObject.getUuid());
-		return uuids;
-	}
+    public static Set<String> getConceptUuids(Collection<Concept> concepts) {
+        Set<String> uuids = new LinkedHashSet<String>();
+        for (Concept concept : concepts)
+            if (!concept.isRetired())
+                uuids.add(concept.getUuid());
+        return uuids;
+    }
 
-	public static String convertString(Collection<String> strings) {
-		StringBuilder builder = new StringBuilder();
-		for (String string : strings)
-			builder.append(string).append(",");
-		return builder.toString();
-	}
+    public static String convertString(Collection<String> strings) {
+        StringBuilder builder = new StringBuilder();
+        for (String string : strings)
+            builder.append(string).append(",");
+        return builder.toString();
+    }
 
 }

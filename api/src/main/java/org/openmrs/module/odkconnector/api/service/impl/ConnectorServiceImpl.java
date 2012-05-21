@@ -26,6 +26,8 @@ import org.openmrs.Concept;
 import org.openmrs.Obs;
 import org.openmrs.Patient;
 import org.openmrs.api.APIException;
+import org.openmrs.api.PatientService;
+import org.openmrs.api.context.Context;
 import org.openmrs.api.impl.BaseOpenmrsService;
 import org.openmrs.module.odkconnector.api.ConceptConfiguration;
 import org.openmrs.module.odkconnector.api.db.ConnectorDAO;
@@ -63,9 +65,16 @@ public class ConnectorServiceImpl extends BaseOpenmrsService implements Connecto
 	 */
 	@Override
 	public List<Patient> getCohortPatients(final Cohort cohort) throws APIException {
+        List<Patient> patients = new ArrayList<Patient>();
 		if (cohort == null || CollectionUtils.isEmpty(cohort.getMemberIds()))
-			return new ArrayList<Patient>();
-		return dao.getCohortPatients(cohort);
+			return patients;
+//
+//        PatientService patientService = Context.getPatientService();
+//        for (Integer patientId : cohort.getMemberIds())
+//            patients.add(patientService.getPatient(patientId));
+//
+//		return patients;
+        return dao.getCohortPatients(cohort);
 	}
 
 	/**

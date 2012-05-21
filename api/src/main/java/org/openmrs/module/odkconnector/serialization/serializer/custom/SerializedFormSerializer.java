@@ -44,16 +44,19 @@ public class SerializedFormSerializer implements Serializer {
 	 */
 	@Override
 	public void write(final OutputStream stream, final Object data) throws IOException {
+        try {
+            SerializedForm serializedForm = (SerializedForm) data;
 
-		SerializedForm serializedForm = (SerializedForm) data;
+            DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
+            DataOutputStream outputStream = new DataOutputStream(stream);
 
-		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
-
-		DataOutputStream outputStream = new DataOutputStream(stream);
-		outputStream.writeInt(serializedForm.getPatientId());
-		outputStream.writeUTF(ExtendedDefinition.DEFINITION_PROPERTY_FORM);
-		outputStream.writeByte(TYPE_INT);
-		outputStream.writeInt(serializedForm.getFormId());
-		outputStream.writeUTF(dateFormat.format(new Date()));
-	}
+            outputStream.writeInt(serializedForm.getPatientId());
+            outputStream.writeUTF(ExtendedDefinition.DEFINITION_PROPERTY_FORM);
+            outputStream.writeByte(TYPE_INT);
+            outputStream.writeInt(serializedForm.getFormId());
+            outputStream.writeUTF(dateFormat.format(new Date()));
+        } catch (IOException e) {
+            log.info("Writing form information failed!", e);
+        }
+    }
 }

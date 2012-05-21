@@ -72,7 +72,7 @@
 
 		<dependency>
 			<groupId>org.openmrs.module</groupId>
-			<artifactId>htmlwidget</artifactId>
+			<artifactId>htmlwidgets</artifactId>
 			<scope>provided</scope>
 		</dependency>
 

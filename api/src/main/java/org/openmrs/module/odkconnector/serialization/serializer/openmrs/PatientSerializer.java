@@ -43,29 +43,32 @@ public class PatientSerializer implements Serializer {
 	 */
 	@Override
 	public void write(final OutputStream stream, final Object data) throws IOException {
+        try {
+            Patient patient = (Patient) data;
 
-		Patient patient = (Patient) data;
+            DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
 
-		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
+            DataOutputStream outputStream = new DataOutputStream(stream);
+            // skip if the patient is an invalid patient
+            if (patient == null || patient.getPersonName() == null || patient.getPatientIdentifier() == null)
+                return;
 
-		DataOutputStream outputStream = new DataOutputStream(stream);
-		// skip if the patient is an invalid patient
-		if (patient == null || patient.getPersonName() == null || patient.getPatientIdentifier() == null)
-			return;
+            outputStream.writeInt(patient.getPatientId());
 
-		outputStream.writeInt(patient.getPatientId());
+            PersonName personName = patient.getPersonName();
+            outputStream.writeUTF(StringUtils.defaultString(personName.getFamilyName()));
+            outputStream.writeUTF(StringUtils.defaultString(personName.getMiddleName()));
+            outputStream.writeUTF(StringUtils.defaultString(personName.getGivenName()));
 
-		PersonName personName = patient.getPersonName();
-		outputStream.writeUTF(StringUtils.defaultString(personName.getFamilyName()));
-		outputStream.writeUTF(StringUtils.defaultString(personName.getMiddleName()));
-		outputStream.writeUTF(StringUtils.defaultString(personName.getGivenName()));
+            outputStream.writeUTF(StringUtils.defaultString(patient.getGender()));
 
-		outputStream.writeUTF(StringUtils.defaultString(patient.getGender()));
+            Date birthDate = patient.getBirthdate();
+            outputStream.writeUTF(birthDate != null ? dateFormat.format(birthDate.getTime()) : StringUtils.EMPTY);
 
-		Date birthDate = patient.getBirthdate();
-		outputStream.writeUTF(birthDate != null ? dateFormat.format(birthDate.getTime()) : StringUtils.EMPTY);
-
-		PatientIdentifier patientIdentifier = patient.getPatientIdentifier();
-		outputStream.writeUTF(StringUtils.defaultString(patientIdentifier.getIdentifier()));
-	}
+            PatientIdentifier patientIdentifier = patient.getPatientIdentifier();
+            outputStream.writeUTF(StringUtils.defaultString(patientIdentifier.getIdentifier()));
+        } catch (IOException e) {
+            log.info("Writing patient information failed!", e);
+        }
+    }
 }
