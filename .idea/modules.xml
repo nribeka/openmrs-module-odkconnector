@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ProjectModuleManager">
-    <modules />
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/odkconnector.iml" filepath="$PROJECT_DIR$/odkconnector.iml" />
+      <module fileurl="file://$PROJECT_DIR$/api/odkconnector-api.iml" filepath="$PROJECT_DIR$/api/odkconnector-api.iml" />
+      <module fileurl="file://$PROJECT_DIR$/omod/odkconnector-omod.iml" filepath="$PROJECT_DIR$/omod/odkconnector-omod.iml" />
+    </modules>
   </component>
 </project>
 

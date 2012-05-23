@@ -8,7 +8,6 @@
     </JAVADOC>
     <SOURCES>
       <root url="jar://$MAVEN_REPOSITORY$/org/openmrs/api/openmrs-api/1.8.2/openmrs-api-1.8.2-sources.jar!/" />
-      <root url="file://$PROJECT_DIR$/../openmrs--1.8.x/api/src/main/java" />
     </SOURCES>
   </library>
 </component>

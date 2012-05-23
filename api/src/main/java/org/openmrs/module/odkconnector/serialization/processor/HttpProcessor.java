@@ -137,7 +137,7 @@ public class HttpProcessor implements Processor {
 					cohort = Context.getCohortService().getCohort(cohortId);
 				}
 
-                System.out.println("Writing patients information!");
+                log.info("Streaming patients information!");
 				serializer.write(dataOutputStream, connectorService.getCohortPatients(cohort));
 
 				// check the concept list
@@ -145,7 +145,7 @@ public class HttpProcessor implements Processor {
 				ConceptConfiguration conceptConfiguration = connectorService.getConceptConfiguration(programId);
 				if (conceptConfiguration != null)
 					concepts = ConnectorUtils.getConcepts(conceptConfiguration.getConfiguredConcepts());
-                System.out.println("Writing observations information!");
+                log.info("Streaming observations information!");
 				serializer.write(dataOutputStream, connectorService.getCohortObservations(cohort, concepts));
 
 				// evaluate and get the applicable form for the patients
@@ -171,7 +171,7 @@ public class HttpProcessor implements Processor {
 						}
 					}
 				}
-                System.out.println("Writing forms information!");
+                log.info("Streaming forms information!");
 				serializer.write(dataOutputStream, serializedForms);
 
 			} else {
