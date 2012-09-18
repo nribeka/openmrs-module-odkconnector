@@ -20,23 +20,23 @@ import org.openmrs.BaseOpenmrsMetadata;
 
 public class DefinitionPropertyType extends BaseOpenmrsMetadata {
 
-	private static final Log log = LogFactory.getLog(DefinitionPropertyType.class);
+    private static final Log log = LogFactory.getLog(DefinitionPropertyType.class);
 
-	private Integer id;
+    private Integer id;
 
-	/**
-	 * @return id - The unique Identifier for the object
-	 */
-	@Override
-	public Integer getId() {
-		return id;
-	}
+    /**
+     * @return id - The unique Identifier for the object
+     */
+    @Override
+    public Integer getId() {
+        return id;
+    }
 
-	/**
-	 * @param id - The unique Identifier for the object
-	 */
-	@Override
-	public void setId(final Integer id) {
-		this.id = id;
-	}
+    /**
+     * @param id - The unique Identifier for the object
+     */
+    @Override
+    public void setId(final Integer id) {
+        this.id = id;
+    }
 }

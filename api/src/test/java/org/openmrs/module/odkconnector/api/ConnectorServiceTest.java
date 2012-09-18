@@ -27,50 +27,50 @@ import org.openmrs.test.BaseModuleContextSensitiveTest;
  */
 public class ConnectorServiceTest extends BaseModuleContextSensitiveTest {
 
-	private static final Log log = LogFactory.getLog(ConnectorServiceTest.class);
+    private static final Log log = LogFactory.getLog(ConnectorServiceTest.class);
 
-	@Test
-	public void getConceptConfiguration_shouldSaveConceptConfigurationIntoTheDatabase() {
-		ConceptConfiguration conceptConfiguration = new ConceptConfiguration();
-		conceptConfiguration.setName("Concept Configuration");
-		conceptConfiguration.setDescription("Concept Configuration Description");
+    @Test
+    public void getConceptConfiguration_shouldSaveConceptConfigurationIntoTheDatabase() {
+        ConceptConfiguration conceptConfiguration = new ConceptConfiguration();
+        conceptConfiguration.setName("Concept Configuration");
+        conceptConfiguration.setDescription("Concept Configuration Description");
 
-		ConfiguredConcept configuredConcept = new ConfiguredConcept();
-		configuredConcept.setConcept(Context.getConceptService().getConcept(20));
-		configuredConcept.setConceptConfiguration(conceptConfiguration);
+        ConfiguredConcept configuredConcept = new ConfiguredConcept();
+        configuredConcept.setConcept(Context.getConceptService().getConcept(20));
+        configuredConcept.setConceptConfiguration(conceptConfiguration);
 
-		conceptConfiguration.addConfiguredConcept(configuredConcept);
+        conceptConfiguration.addConfiguredConcept(configuredConcept);
 
-		Context.getService(ConnectorService.class).saveConceptConfiguration(conceptConfiguration);
-		Assert.assertNotNull(conceptConfiguration.getId());
-		Assert.assertEquals("Concept Configuration", conceptConfiguration.getName());
-		Assert.assertEquals("Concept Configuration Description", conceptConfiguration.getDescription());
-		Assert.assertEquals(1, conceptConfiguration.getConfiguredConcepts().size());
-	}
+        Context.getService(ConnectorService.class).saveConceptConfiguration(conceptConfiguration);
+        Assert.assertNotNull(conceptConfiguration.getId());
+        Assert.assertEquals("Concept Configuration", conceptConfiguration.getName());
+        Assert.assertEquals("Concept Configuration Description", conceptConfiguration.getDescription());
+        Assert.assertEquals(1, conceptConfiguration.getConfiguredConcepts().size());
+    }
 
-	@Test
-	public void getConceptConfiguration_shouldReturnConceptConfigurationGivenAnId() {
-		ConceptConfiguration conceptConfiguration = new ConceptConfiguration();
-		conceptConfiguration.setName("Concept Configuration");
-		conceptConfiguration.setDescription("Concept Configuration Description");
+    @Test
+    public void getConceptConfiguration_shouldReturnConceptConfigurationGivenAnId() {
+        ConceptConfiguration conceptConfiguration = new ConceptConfiguration();
+        conceptConfiguration.setName("Concept Configuration");
+        conceptConfiguration.setDescription("Concept Configuration Description");
 
-		ConfiguredConcept configuredConcept = new ConfiguredConcept();
-		configuredConcept.setConcept(Context.getConceptService().getConcept(20));
-		configuredConcept.setConceptConfiguration(conceptConfiguration);
+        ConfiguredConcept configuredConcept = new ConfiguredConcept();
+        configuredConcept.setConcept(Context.getConceptService().getConcept(20));
+        configuredConcept.setConceptConfiguration(conceptConfiguration);
 
-		conceptConfiguration.addConfiguredConcept(configuredConcept);
+        conceptConfiguration.addConfiguredConcept(configuredConcept);
 
-		Context.getService(ConnectorService.class).saveConceptConfiguration(conceptConfiguration);
-		Assert.assertNotNull(conceptConfiguration.getId());
-		Assert.assertEquals("Concept Configuration", conceptConfiguration.getName());
-		Assert.assertEquals("Concept Configuration Description", conceptConfiguration.getDescription());
-		Assert.assertEquals(1, conceptConfiguration.getConfiguredConcepts().size());
+        Context.getService(ConnectorService.class).saveConceptConfiguration(conceptConfiguration);
+        Assert.assertNotNull(conceptConfiguration.getId());
+        Assert.assertEquals("Concept Configuration", conceptConfiguration.getName());
+        Assert.assertEquals("Concept Configuration Description", conceptConfiguration.getDescription());
+        Assert.assertEquals(1, conceptConfiguration.getConfiguredConcepts().size());
 
-		Integer id = conceptConfiguration.getId();
-		ConceptConfiguration savedConceptConfiguration = Context.getService(ConnectorService.class).getConceptConfiguration(id);
-		Assert.assertNotNull(savedConceptConfiguration);
-		Assert.assertEquals("Concept Configuration", conceptConfiguration.getName());
-		Assert.assertEquals("Concept Configuration Description", conceptConfiguration.getDescription());
-		Assert.assertEquals(1, conceptConfiguration.getConfiguredConcepts().size());
-	}
+        Integer id = conceptConfiguration.getId();
+        ConceptConfiguration savedConceptConfiguration = Context.getService(ConnectorService.class).getConceptConfiguration(id);
+        Assert.assertNotNull(savedConceptConfiguration);
+        Assert.assertEquals("Concept Configuration", conceptConfiguration.getName());
+        Assert.assertEquals("Concept Configuration Description", conceptConfiguration.getDescription());
+        Assert.assertEquals(1, conceptConfiguration.getConfiguredConcepts().size());
+    }
 }

@@ -31,19 +31,19 @@ import org.openmrs.module.odkconnector.serialization.serializable.SerializedForm
 @Handler(supports = SerializedForm.class, order = 50)
 public class SerializedFormSerializer implements Serializer {
 
-	private static final Log log = LogFactory.getLog(SerializedFormSerializer.class);
+    private static final Log log = LogFactory.getLog(SerializedFormSerializer.class);
 
-	public static final Integer TYPE_INT = 2;
+    public static final Integer TYPE_INT = 2;
 
-	/**
-	 * Write the data to the output stream.
-	 *
-	 * @param stream the output stream
-	 * @param data   the data that need to be written to the output stream
-	 * @throws java.io.IOException thrown when the writing process encounter is failing
-	 */
-	@Override
-	public void write(final OutputStream stream, final Object data) throws IOException {
+    /**
+     * Write the data to the output stream.
+     *
+     * @param stream the output stream
+     * @param data   the data that need to be written to the output stream
+     * @throws java.io.IOException thrown when the writing process encounter is failing
+     */
+    @Override
+    public void write(final OutputStream stream, final Object data) throws IOException {
         try {
             SerializedForm serializedForm = (SerializedForm) data;
 

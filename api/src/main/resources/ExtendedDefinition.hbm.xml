@@ -1,38 +1,38 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC
-		"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
-		"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
 
 <hibernate-mapping>
-	<class name="org.openmrs.module.odkconnector.reporting.metadata.ExtendedDefinition" table="odkconnector_extended_definition">
-		<id name="id" type="int" column="id" unsaved-value="0">
-			<generator class="native"/>
-		</id>
+    <class name="org.openmrs.module.odkconnector.reporting.metadata.ExtendedDefinition" table="odkconnector_extended_definition">
+        <id name="id" type="int" column="id" unsaved-value="0">
+            <generator class="native"/>
+        </id>
 
-		<discriminator column="id" insert="false"/>
+        <discriminator column="id" insert="false"/>
 
-		<property name="cohortDefinition" type="org.openmrs.module.odkconnector.api.db.hibernate.type.CohortDefinitionType" column="definition"
-		          not-null="true"/>
+        <property name="cohortDefinition" type="org.openmrs.module.odkconnector.api.db.hibernate.type.CohortDefinitionType" column="definition"
+                  not-null="true"/>
 
-		<set name="properties" inverse="true" cascade="all" access="field" order-by="id asc">
-			<key column="definition_id"/>
-			<one-to-many class="org.openmrs.module.odkconnector.reporting.metadata.DefinitionProperty"/>
-		</set>
+        <set name="properties" inverse="true" cascade="all" access="field" order-by="id asc">
+            <key column="definition_id"/>
+            <one-to-many class="org.openmrs.module.odkconnector.reporting.metadata.DefinitionProperty"/>
+        </set>
 
-		<many-to-one name="creator" class="org.openmrs.User" not-null="true">
-			<column name="creator"/>
-		</many-to-one>
+        <many-to-one name="creator" class="org.openmrs.User" not-null="true">
+            <column name="creator"/>
+        </many-to-one>
 
-		<property name="dateCreated" type="java.util.Date" column="date_created" not-null="true" length="19"/>
+        <property name="dateCreated" type="java.util.Date" column="date_created" not-null="true" length="19"/>
 
-		<property name="retired" type="java.lang.Boolean" column="retired" length="1" not-null="true"/>
+        <property name="retired" type="java.lang.Boolean" column="retired" length="1" not-null="true"/>
 
-		<many-to-one name="retiredBy" class="org.openmrs.User">
-			<column name="retired_by"/>
-		</many-to-one>
+        <many-to-one name="retiredBy" class="org.openmrs.User">
+            <column name="retired_by"/>
+        </many-to-one>
 
-		<property name="dateRetired" type="java.util.Date" column="date_retired" length="19"/>
+        <property name="dateRetired" type="java.util.Date" column="date_retired" length="19"/>
 
-		<property name="uuid" type="java.lang.String" column="uuid" length="38" unique="true"/>
-	</class>
+        <property name="uuid" type="java.lang.String" column="uuid" length="38" unique="true"/>
+    </class>
 </hibernate-mapping>

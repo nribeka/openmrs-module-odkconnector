@@ -27,23 +27,23 @@ import org.openmrs.module.odkconnector.serialization.serializable.SerializedCoho
 @Handler(supports = SerializedCohort.class, order = 50)
 public class SerializedCohortSerializer implements Serializer {
 
-	private static final Log log = LogFactory.getLog(SerializedCohortSerializer.class);
+    private static final Log log = LogFactory.getLog(SerializedCohortSerializer.class);
 
-	/**
-	 * Write the data to the output stream.
-	 *
-	 * @param stream the output stream
-	 * @param data   the data that need to be written to the output stream
-	 */
-	@Override
-	public void write(final OutputStream stream, final Object data) throws IOException {
+    /**
+     * Write the data to the output stream.
+     *
+     * @param stream the output stream
+     * @param data   the data that need to be written to the output stream
+     */
+    @Override
+    public void write(final OutputStream stream, final Object data) throws IOException {
 
-		SerializedCohort cohort = (SerializedCohort) data;
+        SerializedCohort cohort = (SerializedCohort) data;
 
-		DataOutputStream outputStream = new DataOutputStream(stream);
+        DataOutputStream outputStream = new DataOutputStream(stream);
 
-		outputStream.writeInt(cohort.getId());
-		outputStream.writeUTF(cohort.getName());
+        outputStream.writeInt(cohort.getId());
+        outputStream.writeUTF(cohort.getName());
         outputStream.flush();
-	}
+    }
 }

@@ -27,12 +27,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @RequestMapping("/module/odkconnector/reporting/manageProperty.form")
 public class ManagePropertyController {
 
-	private static final Log log = LogFactory.getLog(ManagePropertyController.class);
+    private static final Log log = LogFactory.getLog(ManagePropertyController.class);
 
-	@RequestMapping(method = RequestMethod.GET)
-	public void preparePage(final Model model) {
-		CohortDefinitionService definitionService = Context.getService(CohortDefinitionService.class);
-		model.addAttribute("cohortDefinitions", definitionService.getAllDefinitions(Boolean.FALSE));
-	}
+    @RequestMapping(method = RequestMethod.GET)
+    public void preparePage(final Model model) {
+        CohortDefinitionService definitionService = Context.getService(CohortDefinitionService.class);
+        model.addAttribute("cohortDefinitions", definitionService.getAllDefinitions(Boolean.FALSE));
+    }
 
 }

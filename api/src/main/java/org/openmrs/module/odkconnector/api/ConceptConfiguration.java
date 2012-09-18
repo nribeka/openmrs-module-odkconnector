@@ -23,54 +23,54 @@ import org.openmrs.BaseOpenmrsMetadata;
 
 public class ConceptConfiguration extends BaseOpenmrsMetadata {
 
-	private static final Log log = LogFactory.getLog(ConceptConfiguration.class);
+    private static final Log log = LogFactory.getLog(ConceptConfiguration.class);
 
-	private Integer id;
+    private Integer id;
 
-	private Set<ConfiguredConcept> configuredConcepts;
+    private Set<ConfiguredConcept> configuredConcepts;
 
-	/**
-	 * @return id - The unique Identifier for the object
-	 */
-	@Override
-	public Integer getId() {
-		return id;
-	}
+    /**
+     * @return id - The unique Identifier for the object
+     */
+    @Override
+    public Integer getId() {
+        return id;
+    }
 
-	/**
-	 * @param id - The unique Identifier for the object
-	 */
-	@Override
-	public void setId(final Integer id) {
-		this.id = id;
-	}
+    /**
+     * @param id - The unique Identifier for the object
+     */
+    @Override
+    public void setId(final Integer id) {
+        this.id = id;
+    }
 
-	/**
-	 * Return set of configured concepts
-	 *
-	 * @return
-	 */
-	public Set<ConfiguredConcept> getConfiguredConcepts() {
-		return configuredConcepts;
-	}
+    /**
+     * Return set of configured concepts
+     *
+     * @return
+     */
+    public Set<ConfiguredConcept> getConfiguredConcepts() {
+        return configuredConcepts;
+    }
 
-	/**
-	 * Set the configured concepts
-	 *
-	 * @param configuredConcepts
-	 */
-	public void setConfiguredConcepts(final Set<ConfiguredConcept> configuredConcepts) {
-		this.configuredConcepts = configuredConcepts;
-	}
+    /**
+     * Set the configured concepts
+     *
+     * @param configuredConcepts
+     */
+    public void setConfiguredConcepts(final Set<ConfiguredConcept> configuredConcepts) {
+        this.configuredConcepts = configuredConcepts;
+    }
 
-	/**
-	 * Add a configured concept into the configuration
-	 *
-	 * @param configuredConcept
-	 */
-	public void addConfiguredConcept(final ConfiguredConcept configuredConcept) {
-		if (configuredConcepts == null)
-			configuredConcepts = new LinkedHashSet<ConfiguredConcept>();
-		configuredConcepts.add(configuredConcept);
-	}
+    /**
+     * Add a configured concept into the configuration
+     *
+     * @param configuredConcept
+     */
+    public void addConfiguredConcept(final ConfiguredConcept configuredConcept) {
+        if (configuredConcepts == null)
+            configuredConcepts = new LinkedHashSet<ConfiguredConcept>();
+        configuredConcepts.add(configuredConcept);
+    }
 }

@@ -29,45 +29,45 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 public class ConceptConfigurationController {
 
-	private static final Log log = LogFactory.getLog(ConceptConfigurationController.class);
+    private static final Log log = LogFactory.getLog(ConceptConfigurationController.class);
 
-	@RequestMapping(value = "/module/odkconnector/concept/conceptConfiguration", method = RequestMethod.GET)
-	public void preparePage(final @RequestParam(value = "uuid", required = false) String uuid,
-	                        final Model model) {
-		ConnectorService service = Context.getService(ConnectorService.class);
-		ConceptConfiguration conceptConfiguration = service.getConceptConfigurationByUuid(uuid);
-		model.addAttribute("configuration", conceptConfiguration);
-	}
+    @RequestMapping(value = "/module/odkconnector/concept/conceptConfiguration", method = RequestMethod.GET)
+    public void preparePage(final @RequestParam(value = "uuid", required = false) String uuid,
+                            final Model model) {
+        ConnectorService service = Context.getService(ConnectorService.class);
+        ConceptConfiguration conceptConfiguration = service.getConceptConfigurationByUuid(uuid);
+        model.addAttribute("configuration", conceptConfiguration);
+    }
 
-	@RequestMapping(value = "/module/odkconnector/concept/conceptConfiguration", method = RequestMethod.POST)
-	public String process(final @RequestParam(value = "name", required = true) String name,
-	                      final @RequestParam(value = "description", required = true) String description,
-	                      final @RequestParam(value = "configurationUuid", required = false) String configurationUuid) {
-		ConnectorService service = Context.getService(ConnectorService.class);
+    @RequestMapping(value = "/module/odkconnector/concept/conceptConfiguration", method = RequestMethod.POST)
+    public String process(final @RequestParam(value = "name", required = true) String name,
+                          final @RequestParam(value = "description", required = true) String description,
+                          final @RequestParam(value = "configurationUuid", required = false) String configurationUuid) {
+        ConnectorService service = Context.getService(ConnectorService.class);
 
-		ConceptConfiguration conceptConfiguration = service.getConceptConfigurationByUuid(configurationUuid);
-		if (conceptConfiguration == null)
-			conceptConfiguration = new ConceptConfiguration();
-		conceptConfiguration.setName(name);
-		conceptConfiguration.setDescription(description);
+        ConceptConfiguration conceptConfiguration = service.getConceptConfigurationByUuid(configurationUuid);
+        if (conceptConfiguration == null)
+            conceptConfiguration = new ConceptConfiguration();
+        conceptConfiguration.setName(name);
+        conceptConfiguration.setDescription(description);
 
-		service.saveConceptConfiguration(conceptConfiguration);
+        service.saveConceptConfiguration(conceptConfiguration);
 
-		return "redirect:manageConcept.form?uuid=" + conceptConfiguration.getUuid();
-	}
+        return "redirect:manageConcept.form?uuid=" + conceptConfiguration.getUuid();
+    }
 
-	@RequestMapping(value = "/module/odkconnector/concept/deleteConfiguration", method = RequestMethod.GET)
-	public
-	@ResponseBody
-	Boolean delete(final @RequestParam(value = "uuid", required = false) String uuid) {
-		Boolean deleted = Boolean.FALSE;
-		ConnectorService service = Context.getService(ConnectorService.class);
-		ConceptConfiguration conceptConfiguration = service.getConceptConfigurationByUuid(uuid);
-		if (conceptConfiguration != null) {
-			conceptConfiguration.setRetired(Boolean.TRUE);
-			service.saveConceptConfiguration(conceptConfiguration);
-			deleted = Boolean.TRUE;
-		}
-		return deleted;
-	}
+    @RequestMapping(value = "/module/odkconnector/concept/deleteConfiguration", method = RequestMethod.GET)
+    public
+    @ResponseBody
+    Boolean delete(final @RequestParam(value = "uuid", required = false) String uuid) {
+        Boolean deleted = Boolean.FALSE;
+        ConnectorService service = Context.getService(ConnectorService.class);
+        ConceptConfiguration conceptConfiguration = service.getConceptConfigurationByUuid(uuid);
+        if (conceptConfiguration != null) {
+            conceptConfiguration.setRetired(Boolean.TRUE);
+            service.saveConceptConfiguration(conceptConfiguration);
+            deleted = Boolean.TRUE;
+        }
+        return deleted;
+    }
 }

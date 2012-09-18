@@ -36,50 +36,50 @@ import org.openmrs.util.HandlerUtil;
 
 public class CohortSerializerTest extends BaseModuleContextSensitiveTest {
 
-	private static final Log log = LogFactory.getLog(CohortSerializerTest.class);
+    private static final Log log = LogFactory.getLog(CohortSerializerTest.class);
 
-	@Test
-	public void serialize_shouldSerializeCohortInformation() throws Exception {
+    @Test
+    public void serialize_shouldSerializeCohortInformation() throws Exception {
 
-		CohortService cohortService = Context.getCohortService();
+        CohortService cohortService = Context.getCohortService();
 
-		Cohort firstCohort = new Cohort();
-		firstCohort.addMember(6);
-		firstCohort.addMember(7);
-		firstCohort.addMember(8);
-		firstCohort.setName("First Cohort");
-		firstCohort.setDescription("First cohort for testing the serializer");
-		cohortService.saveCohort(firstCohort);
+        Cohort firstCohort = new Cohort();
+        firstCohort.addMember(6);
+        firstCohort.addMember(7);
+        firstCohort.addMember(8);
+        firstCohort.setName("First Cohort");
+        firstCohort.setDescription("First cohort for testing the serializer");
+        cohortService.saveCohort(firstCohort);
 
-		Cohort secondCohort = new Cohort();
-		secondCohort.addMember(6);
-		secondCohort.addMember(7);
-		secondCohort.addMember(8);
-		secondCohort.setName("Second Cohort");
-		secondCohort.setDescription("Second cohort for testing the serializer");
-		cohortService.saveCohort(secondCohort);
+        Cohort secondCohort = new Cohort();
+        secondCohort.addMember(6);
+        secondCohort.addMember(7);
+        secondCohort.addMember(8);
+        secondCohort.setName("Second Cohort");
+        secondCohort.setDescription("Second cohort for testing the serializer");
+        cohortService.saveCohort(secondCohort);
 
-		File file = File.createTempFile("CohortSerialization", "Example");
-		GZIPOutputStream outputStream = new GZIPOutputStream(new BufferedOutputStream(new FileOutputStream(file)));
+        File file = File.createTempFile("CohortSerialization", "Example");
+        GZIPOutputStream outputStream = new GZIPOutputStream(new BufferedOutputStream(new FileOutputStream(file)));
 
-		List<Cohort> cohorts = cohortService.getAllCohorts();
-		Serializer serializer = HandlerUtil.getPreferredHandler(Serializer.class, List.class);
-		serializer.write(outputStream, cohorts);
+        List<Cohort> cohorts = cohortService.getAllCohorts();
+        Serializer serializer = HandlerUtil.getPreferredHandler(Serializer.class, List.class);
+        serializer.write(outputStream, cohorts);
 
-		outputStream.close();
+        outputStream.close();
 
-		GZIPInputStream inputStream = new GZIPInputStream(new BufferedInputStream(new FileInputStream(file)));
-		DataInputStream dataInputStream = new DataInputStream(inputStream);
+        GZIPInputStream inputStream = new GZIPInputStream(new BufferedInputStream(new FileInputStream(file)));
+        DataInputStream dataInputStream = new DataInputStream(inputStream);
 
-		Integer cohortCounts = dataInputStream.readInt();
-		System.out.println("Number of cohorts: " + cohortCounts);
+        Integer cohortCounts = dataInputStream.readInt();
+        System.out.println("Number of cohorts: " + cohortCounts);
 
-		for (int i = 0; i < cohortCounts; i++) {
-			System.out.println("Cohort ID: " + dataInputStream.readInt());
-			System.out.println("Cohort Name: " + dataInputStream.readUTF());
-		}
+        for (int i = 0; i < cohortCounts; i++) {
+            System.out.println("Cohort ID: " + dataInputStream.readInt());
+            System.out.println("Cohort Name: " + dataInputStream.readUTF());
+        }
 
-		inputStream.close();
-	}
+        inputStream.close();
+    }
 
 }

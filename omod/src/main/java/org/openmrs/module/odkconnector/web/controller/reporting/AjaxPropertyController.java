@@ -16,6 +16,7 @@ package org.openmrs.module.odkconnector.web.controller.reporting;
 
 import java.io.IOException;
 import java.io.OutputStream;
+
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.beanutils.BeanUtils;
@@ -38,69 +39,81 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 public class AjaxPropertyController {
 
-	private static final Log log = LogFactory.getLog(AjaxPropertyController.class);
+    private static final Log log = LogFactory.getLog(AjaxPropertyController.class);
 
-	@RequestMapping(value = "/module/odkconnector/reporting/saveProperty.form", method = RequestMethod.POST)
-	public void processSave(final @RequestParam(value = "id", required = true) Integer id,
-	                        final @RequestParam(value = "property", required = true) String property,
-	                        final @RequestParam(value = "value", required = true) String value) throws Exception {
-		ReportingConnectorService reportingConnectorService = Context.getService(ReportingConnectorService.class);
-		// search the definition property
-		DefinitionProperty definitionProperty = reportingConnectorService.getDefinitionProperty(id);
-		// update the definition property and then save it
-		BeanUtils.setProperty(definitionProperty, property, value);
-		reportingConnectorService.saveDefinitionProperty(definitionProperty);
-	}
+    @RequestMapping(value = "/module/odkconnector/reporting/saveProperty.form", method = RequestMethod.POST)
+    public void processSave(final @RequestParam(value = "propertyUuid", required = true) String propertyUuid,
+                            final @RequestParam(value = "property", required = true) String property,
+                            final @RequestParam(value = "value", required = true) String value) throws Exception {
+        ReportingConnectorService reportingConnectorService = Context.getService(ReportingConnectorService.class);
+        // search the definition property
+        DefinitionProperty definitionProperty = reportingConnectorService.getDefinitionPropertyByUuid(propertyUuid);
+        // update the definition property and then save it
+        BeanUtils.setProperty(definitionProperty, property, value);
+        reportingConnectorService.saveDefinitionProperty(definitionProperty);
+    }
 
-	@RequestMapping(value = "/module/odkconnector/reporting/newProperty.form", method = RequestMethod.POST)
-	public void processNew(final @RequestParam(value = "uuid", required = true) String uuid,
-	                       final @RequestParam(value = "property", required = true) String property,
-	                       final @RequestParam(value = "propertyValue", required = true) String propertyValue,
-	                       final @RequestParam(value = "propertyDescription", required = true) String propertyDescription) throws Exception {
+    @RequestMapping(value = "/module/odkconnector/reporting/deleteProperty.form", method = RequestMethod.POST)
+    public void processDelete(final @RequestParam(value = "propertyUuid", required = true) String propertyUuid) throws Exception {
+        ReportingConnectorService reportingConnectorService = Context.getService(ReportingConnectorService.class);
+        DefinitionProperty definitionProperty = reportingConnectorService.getDefinitionPropertyByUuid(propertyUuid);
+        definitionProperty.setRetired(Boolean.TRUE);
+        reportingConnectorService.saveDefinitionProperty(definitionProperty);
+    }
 
-		CohortDefinitionService definitionService = Context.getService(CohortDefinitionService.class);
-		ReportingConnectorService reportingConnectorService = Context.getService(ReportingConnectorService.class);
-		// create the new definition property
-		DefinitionProperty definitionProperty = new DefinitionProperty(property, propertyValue, propertyDescription);
-		// check if the extended definition for this cohort definition already exist or not
-		CohortDefinition definition = definitionService.getDefinitionByUuid(uuid);
-		ExtendedDefinition extendedDefinition = reportingConnectorService.getExtendedDefinitionByDefinition(definition);
-		if (extendedDefinition == null) {
-			extendedDefinition = new ExtendedDefinition();
-			extendedDefinition.setCohortDefinition(definition);
-		}
-		extendedDefinition.addDefinitionProperty(definitionProperty);
-		reportingConnectorService.saveExtendedDefinition(extendedDefinition);
-	}
+    @RequestMapping(value = "/module/odkconnector/reporting/newProperty.form", method = RequestMethod.POST)
+    public void processNew(final @RequestParam(value = "uuid", required = true) String uuid,
+                           final @RequestParam(value = "property", required = true) String property,
+                           final @RequestParam(value = "propertyValue", required = true) String propertyValue,
+                           final @RequestParam(value = "propertyDescription", required = true) String propertyDescription) throws Exception {
 
-	@RequestMapping(value = "/module/odkconnector/reporting/searchProperty.form", method = RequestMethod.POST)
-	public void processSearch(final @RequestParam(value = "uuid", required = true) String uuid,
-	                          final HttpServletResponse response) throws IOException {
-		CohortDefinitionService definitionService = Context.getService(CohortDefinitionService.class);
-		ReportingConnectorService reportingConnectorService = Context.getService(ReportingConnectorService.class);
+        CohortDefinitionService definitionService = Context.getService(CohortDefinitionService.class);
+        ReportingConnectorService reportingConnectorService = Context.getService(ReportingConnectorService.class);
+        // create the new definition property
+        DefinitionProperty definitionProperty = new DefinitionProperty(property, propertyValue, propertyDescription);
+        // check if the extended definition for this cohort definition already exist or not
+        CohortDefinition definition = definitionService.getDefinitionByUuid(uuid);
+        ExtendedDefinition extendedDefinition = reportingConnectorService.getExtendedDefinitionByDefinition(definition);
+        if (extendedDefinition == null) {
+            extendedDefinition = new ExtendedDefinition();
+            extendedDefinition.setCohortDefinition(definition);
+        }
+        extendedDefinition.addDefinitionProperty(definitionProperty);
+        reportingConnectorService.saveExtendedDefinition(extendedDefinition);
+    }
 
-		CohortDefinition definition = definitionService.getDefinitionByUuid(uuid);
-		ExtendedDefinition extendedDefinition = reportingConnectorService.getExtendedDefinitionByDefinition(definition);
+    @RequestMapping(value = "/module/odkconnector/reporting/searchProperty.form", method = RequestMethod.POST)
+    public void processSearch(final @RequestParam(value = "uuid", required = true) String uuid,
+                              final HttpServletResponse response) throws IOException {
+        CohortDefinitionService definitionService = Context.getService(CohortDefinitionService.class);
+        ReportingConnectorService reportingConnectorService = Context.getService(ReportingConnectorService.class);
 
-		OutputStream stream = response.getOutputStream();
+        CohortDefinition definition = definitionService.getDefinitionByUuid(uuid);
+        ExtendedDefinition extendedDefinition = reportingConnectorService.getExtendedDefinitionByDefinition(definition);
 
-		JsonFactory f = new JsonFactory();
-		JsonGenerator g = f.createJsonGenerator(stream, JsonEncoding.UTF8);
-		g.useDefaultPrettyPrinter();
+        OutputStream stream = response.getOutputStream();
 
-		g.writeStartArray();
-		if (extendedDefinition != null)
-			for (DefinitionProperty property : extendedDefinition.getProperties()) {
-				g.writeStartObject();
-				g.writeNumberField("propertyId", property.getId());
-				g.writeStringField("property", property.getProperty());
-				g.writeStringField("propertyValue", property.getPropertyValue());
-				g.writeStringField("propertyDescription", property.getPropertyDescription());
-				g.writeEndObject();
-			}
-		g.writeEndArray();
+        JsonFactory f = new JsonFactory();
+        JsonGenerator g = f.createJsonGenerator(stream, JsonEncoding.UTF8);
+        g.useDefaultPrettyPrinter();
 
-		g.close();
-	}
+        g.writeStartArray();
+        if (extendedDefinition != null)
+            for (DefinitionProperty property : extendedDefinition.getProperties()) {
+                if (property.isRetired())
+                    continue;
+
+                g.writeStartObject();
+                g.writeNumberField("propertyId", property.getId());
+                g.writeStringField("property", property.getProperty());
+                g.writeStringField("propertyValue", property.getPropertyValue());
+                g.writeStringField("propertyDescription", property.getPropertyDescription());
+                g.writeStringField("propertyUuid", property.getUuid());
+                g.writeEndObject();
+            }
+        g.writeEndArray();
+
+        g.close();
+    }
 
 }

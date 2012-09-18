@@ -39,69 +39,69 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public interface ConnectorService extends OpenmrsService {
 
-	/*
-	 * Add service methods here
-	 *
-	 */
+    /*
+     * Add service methods here
+     *
+     */
 
-	/**
-	 * Service method to get all patients inside the cohort
-	 *
-	 * @param cohort the cohort
-	 * @return all patients in the cohort or empty list when no patient match the patient id in the cohort
-	 * @throws org.openmrs.api.APIException when the process failed
-	 */
-	@Transactional(readOnly = true)
-	List<Patient> getCohortPatients(final Cohort cohort) throws APIException;
+    /**
+     * Service method to get all patients inside the cohort
+     *
+     * @param cohort the cohort
+     * @return all patients in the cohort or empty list when no patient match the patient id in the cohort
+     * @throws org.openmrs.api.APIException when the process failed
+     */
+    @Transactional(readOnly = true)
+    List<Patient> getCohortPatients(final Cohort cohort) throws APIException;
 
-	/**
-	 * Service method to get all observations for all patients in the cohort
-	 *
-	 *
-	 * @param cohort   the cohort
-	 * @param concepts the concepts
-	 * @return all observations for patients in the cohort or empty list when no observations for the patient ids in the cohort exists
-	 * @throws org.openmrs.api.APIException when the process failed
-	 */
-	@Transactional(readOnly = true)
-	List<Obs> getCohortObservations(final Cohort cohort, final Collection<Concept> concepts) throws APIException;
+    /**
+     * Service method to get all observations for all patients in the cohort
+     *
+     *
+     * @param cohort   the cohort
+     * @param concepts the concepts
+     * @return all observations for patients in the cohort or empty list when no observations for the patient ids in the cohort exists
+     * @throws org.openmrs.api.APIException when the process failed
+     */
+    @Transactional(readOnly = true)
+    List<Obs> getCohortObservations(final Cohort cohort, final Collection<Concept> concepts) throws APIException;
 
-	/**
-	 * Service method to save the concept configuration to the database
-	 *
-	 * @param conceptConfiguration the concept configuration
-	 * @return saved concept configuration
-	 * @throws APIException when saving failed
-	 */
-	@Transactional
-	ConceptConfiguration saveConceptConfiguration(final ConceptConfiguration conceptConfiguration) throws APIException;
+    /**
+     * Service method to save the concept configuration to the database
+     *
+     * @param conceptConfiguration the concept configuration
+     * @return saved concept configuration
+     * @throws APIException when saving failed
+     */
+    @Transactional
+    ConceptConfiguration saveConceptConfiguration(final ConceptConfiguration conceptConfiguration) throws APIException;
 
-	/**
-	 * Get concept configuration based on the configuration id
-	 *
-	 * @param id the concept configuration id
-	 * @return the matching concept configuration or null if no matching record found in the database
-	 * @throws APIException when fetching failed
-	 */
-	@Transactional(readOnly = true)
-	ConceptConfiguration getConceptConfiguration(final Integer id) throws APIException;
+    /**
+     * Get concept configuration based on the configuration id
+     *
+     * @param id the concept configuration id
+     * @return the matching concept configuration or null if no matching record found in the database
+     * @throws APIException when fetching failed
+     */
+    @Transactional(readOnly = true)
+    ConceptConfiguration getConceptConfiguration(final Integer id) throws APIException;
 
-	/**
-	 * Get concept configuration based on the configuration uuid
-	 *
-	 * @param uuid the concept configuration uuid
-	 * @return the matching concept configuration or null if no matching record found in the database
-	 * @throws APIException when fetching failed
-	 */
-	@Transactional(readOnly = true)
-	ConceptConfiguration getConceptConfigurationByUuid(final String uuid) throws APIException;
+    /**
+     * Get concept configuration based on the configuration uuid
+     *
+     * @param uuid the concept configuration uuid
+     * @return the matching concept configuration or null if no matching record found in the database
+     * @throws APIException when fetching failed
+     */
+    @Transactional(readOnly = true)
+    ConceptConfiguration getConceptConfigurationByUuid(final String uuid) throws APIException;
 
-	/**
-	 * Get all saved concept configuration
-	 *
-	 * @return all saved concept configuration or empty list when there's no saved concept configuration
-	 * @throws APIException when fetching failed
-	 */
-	@Transactional(readOnly = true)
-	List<ConceptConfiguration> getConceptConfigurations() throws APIException;
+    /**
+     * Get all saved concept configuration
+     *
+     * @return all saved concept configuration or empty list when there's no saved concept configuration
+     * @throws APIException when fetching failed
+     */
+    @Transactional(readOnly = true)
+    List<ConceptConfiguration> getConceptConfigurations() throws APIException;
 }

@@ -2,63 +2,63 @@
 
 <module configVersion="1.2">
 
-	<!-- Module Properties -->
-	<id>${project.parent.artifactId}</id>
-	<name>${project.parent.name}</name>
-	<version>${project.parent.version}</version>
-	<package>${project.parent.groupId}.${project.parent.artifactId}</package>
-	<author>nribeka</author>
-	<description>
-		${project.parent.description}
-	</description>
-	<updateURL>https://dev.openmrs.org/modules/download/${project.parent.artifactId}/update.rdf</updateURL>
-	<require_modules>
-		<require_module version="0.7.0">org.openmrs.module.reporting</require_module>
-	</require_modules>
-	<require_version>1.8.0</require_version>
-	<!-- / Module Properties -->
+    <!-- Module Properties -->
+    <id>${project.parent.artifactId}</id>
+    <name>${project.parent.name}</name>
+    <version>${project.parent.version}.${buildNumber}</version>
+    <package>${project.parent.groupId}.${project.parent.artifactId}</package>
+    <author>nribeka</author>
+    <description>
+        ${project.parent.description}
+    </description>
+    <updateURL>https://dev.openmrs.org/modules/download/${project.parent.artifactId}/update.rdf</updateURL>
+    <require_modules>
+        <require_module version="0.6.2">org.openmrs.module.reporting</require_module>
+    </require_modules>
+    <require_version>1.8.0</require_version>
+    <!-- / Module Properties -->
 
 
-	<!-- Module Activator -->
-	<activator>${project.parent.groupId}.${project.parent.artifactId}.ConnectorActivator</activator>
+    <!-- Module Activator -->
+    <activator>${project.parent.groupId}.${project.parent.artifactId}.ConnectorActivator</activator>
 
 
-	<!-- Adds link to admin page -->
-	<extension>
-		<point>org.openmrs.admin.list</point>
-		<class>${project.parent.groupId}.${project.parent.artifactId}.extension.html.AdminList</class>
-	</extension>
+    <!-- Adds link to admin page -->
+    <extension>
+        <point>org.openmrs.admin.list</point>
+        <class>${project.parent.groupId}.${project.parent.artifactId}.extension.html.AdminList</class>
+    </extension>
 
-	<privilege>
-		<name>Manage Connector</name>
-		<description>Able to add/edit connector metadata</description>
-	</privilege>
+    <privilege>
+        <name>Manage Connector</name>
+        <description>Able to add/edit connector metadata</description>
+    </privilege>
 
-	<!-- Maps hibernate file's, if present -->
-	<mappingFiles>
+    <!-- Maps hibernate file's, if present -->
+    <mappingFiles>
 
-		DefinitionProperty.hbm.xml
-		ExtendedDefinition.hbm.xml
-		ConceptConfiguration.hbm.xml
-		ConfiguredConcept.hbm.xml
+        DefinitionProperty.hbm.xml
+        ExtendedDefinition.hbm.xml
+        ConceptConfiguration.hbm.xml
+        ConfiguredConcept.hbm.xml
 
-	</mappingFiles>
+    </mappingFiles>
 
-	<!-- Internationalization -->
-	<!-- All message codes should start with ${project.parent.artifactId}. -->
-	<messages>
-		<lang>en</lang>
-		<file>messages.properties</file>
-	</messages>
-	<messages>
-		<lang>fr</lang>
-		<file>messages_fr.properties</file>
-	</messages>
-	<messages>
-		<lang>es</lang>
-		<file>messages_es.properties</file>
-	</messages>
-	<!-- /Internationalization -->
+    <!-- Internationalization -->
+    <!-- All message codes should start with ${project.parent.artifactId}. -->
+    <messages>
+        <lang>en</lang>
+        <file>messages.properties</file>
+    </messages>
+    <messages>
+        <lang>fr</lang>
+        <file>messages_fr.properties</file>
+    </messages>
+    <messages>
+        <lang>es</lang>
+        <file>messages_es.properties</file>
+    </messages>
+    <!-- /Internationalization -->
 
 </module>
 

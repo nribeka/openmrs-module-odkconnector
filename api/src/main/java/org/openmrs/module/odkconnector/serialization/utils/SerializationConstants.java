@@ -16,5 +16,5 @@ package org.openmrs.module.odkconnector.serialization.utils;
 
 public interface SerializationConstants {
 
-	String CLINIC_CONCEPTS = "odkconnector.concepts";
+    String CLINIC_CONCEPTS = "odkconnector.concepts";
 }

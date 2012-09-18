@@ -2,70 +2,70 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
-  		    http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+              http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
-	<!-- Add here beans related to the API context -->
+    <!-- Add here beans related to the API context -->
 
 
-	<!-- Services accessible via Context.getService() -->
-	<bean parent="serviceContext">
-		<property name="moduleService">
-			<list>
-				<value>org.openmrs.module.odkconnector.api.service.ConnectorService</value>
-				<bean class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
-					<property name="transactionManager">
-						<ref bean="transactionManager"/>
-					</property>
-					<property name="target">
-						<bean class="org.openmrs.module.odkconnector.api.service.impl.ConnectorServiceImpl">
-							<property name="dao">
-								<bean class="org.openmrs.module.odkconnector.api.db.hibernate.HibernateConnectorDAO">
-									<property name="sessionFactory">
-										<ref bean="sessionFactory"/>
-									</property>
-								</bean>
-							</property>
-						</bean>
-					</property>
-					<property name="preInterceptors">
-						<ref bean="serviceInterceptors"/>
-					</property>
-					<property name="transactionAttributeSource">
-						<ref bean="transactionAttributeSource"/>
-					</property>
-				</bean>
-			</list>
-		</property>
-	</bean>
+    <!-- Services accessible via Context.getService() -->
+    <bean parent="serviceContext">
+        <property name="moduleService">
+            <list>
+                <value>org.openmrs.module.odkconnector.api.service.ConnectorService</value>
+                <bean class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+                    <property name="transactionManager">
+                        <ref bean="transactionManager"/>
+                    </property>
+                    <property name="target">
+                        <bean class="org.openmrs.module.odkconnector.api.service.impl.ConnectorServiceImpl">
+                            <property name="dao">
+                                <bean class="org.openmrs.module.odkconnector.api.db.hibernate.HibernateConnectorDAO">
+                                    <property name="sessionFactory">
+                                        <ref bean="sessionFactory"/>
+                                    </property>
+                                </bean>
+                            </property>
+                        </bean>
+                    </property>
+                    <property name="preInterceptors">
+                        <ref bean="serviceInterceptors"/>
+                    </property>
+                    <property name="transactionAttributeSource">
+                        <ref bean="transactionAttributeSource"/>
+                    </property>
+                </bean>
+            </list>
+        </property>
+    </bean>
 
-	<bean parent="serviceContext">
-		<property name="moduleService">
-			<list>
-				<value>org.openmrs.module.odkconnector.reporting.service.ReportingConnectorService</value>
-				<bean class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
-					<property name="transactionManager">
-						<ref bean="transactionManager"/>
-					</property>
-					<property name="target">
-						<bean class="org.openmrs.module.odkconnector.reporting.service.impl.ReportingConnectorServiceImpl">
-							<property name="dao">
-								<bean class="org.openmrs.module.odkconnector.reporting.db.hibernate.HibernateReportingConnectorDAO">
-									<property name="sessionFactory">
-										<ref bean="sessionFactory"/>
-									</property>
-								</bean>
-							</property>
-						</bean>
-					</property>
-					<property name="preInterceptors">
-						<ref bean="serviceInterceptors"/>
-					</property>
-					<property name="transactionAttributeSource">
-						<ref bean="transactionAttributeSource"/>
-					</property>
-				</bean>
-			</list>
-		</property>
-	</bean>
+    <bean parent="serviceContext">
+        <property name="moduleService">
+            <list>
+                <value>org.openmrs.module.odkconnector.reporting.service.ReportingConnectorService</value>
+                <bean class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+                    <property name="transactionManager">
+                        <ref bean="transactionManager"/>
+                    </property>
+                    <property name="target">
+                        <bean class="org.openmrs.module.odkconnector.reporting.service.impl.ReportingConnectorServiceImpl">
+                            <property name="dao">
+                                <bean class="org.openmrs.module.odkconnector.reporting.db.hibernate.HibernateReportingConnectorDAO">
+                                    <property name="sessionFactory">
+                                        <ref bean="sessionFactory"/>
+                                    </property>
+                                </bean>
+                            </property>
+                        </bean>
+                    </property>
+                    <property name="preInterceptors">
+                        <ref bean="serviceInterceptors"/>
+                    </property>
+                    <property name="transactionAttributeSource">
+                        <ref bean="transactionAttributeSource"/>
+                    </property>
+                </bean>
+            </list>
+        </property>
+    </bean>
 
 </beans>

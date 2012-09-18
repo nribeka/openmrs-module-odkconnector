@@ -33,16 +33,16 @@ import org.openmrs.module.odkconnector.serialization.Serializer;
 @Handler(supports = Patient.class, order = 50)
 public class PatientSerializer implements Serializer {
 
-	private static final Log log = LogFactory.getLog(PatientSerializer.class);
+    private static final Log log = LogFactory.getLog(PatientSerializer.class);
 
-	/**
-	 * Write the patient information to the output stream.
-	 *
-	 * @param stream the output stream
-	 * @param data   the data that need to be written to the output stream
-	 */
-	@Override
-	public void write(final OutputStream stream, final Object data) throws IOException {
+    /**
+     * Write the patient information to the output stream.
+     *
+     * @param stream the output stream
+     * @param data   the data that need to be written to the output stream
+     */
+    @Override
+    public void write(final OutputStream stream, final Object data) throws IOException {
         try {
             Patient patient = (Patient) data;
 

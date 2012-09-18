@@ -21,61 +21,61 @@ import org.openmrs.Concept;
 
 public class ConfiguredConcept extends BaseOpenmrsMetadata {
 
-	private static final Log log = LogFactory.getLog(ConfiguredConcept.class);
+    private static final Log log = LogFactory.getLog(ConfiguredConcept.class);
 
-	private Integer id;
+    private Integer id;
 
-	private Concept concept;
+    private Concept concept;
 
-	private ConceptConfiguration conceptConfiguration;
+    private ConceptConfiguration conceptConfiguration;
 
-	/**
-	 * @return id - The unique Identifier for the object
-	 */
-	@Override
-	public Integer getId() {
-		return id;
-	}
+    /**
+     * @return id - The unique Identifier for the object
+     */
+    @Override
+    public Integer getId() {
+        return id;
+    }
 
-	/**
-	 * @param id - The unique Identifier for the object
-	 */
-	@Override
-	public void setId(final Integer id) {
-		this.id = id;
-	}
+    /**
+     * @param id - The unique Identifier for the object
+     */
+    @Override
+    public void setId(final Integer id) {
+        this.id = id;
+    }
 
-	/**
-	 * Return the concept
-	 *
-	 * @return
-	 */
-	public Concept getConcept() {
-		return concept;
-	}
+    /**
+     * Return the concept
+     *
+     * @return
+     */
+    public Concept getConcept() {
+        return concept;
+    }
 
-	/**
-	 * Set the concept
-	 *
-	 * @param concept the concept
-	 */
-	public void setConcept(final Concept concept) {
-		this.concept = concept;
-	}
+    /**
+     * Set the concept
+     *
+     * @param concept the concept
+     */
+    public void setConcept(final Concept concept) {
+        this.concept = concept;
+    }
 
-	/**
-	 * @return the concept configuration
-	 */
-	public ConceptConfiguration getConceptConfiguration() {
-		return conceptConfiguration;
-	}
+    /**
+     * @return the concept configuration
+     */
+    public ConceptConfiguration getConceptConfiguration() {
+        return conceptConfiguration;
+    }
 
-	/**
-	 * Set the concept configuration
-	 *
-	 * @param conceptConfiguration the concept configuration
-	 */
-	public void setConceptConfiguration(final ConceptConfiguration conceptConfiguration) {
-		this.conceptConfiguration = conceptConfiguration;
-	}
+    /**
+     * Set the concept configuration
+     *
+     * @param conceptConfiguration the concept configuration
+     */
+    public void setConceptConfiguration(final ConceptConfiguration conceptConfiguration) {
+        this.conceptConfiguration = conceptConfiguration;
+    }
 }

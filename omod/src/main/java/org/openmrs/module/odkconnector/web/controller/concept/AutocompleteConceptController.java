@@ -16,6 +16,7 @@ package org.openmrs.module.odkconnector.web.controller.concept;
 
 import java.io.OutputStream;
 import java.util.List;
+
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.logging.Log;
@@ -37,33 +38,33 @@ import org.springframework.web.bind.annotation.RequestParam;
 @RequestMapping("/module/odkconnector/search/concept")
 public class AutocompleteConceptController {
 
-	/**
-	 * Logger for this class and subclasses
-	 */
-	private static final Log log = LogFactory.getLog(AutocompleteConceptController.class);
+    /**
+     * Logger for this class and subclasses
+     */
+    private static final Log log = LogFactory.getLog(AutocompleteConceptController.class);
 
-	@RequestMapping(method = RequestMethod.GET)
-	public void search(final @RequestParam(required = true, value = "searchTerm") String searchTerm,
-	                   final HttpServletResponse response) throws Exception {
-		List<Concept> concepts = Context.getConceptService().getConceptsByName(searchTerm);
-		OutputStream stream = response.getOutputStream();
+    @RequestMapping(method = RequestMethod.GET)
+    public void search(final @RequestParam(required = true, value = "searchTerm") String searchTerm,
+                       final HttpServletResponse response) throws Exception {
+        List<Concept> concepts = Context.getConceptService().getConceptsByName(searchTerm);
+        OutputStream stream = response.getOutputStream();
 
-		JsonFactory f = new JsonFactory();
-		JsonGenerator g = f.createJsonGenerator(stream, JsonEncoding.UTF8);
-		g.useDefaultPrettyPrinter();
+        JsonFactory f = new JsonFactory();
+        JsonGenerator g = f.createJsonGenerator(stream, JsonEncoding.UTF8);
+        g.useDefaultPrettyPrinter();
 
-		g.writeStartObject();
-		g.writeArrayFieldStart("elements");
+        g.writeStartObject();
+        g.writeArrayFieldStart("elements");
 
-		for (Concept concept : concepts) {
-			g.writeStartObject();
-			g.writeStringField("uuid", concept.getUuid());
-			g.writeStringField("name", concept.getDisplayString());
-			g.writeEndObject();
-		}
-		g.writeEndArray();
-		g.writeEndObject();
+        for (Concept concept : concepts) {
+            g.writeStartObject();
+            g.writeStringField("uuid", concept.getUuid());
+            g.writeStringField("name", concept.getDisplayString());
+            g.writeEndObject();
+        }
+        g.writeEndArray();
+        g.writeEndObject();
 
-		g.close();
-	}
+        g.close();
+    }
 }

@@ -19,45 +19,45 @@ import org.apache.commons.logging.LogFactory;
 
 public class SerializedCohort {
 
-	private static final Log log = LogFactory.getLog(SerializedCohort.class);
+    private static final Log log = LogFactory.getLog(SerializedCohort.class);
 
-	private Integer id;
+    private Integer id;
 
-	private String name;
+    private String name;
 
-	/**
-	 * Get the serialized cohort id
-	 *
-	 * @return the id
-	 */
-	public Integer getId() {
-		return id;
-	}
+    /**
+     * Get the serialized cohort id
+     *
+     * @return the id
+     */
+    public Integer getId() {
+        return id;
+    }
 
-	/**
-	 * Set the serialized cohort id
-	 *
-	 * @param id the id
-	 */
-	public void setId(final Integer id) {
-		this.id = id;
-	}
+    /**
+     * Set the serialized cohort id
+     *
+     * @param id the id
+     */
+    public void setId(final Integer id) {
+        this.id = id;
+    }
 
-	/**
-	 * Get the serialized cohort name
-	 *
-	 * @return the name
-	 */
-	public String getName() {
-		return name;
-	}
+    /**
+     * Get the serialized cohort name
+     *
+     * @return the name
+     */
+    public String getName() {
+        return name;
+    }
 
-	/**
-	 * Set the serialized cohort name
-	 *
-	 * @param name the name
-	 */
-	public void setName(final String name) {
-		this.name = name;
-	}
+    /**
+     * Set the serialized cohort name
+     *
+     * @param name the name
+     */
+    public void setName(final String name) {
+        this.name = name;
+    }
 }

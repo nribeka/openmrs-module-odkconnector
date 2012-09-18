@@ -29,12 +29,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @RequestMapping(value = "/module/odkconnector/download/patients")
 public class DownloadPatientsController {
 
-	private static final Log log = LogFactory.getLog(DownloadPatientsController.class);
+    private static final Log log = LogFactory.getLog(DownloadPatientsController.class);
 
-	@RequestMapping(method = RequestMethod.POST)
-	public void process(final HttpServletRequest request, final HttpServletResponse response) throws Exception {
-		Processor processor = new HttpProcessor(HttpProcessor.PROCESS_PATIENTS);
-		processor.process(request.getInputStream(), response.getOutputStream());
-	}
+    @RequestMapping(method = RequestMethod.POST)
+    public void process(final HttpServletRequest request, final HttpServletResponse response) throws Exception {
+        Processor processor = new HttpProcessor(HttpProcessor.PROCESS_PATIENTS);
+        processor.process(request.getInputStream(), response.getOutputStream());
+    }
 
 }

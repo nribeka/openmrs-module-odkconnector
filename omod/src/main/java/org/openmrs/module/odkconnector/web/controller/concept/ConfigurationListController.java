@@ -27,10 +27,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @RequestMapping("/module/odkconnector/concept/configurationList")
 public class ConfigurationListController {
 
-	private static final Log log = LogFactory.getLog(ConfigurationListController.class);
+    private static final Log log = LogFactory.getLog(ConfigurationListController.class);
 
-	@RequestMapping(method = RequestMethod.GET)
-	public void preparePage(final Model model) {
-		model.addAttribute("configurations", Context.getService(ConnectorService.class).getConceptConfigurations());
-	}
+    @RequestMapping(method = RequestMethod.GET)
+    public void preparePage(final Model model) {
+        model.addAttribute("configurations", Context.getService(ConnectorService.class).getConceptConfigurations());
+    }
 }

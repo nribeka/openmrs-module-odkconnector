@@ -24,48 +24,48 @@ import org.openmrs.module.ModuleActivator;
  */
 public class ConnectorActivator implements ModuleActivator {
 
-	private static final Log log = LogFactory.getLog(ConnectorActivator.class);
+    private static final Log log = LogFactory.getLog(ConnectorActivator.class);
 
-	/**
-	 * @see ModuleActivator#willRefreshContext()
-	 */
-	public void willRefreshContext() {
-		log.info("Refreshing ODK-OpenMRS Connector Module");
-	}
+    /**
+     * @see ModuleActivator#willRefreshContext()
+     */
+    public void willRefreshContext() {
+        log.info("Refreshing ODK-OpenMRS Connector Module");
+    }
 
-	/**
-	 * @see ModuleActivator#contextRefreshed()
-	 */
-	public void contextRefreshed() {
-		log.info("ODK-OpenMRS Connector Module refreshed");
-	}
+    /**
+     * @see ModuleActivator#contextRefreshed()
+     */
+    public void contextRefreshed() {
+        log.info("ODK-OpenMRS Connector Module refreshed");
+    }
 
-	/**
-	 * @see ModuleActivator#willStart()
-	 */
-	public void willStart() {
-		log.info("Starting ODK-OpenMRS Connector Module");
-	}
+    /**
+     * @see ModuleActivator#willStart()
+     */
+    public void willStart() {
+        log.info("Starting ODK-OpenMRS Connector Module");
+    }
 
-	/**
-	 * @see ModuleActivator#started()
-	 */
-	public void started() {
-		log.info("ODK-OpenMRS Connector Module started");
-	}
+    /**
+     * @see ModuleActivator#started()
+     */
+    public void started() {
+        log.info("ODK-OpenMRS Connector Module started");
+    }
 
-	/**
-	 * @see ModuleActivator#willStop()
-	 */
-	public void willStop() {
-		log.info("Stopping ODK-OpenMRS Connector Module");
-	}
+    /**
+     * @see ModuleActivator#willStop()
+     */
+    public void willStop() {
+        log.info("Stopping ODK-OpenMRS Connector Module");
+    }
 
-	/**
-	 * @see ModuleActivator#stopped()
-	 */
-	public void stopped() {
-		log.info("ODK-OpenMRS Connector Module stopped");
-	}
+    /**
+     * @see ModuleActivator#stopped()
+     */
+    public void stopped() {
+        log.info("ODK-OpenMRS Connector Module stopped");
+    }
 
 }

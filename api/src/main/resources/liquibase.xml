@@ -4,230 +4,230 @@
                    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog/1.9
                   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-1.9.xsd">
-	<!--
-			See http://www.liquibase.org/manual/home#available_database_refactorings
-			for a list of supported elements and attributes
-	-->
+    <!--
+            See http://www.liquibase.org/manual/home#available_database_refactorings
+            for a list of supported elements and attributes
+    -->
 
-	<changeSet id="20120306160606" author="nribeka">
-		<createTable tableName="odkconnector_definition_property">
-			<column name="id" type="int">
-				<constraints primaryKey="true" nullable="false"/>
-			</column>
+    <changeSet id="20120306160606" author="nribeka">
+        <createTable tableName="odkconnector_definition_property">
+            <column name="id" type="int">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
 
-			<column name="property" type="varchar(255)"/>
-			<column name="property_value" type="varchar(255)"/>
-			<column name="property_description" type="varchar(255)"/>
+            <column name="property" type="varchar(255)"/>
+            <column name="property_value" type="varchar(255)"/>
+            <column name="property_description" type="varchar(255)"/>
 
-			<column name="definition_id" type="int" defaultValueNumeric="0">
-				<constraints nullable="false"/>
-			</column>
+            <column name="definition_id" type="int" defaultValueNumeric="0">
+                <constraints nullable="false"/>
+            </column>
 
-			<column name="creator" type="int" defaultValueNumeric="0">
-				<constraints nullable="false"/>
-			</column>
-			<column name="date_created" type="datetime" defaultValueDate="0002-11-30T00:00:00.0">
-				<constraints nullable="false"/>
-			</column>
+            <column name="creator" type="int" defaultValueNumeric="0">
+                <constraints nullable="false"/>
+            </column>
+            <column name="date_created" type="datetime" defaultValueDate="0002-11-30T00:00:00.0">
+                <constraints nullable="false"/>
+            </column>
 
-			<column name="retired" type="tinyint" defaultValueNumeric="0">
-				<constraints nullable="false"/>
-			</column>
-			<column name="retired_by" type="int"/>
-			<column name="date_retired" type="datetime"/>
+            <column name="retired" type="tinyint" defaultValueNumeric="0">
+                <constraints nullable="false"/>
+            </column>
+            <column name="retired_by" type="int"/>
+            <column name="date_retired" type="datetime"/>
 
-			<column name="uuid" type="varchar(38)">
-				<constraints unique="true" nullable="false"/>
-			</column>
-		</createTable>
-		<rollback>
-			<dropTable tableName="odkconnector_definition_property"/>
-		</rollback>
-	</changeSet>
+            <column name="uuid" type="varchar(38)">
+                <constraints unique="true" nullable="false"/>
+            </column>
+        </createTable>
+        <rollback>
+            <dropTable tableName="odkconnector_definition_property"/>
+        </rollback>
+    </changeSet>
 
-	<changeSet id="20120306160607" author="nribeka">
-		<createTable tableName="odkconnector_extended_definition">
-			<column name="id" type="int">
-				<constraints primaryKey="true" nullable="false"/>
-			</column>
+    <changeSet id="20120306160607" author="nribeka">
+        <createTable tableName="odkconnector_extended_definition">
+            <column name="id" type="int">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
 
-			<column name="definition" type="varchar(38)" defaultValue="">
-				<constraints nullable="false"/>
-			</column>
+            <column name="definition" type="varchar(38)" defaultValue="">
+                <constraints nullable="false"/>
+            </column>
 
-			<column name="creator" type="int" defaultValueNumeric="0">
-				<constraints nullable="false"/>
-			</column>
-			<column name="date_created" type="datetime" defaultValueDate="0002-11-30T00:00:00.0">
-				<constraints nullable="false"/>
-			</column>
+            <column name="creator" type="int" defaultValueNumeric="0">
+                <constraints nullable="false"/>
+            </column>
+            <column name="date_created" type="datetime" defaultValueDate="0002-11-30T00:00:00.0">
+                <constraints nullable="false"/>
+            </column>
 
-			<column name="retired" type="tinyint" defaultValueNumeric="0">
-				<constraints nullable="false"/>
-			</column>
-			<column name="retired_by" type="int"/>
-			<column name="date_retired" type="datetime"/>
+            <column name="retired" type="tinyint" defaultValueNumeric="0">
+                <constraints nullable="false"/>
+            </column>
+            <column name="retired_by" type="int"/>
+            <column name="date_retired" type="datetime"/>
 
-			<column name="uuid" type="varchar(38)">
-				<constraints unique="true" nullable="false"/>
-			</column>
-		</createTable>
-		<rollback>
-			<dropTable tableName="odkconnector_extended_definition"/>
-		</rollback>
-	</changeSet>
+            <column name="uuid" type="varchar(38)">
+                <constraints unique="true" nullable="false"/>
+            </column>
+        </createTable>
+        <rollback>
+            <dropTable tableName="odkconnector_extended_definition"/>
+        </rollback>
+    </changeSet>
 
-	<changeSet id="20120306160608" author="nribeka">
-		<addForeignKeyConstraint baseColumnNames="creator" baseTableName="odkconnector_definition_property"
-		                         constraintName="user_who_created_odkconnector_definition_property" deferrable="false" initiallyDeferred="false"
-		                         referencedColumnNames="user_id" referencedTableName="users"/>
-	</changeSet>
+    <changeSet id="20120306160608" author="nribeka">
+        <addForeignKeyConstraint baseColumnNames="creator" baseTableName="odkconnector_definition_property"
+                                 constraintName="user_who_created_odkconnector_definition_property" deferrable="false" initiallyDeferred="false"
+                                 referencedColumnNames="user_id" referencedTableName="users"/>
+    </changeSet>
 
-	<changeSet id="20120306160609" author="nribeka">
-		<addForeignKeyConstraint baseColumnNames="creator" baseTableName="odkconnector_extended_definition"
-		                         constraintName="user_who_created_odkconnector_extended_definition" deferrable="false" initiallyDeferred="false"
-		                         referencedColumnNames="user_id" referencedTableName="users"/>
-	</changeSet>
+    <changeSet id="20120306160609" author="nribeka">
+        <addForeignKeyConstraint baseColumnNames="creator" baseTableName="odkconnector_extended_definition"
+                                 constraintName="user_who_created_odkconnector_extended_definition" deferrable="false" initiallyDeferred="false"
+                                 referencedColumnNames="user_id" referencedTableName="users"/>
+    </changeSet>
 
-	<changeSet id="20120306160610" author="nribeka">
-		<addForeignKeyConstraint baseColumnNames="retired_by" baseTableName="odkconnector_definition_property"
-		                         constraintName="user_who_retire_odkconnector_definition_property" deferrable="false" initiallyDeferred="false"
-		                         referencedColumnNames="user_id" referencedTableName="users"/>
-	</changeSet>
+    <changeSet id="20120306160610" author="nribeka">
+        <addForeignKeyConstraint baseColumnNames="retired_by" baseTableName="odkconnector_definition_property"
+                                 constraintName="user_who_retire_odkconnector_definition_property" deferrable="false" initiallyDeferred="false"
+                                 referencedColumnNames="user_id" referencedTableName="users"/>
+    </changeSet>
 
-	<changeSet id="20120306160611" author="nribeka">
-		<addForeignKeyConstraint baseColumnNames="retired_by" baseTableName="odkconnector_extended_definition"
-		                         constraintName="user_who_retire_odkconnector_extended_definition" deferrable="false" initiallyDeferred="false"
-		                         referencedColumnNames="user_id" referencedTableName="users"/>
-	</changeSet>
+    <changeSet id="20120306160611" author="nribeka">
+        <addForeignKeyConstraint baseColumnNames="retired_by" baseTableName="odkconnector_extended_definition"
+                                 constraintName="user_who_retire_odkconnector_extended_definition" deferrable="false" initiallyDeferred="false"
+                                 referencedColumnNames="user_id" referencedTableName="users"/>
+    </changeSet>
 
-	<changeSet id="20120306160612" author="nribeka">
-		<addForeignKeyConstraint baseColumnNames="definition_id" baseTableName="odkconnector_definition_property"
-		                         constraintName="extended_definition_of_odkconnector_definition_property" deferrable="false" initiallyDeferred="false"
-		                         referencedColumnNames="id" referencedTableName="odkconnector_extended_definition"/>
-	</changeSet>
+    <changeSet id="20120306160612" author="nribeka">
+        <addForeignKeyConstraint baseColumnNames="definition_id" baseTableName="odkconnector_definition_property"
+                                 constraintName="extended_definition_of_odkconnector_definition_property" deferrable="false" initiallyDeferred="false"
+                                 referencedColumnNames="id" referencedTableName="odkconnector_extended_definition"/>
+    </changeSet>
 
-	<changeSet id="20120306160613" author="nribeka">
-		<addAutoIncrement tableName="odkconnector_extended_definition" columnName="id" columnDataType="int"/>
-	</changeSet>
+    <changeSet id="20120306160613" author="nribeka">
+        <addAutoIncrement tableName="odkconnector_extended_definition" columnName="id" columnDataType="int"/>
+    </changeSet>
 
-	<changeSet id="20120306160614" author="nribeka">
-		<addAutoIncrement tableName="odkconnector_definition_property" columnName="id" columnDataType="int"/>
-	</changeSet>
+    <changeSet id="20120306160614" author="nribeka">
+        <addAutoIncrement tableName="odkconnector_definition_property" columnName="id" columnDataType="int"/>
+    </changeSet>
 
-	<changeSet id="20120416160606" author="nribeka">
-		<createTable tableName="odkconnector_configured_concept">
-			<column name="id" type="int">
-				<constraints primaryKey="true" nullable="false"/>
-			</column>
+    <changeSet id="20120416160606" author="nribeka">
+        <createTable tableName="odkconnector_configured_concept">
+            <column name="id" type="int">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
 
-			<column name="concept_id" type="int" defaultValue="0">
-				<constraints nullable="false"/>
-			</column>
+            <column name="concept_id" type="int" defaultValue="0">
+                <constraints nullable="false"/>
+            </column>
 
-			<column name="configuration_id" type="int" defaultValue="0">
-				<constraints nullable="false"/>
-			</column>
+            <column name="configuration_id" type="int" defaultValue="0">
+                <constraints nullable="false"/>
+            </column>
 
-			<column name="creator" type="int" defaultValueNumeric="0">
-				<constraints nullable="false"/>
-			</column>
-			<column name="date_created" type="datetime" defaultValueDate="0002-11-30T00:00:00.0">
-				<constraints nullable="false"/>
-			</column>
+            <column name="creator" type="int" defaultValueNumeric="0">
+                <constraints nullable="false"/>
+            </column>
+            <column name="date_created" type="datetime" defaultValueDate="0002-11-30T00:00:00.0">
+                <constraints nullable="false"/>
+            </column>
 
-			<column name="retired" type="tinyint" defaultValueNumeric="0">
-				<constraints nullable="false"/>
-			</column>
-			<column name="retired_by" type="int"/>
-			<column name="date_retired" type="datetime"/>
+            <column name="retired" type="tinyint" defaultValueNumeric="0">
+                <constraints nullable="false"/>
+            </column>
+            <column name="retired_by" type="int"/>
+            <column name="date_retired" type="datetime"/>
 
-			<column name="uuid" type="varchar(38)">
-				<constraints unique="true" nullable="false"/>
-			</column>
-		</createTable>
-		<rollback>
-			<dropTable tableName="odkconnector_configured_concept"/>
-		</rollback>
-	</changeSet>
+            <column name="uuid" type="varchar(38)">
+                <constraints unique="true" nullable="false"/>
+            </column>
+        </createTable>
+        <rollback>
+            <dropTable tableName="odkconnector_configured_concept"/>
+        </rollback>
+    </changeSet>
 
-	<changeSet id="20120416160607" author="nribeka">
-		<createTable tableName="odkconnector_concept_configuration">
-			<column name="id" type="int">
-				<constraints primaryKey="true" nullable="false"/>
-			</column>
+    <changeSet id="20120416160607" author="nribeka">
+        <createTable tableName="odkconnector_concept_configuration">
+            <column name="id" type="int">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
 
-			<column name="name" type="varchar(255)"/>
-			<column name="description" type="varchar(255)"/>
+            <column name="name" type="varchar(255)"/>
+            <column name="description" type="varchar(255)"/>
 
-			<column name="definition_id" type="int" defaultValueNumeric="0">
-				<constraints nullable="false"/>
-			</column>
+            <column name="definition_id" type="int" defaultValueNumeric="0">
+                <constraints nullable="false"/>
+            </column>
 
-			<column name="creator" type="int" defaultValueNumeric="0">
-				<constraints nullable="false"/>
-			</column>
-			<column name="date_created" type="datetime" defaultValueDate="0002-11-30T00:00:00.0">
-				<constraints nullable="false"/>
-			</column>
+            <column name="creator" type="int" defaultValueNumeric="0">
+                <constraints nullable="false"/>
+            </column>
+            <column name="date_created" type="datetime" defaultValueDate="0002-11-30T00:00:00.0">
+                <constraints nullable="false"/>
+            </column>
 
-			<column name="retired" type="tinyint" defaultValueNumeric="0">
-				<constraints nullable="false"/>
-			</column>
-			<column name="retired_by" type="int"/>
-			<column name="date_retired" type="datetime"/>
+            <column name="retired" type="tinyint" defaultValueNumeric="0">
+                <constraints nullable="false"/>
+            </column>
+            <column name="retired_by" type="int"/>
+            <column name="date_retired" type="datetime"/>
 
-			<column name="uuid" type="varchar(38)">
-				<constraints unique="true" nullable="false"/>
-			</column>
-		</createTable>
-		<rollback>
-			<dropTable tableName="odkconnector_concept_configuration"/>
-		</rollback>
-	</changeSet>
+            <column name="uuid" type="varchar(38)">
+                <constraints unique="true" nullable="false"/>
+            </column>
+        </createTable>
+        <rollback>
+            <dropTable tableName="odkconnector_concept_configuration"/>
+        </rollback>
+    </changeSet>
 
-	<changeSet id="20120416160608" author="nribeka">
-		<addForeignKeyConstraint baseColumnNames="creator" baseTableName="odkconnector_configured_concept"
-		                         constraintName="user_who_created_odkconnector_configured_concept" deferrable="false" initiallyDeferred="false"
-		                         referencedColumnNames="user_id" referencedTableName="users"/>
-	</changeSet>
+    <changeSet id="20120416160608" author="nribeka">
+        <addForeignKeyConstraint baseColumnNames="creator" baseTableName="odkconnector_configured_concept"
+                                 constraintName="user_who_created_odkconnector_configured_concept" deferrable="false" initiallyDeferred="false"
+                                 referencedColumnNames="user_id" referencedTableName="users"/>
+    </changeSet>
 
-	<changeSet id="20120416160609" author="nribeka">
-		<addForeignKeyConstraint baseColumnNames="creator" baseTableName="odkconnector_concept_configuration"
-		                         constraintName="user_who_created_odkconnector_concept_configuration" deferrable="false" initiallyDeferred="false"
-		                         referencedColumnNames="user_id" referencedTableName="users"/>
-	</changeSet>
+    <changeSet id="20120416160609" author="nribeka">
+        <addForeignKeyConstraint baseColumnNames="creator" baseTableName="odkconnector_concept_configuration"
+                                 constraintName="user_who_created_odkconnector_concept_configuration" deferrable="false" initiallyDeferred="false"
+                                 referencedColumnNames="user_id" referencedTableName="users"/>
+    </changeSet>
 
-	<changeSet id="20120416160610" author="nribeka">
-		<addForeignKeyConstraint baseColumnNames="retired_by" baseTableName="odkconnector_configured_concept"
-		                         constraintName="user_who_retire_odkconnector_configured_concept" deferrable="false" initiallyDeferred="false"
-		                         referencedColumnNames="user_id" referencedTableName="users"/>
-	</changeSet>
+    <changeSet id="20120416160610" author="nribeka">
+        <addForeignKeyConstraint baseColumnNames="retired_by" baseTableName="odkconnector_configured_concept"
+                                 constraintName="user_who_retire_odkconnector_configured_concept" deferrable="false" initiallyDeferred="false"
+                                 referencedColumnNames="user_id" referencedTableName="users"/>
+    </changeSet>
 
-	<changeSet id="20120416160611" author="nribeka">
-		<addForeignKeyConstraint baseColumnNames="retired_by" baseTableName="odkconnector_concept_configuration"
-		                         constraintName="user_who_retire_odkconnector_concept_configuration" deferrable="false" initiallyDeferred="false"
-		                         referencedColumnNames="user_id" referencedTableName="users"/>
-	</changeSet>
+    <changeSet id="20120416160611" author="nribeka">
+        <addForeignKeyConstraint baseColumnNames="retired_by" baseTableName="odkconnector_concept_configuration"
+                                 constraintName="user_who_retire_odkconnector_concept_configuration" deferrable="false" initiallyDeferred="false"
+                                 referencedColumnNames="user_id" referencedTableName="users"/>
+    </changeSet>
 
-	<changeSet id="20120416160612" author="nribeka">
-		<addForeignKeyConstraint baseColumnNames="concept_id" baseTableName="odkconnector_configured_concept"
-		                         constraintName="concept_of_odkconnector_configured_concept" deferrable="false" initiallyDeferred="false"
-		                         referencedColumnNames="concept_id" referencedTableName="concept"/>
-	</changeSet>
+    <changeSet id="20120416160612" author="nribeka">
+        <addForeignKeyConstraint baseColumnNames="concept_id" baseTableName="odkconnector_configured_concept"
+                                 constraintName="concept_of_odkconnector_configured_concept" deferrable="false" initiallyDeferred="false"
+                                 referencedColumnNames="concept_id" referencedTableName="concept"/>
+    </changeSet>
 
-	<changeSet id="20120416160613" author="nribeka">
-		<addForeignKeyConstraint baseColumnNames="configuration_id" baseTableName="odkconnector_configured_concept"
-		                         constraintName="configuration_of_odkconnector_configured_concept" deferrable="false" initiallyDeferred="false"
-		                         referencedColumnNames="id" referencedTableName="odkconnector_concept_configuration"/>
-	</changeSet>
+    <changeSet id="20120416160613" author="nribeka">
+        <addForeignKeyConstraint baseColumnNames="configuration_id" baseTableName="odkconnector_configured_concept"
+                                 constraintName="configuration_of_odkconnector_configured_concept" deferrable="false" initiallyDeferred="false"
+                                 referencedColumnNames="id" referencedTableName="odkconnector_concept_configuration"/>
+    </changeSet>
 
-	<changeSet id="20120416160614" author="nribeka">
-		<addAutoIncrement tableName="odkconnector_configured_concept" columnName="id" columnDataType="int"/>
-	</changeSet>
+    <changeSet id="20120416160614" author="nribeka">
+        <addAutoIncrement tableName="odkconnector_configured_concept" columnName="id" columnDataType="int"/>
+    </changeSet>
 
-	<changeSet id="20120416160615" author="nribeka">
-		<addAutoIncrement tableName="odkconnector_concept_configuration" columnName="id" columnDataType="int"/>
-	</changeSet>
+    <changeSet id="20120416160615" author="nribeka">
+        <addAutoIncrement tableName="odkconnector_concept_configuration" columnName="id" columnDataType="int"/>
+    </changeSet>
 
 </databaseChangeLog>
