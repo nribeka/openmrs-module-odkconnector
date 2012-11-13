@@ -86,8 +86,10 @@ public class ConnectorServiceImpl extends BaseOpenmrsService implements Connecto
      */
     @Override
     public List<Obs> getCohortObservations(final Cohort cohort, final Collection<Concept> concepts) throws APIException {
-        if (cohort == null || CollectionUtils.isEmpty(cohort.getMemberIds()) || CollectionUtils.isEmpty(concepts))
+        if (cohort == null || CollectionUtils.isEmpty(cohort.getMemberIds()) || CollectionUtils.isEmpty(concepts)) {
+            System.out.println("No observations found because of cohort or concepts is empty.");
             return new ArrayList<Obs>();
+        }
         return dao.getCohortObservations(cohort, concepts);
     }
 

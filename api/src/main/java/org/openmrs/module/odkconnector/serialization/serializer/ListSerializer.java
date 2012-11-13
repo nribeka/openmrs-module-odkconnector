@@ -56,6 +56,7 @@ public class ListSerializer implements Serializer {
                 Serializer serializer = HandlerUtil.getPreferredHandler(Serializer.class, object.getClass());
                 serializer.write(outputStream, object);
             }
+            outputStream.flush();
         }
     }
 }

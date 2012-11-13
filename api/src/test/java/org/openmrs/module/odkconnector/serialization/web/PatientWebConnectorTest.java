@@ -30,7 +30,7 @@ public class PatientWebConnectorTest extends BaseModuleContextSensitiveTest {
 
     private static final Log log = LogFactory.getLog(PatientWebConnectorTest.class);
 
-    private static final String SERVER_URL = "http://rwinkwavu.cs.washington.edu:8081/openmrs";
+    private static final String SERVER_URL = "http://localhost:8081/openmrs-standalone";
 
     @Test
     public void serialize_shouldDisplayAllPatientInformation() throws Exception {
@@ -50,8 +50,8 @@ public class PatientWebConnectorTest extends BaseModuleContextSensitiveTest {
         DataOutputStream outputStream = new DataOutputStream(new GZIPOutputStream(connection.getOutputStream()));
         outputStream.writeUTF("admin");
         outputStream.writeUTF("test");
-        outputStream.writeBoolean(false);
-        outputStream.writeInt(6);
+        outputStream.writeBoolean(true);
+        outputStream.writeInt(2);
         outputStream.writeInt(1);
         outputStream.close();
 

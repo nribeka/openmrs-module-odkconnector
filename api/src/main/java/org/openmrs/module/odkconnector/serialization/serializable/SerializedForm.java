@@ -71,4 +71,12 @@ public class SerializedForm {
     public void setFormId(final Integer formId) {
         this.formId = formId;
     }
+
+    @Override
+    public String toString() {
+        return "SerializedForm{" +
+                "patientId=" + patientId +
+                ", formId=" + formId +
+                '}';
+    }
 }

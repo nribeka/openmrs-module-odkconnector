@@ -73,4 +73,17 @@ public class ConceptConfiguration extends BaseOpenmrsMetadata {
             configuredConcepts = new LinkedHashSet<ConfiguredConcept>();
         configuredConcepts.add(configuredConcept);
     }
+
+    @Override
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
+        builder.append("ConceptConfiguration {").append("\n");
+        builder.append("    id=" + id).append("\n");
+        builder.append("    configuredConcepts:").append("\n");
+        for (ConfiguredConcept configuredConcept : configuredConcepts) {
+            builder.append("        ").append(configuredConcept).append("\n");
+        }
+        builder.append("}");
+        return builder.toString();
+    }
 }

@@ -18,6 +18,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.openmrs.BaseOpenmrsMetadata;
 import org.openmrs.Concept;
+import org.openmrs.api.context.Context;
 
 public class ConfiguredConcept extends BaseOpenmrsMetadata {
 
@@ -77,5 +78,15 @@ public class ConfiguredConcept extends BaseOpenmrsMetadata {
      */
     public void setConceptConfiguration(final ConceptConfiguration conceptConfiguration) {
         this.conceptConfiguration = conceptConfiguration;
+    }
+
+    @Override
+    public String toString() {
+        return "ConfiguredConcept{" +
+                "id=" + id
+                + ", concept id=" + concept.getId()
+                + ", concept name=" + concept.getName(Context.getLocale()).getName()
+                + ", concept uuid=" + concept.getUuid()
+                + ", conceptConfiguration id=" + conceptConfiguration.getId() + '}';
     }
 }

@@ -119,6 +119,13 @@ public class HttpProcessor implements Processor {
             Context.authenticate(username, password);
 
             dataOutputStream.writeInt(HttpURLConnection.HTTP_OK);
+            dataOutputStream.flush();
+
+            if (log.isDebugEnabled()) {
+                log.debug("Saved Search Value: " + savedSearch);
+                log.debug("Cohort ID: " + cohortId);
+                log.debug("Program ID: " + programId);
+            }
 
             Serializer serializer = HandlerUtil.getPreferredHandler(Serializer.class, List.class);
             if (StringUtils.equalsIgnoreCase(getAction(), HttpProcessor.PROCESS_PATIENTS)) {
@@ -127,8 +134,15 @@ public class HttpProcessor implements Processor {
                 Cohort cohort = new Cohort();
                 if (savedSearch) {
                     CohortSearchHistory history = new CohortSearchHistory();
-                    PatientSearchReportObject patientSearchReportObject = (PatientSearchReportObject) Context.getReportObjectService().getReportObject(cohortId);
+                    PatientSearchReportObject patientSearchReportObject = (PatientSearchReportObject) Context
+                            .getReportObjectService().getReportObject(cohortId);
                     if (patientSearchReportObject != null) {
+                        if (log.isDebugEnabled()) {
+                            log.debug("Object Class: " + patientSearchReportObject.getClass());
+                            log.debug("Object Name: " + patientSearchReportObject.getName());
+                            log.debug("Object Subtype: " + patientSearchReportObject.getSubType());
+                            log.debug("Object Type: " + patientSearchReportObject.getType());
+                        }
                         history.addSearchItem(PatientSearch.createSavedSearchReference(cohortId));
                         cohort = history.getPatientSet(0, null);
                     }
@@ -136,21 +150,29 @@ public class HttpProcessor implements Processor {
                     cohort = Context.getCohortService().getCohort(cohortId);
                 }
 
+                if (log.isDebugEnabled())
+                    log.debug("Cohort data: " + cohort.getMemberIds());
+
                 log.info("Streaming patients information!");
                 serializer.write(dataOutputStream, connectorService.getCohortPatients(cohort));
 
                 // check the concept list
                 Collection<Concept> concepts = null;
                 ConceptConfiguration conceptConfiguration = connectorService.getConceptConfiguration(programId);
-                if (conceptConfiguration != null)
+                if (conceptConfiguration != null) {
+
+                    if (log.isDebugEnabled())
+                        log.debug("Printing concept configuration information: " + conceptConfiguration);
+
                     concepts = ConnectorUtils.getConcepts(conceptConfiguration.getConfiguredConcepts());
+                }
                 log.info("Streaming observations information!");
                 serializer.write(dataOutputStream, connectorService.getCohortObservations(cohort, concepts));
 
                 // evaluate and get the applicable form for the patients
                 CohortDefinitionService cohortDefinitionService = Context.getService(CohortDefinitionService.class);
-                ReportingConnectorService reportingConnectorService = Context.getService(ReportingConnectorService.class);
-                List<ExtendedDefinition> definitions = reportingConnectorService.getAllExtendedDefinition();
+                ReportingConnectorService reportingService = Context.getService(ReportingConnectorService.class);
+                List<ExtendedDefinition> definitions = reportingService.getAllExtendedDefinition();
 
                 EvaluationContext context = new EvaluationContext();
                 context.setBaseCohort(cohort);
@@ -159,10 +181,20 @@ public class HttpProcessor implements Processor {
                 List<SerializedForm> serializedForms = new ArrayList<SerializedForm>();
                 for (ExtendedDefinition definition : definitions) {
                     if (definition.containsProperty(ExtendedDefinition.DEFINITION_PROPERTY_FORM)) {
-                        EvaluatedCohort evaluatedCohort = cohortDefinitionService.evaluate(definition.getCohortDefinition(), context);
+
+                        if (log.isDebugEnabled())
+                            log.debug("Evaluating: " + definition.getCohortDefinition().getName());
+
+                        EvaluatedCohort evaluatedCohort =
+                                cohortDefinitionService.evaluate(definition.getCohortDefinition(), context);
                         // the cohort could be null, so we don't want to get exception during the intersection process
-                        if (cohort != null )
-                            intersectedMemberIds = CollectionUtils.intersection(cohort.getMemberIds(), evaluatedCohort.getMemberIds());
+                        if (cohort != null)
+                            intersectedMemberIds =
+                                    CollectionUtils.intersection(cohort.getMemberIds(), evaluatedCohort.getMemberIds());
+
+                        if (log.isDebugEnabled())
+                            log.debug("Cohort data after intersection: " + intersectedMemberIds);
+
                         for (DefinitionProperty definitionProperty : definition.getProperties()) {
                             // skip retired definition property
                             if (definitionProperty.isRetired())
@@ -170,17 +202,24 @@ public class HttpProcessor implements Processor {
 
                             Integer formId = NumberUtils.toInt(definitionProperty.getPropertyValue());
                             for (Object patientId : intersectedMemberIds)
-                                serializedForms.add(new SerializedForm(NumberUtils.toInt(String.valueOf(patientId)), formId));
+                                serializedForms.add(new SerializedForm(NumberUtils.toInt(String.valueOf(patientId)),
+                                        formId));
                         }
                     }
                 }
+
+                if (log.isDebugEnabled())
+                    log.debug("Serialized form informations:" + serializedForms);
+
                 log.info("Streaming forms information!");
                 serializer.write(dataOutputStream, serializedForms);
 
             } else {
                 if (savedSearch) {
                     List<SerializedCohort> serializedCohorts = new ArrayList<SerializedCohort>();
-                    List<AbstractReportObject> objects = Context.getReportObjectService().getReportObjectsByType(OpenmrsConstants.REPORT_OBJECT_TYPE_PATIENTSEARCH);
+                    List<AbstractReportObject> objects =
+                            Context.getReportObjectService().getReportObjectsByType(
+                                    OpenmrsConstants.REPORT_OBJECT_TYPE_PATIENTSEARCH);
                     for (AbstractReportObject object : objects) {
                         SerializedCohort serializedCohort = new SerializedCohort();
                         serializedCohort.setId(object.getReportObjectId());
