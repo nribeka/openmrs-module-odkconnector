@@ -35,6 +35,9 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.openmrs.Cohort;
 import org.openmrs.Concept;
+import org.openmrs.Obs;
+import org.openmrs.Patient;
+import org.openmrs.api.PatientSetService;
 import org.openmrs.api.context.Context;
 import org.openmrs.cohort.CohortSearchHistory;
 import org.openmrs.module.odkconnector.api.ConceptConfiguration;
@@ -48,6 +51,8 @@ import org.openmrs.module.odkconnector.serialization.Serializer;
 import org.openmrs.module.odkconnector.serialization.serializable.SerializedCohort;
 import org.openmrs.module.odkconnector.serialization.serializable.SerializedForm;
 import org.openmrs.module.reporting.cohort.EvaluatedCohort;
+import org.openmrs.module.reporting.cohort.definition.CohortDefinition;
+import org.openmrs.module.reporting.cohort.definition.SqlCohortDefinition;
 import org.openmrs.module.reporting.cohort.definition.service.CohortDefinitionService;
 import org.openmrs.module.reporting.evaluation.EvaluationContext;
 import org.openmrs.reporting.AbstractReportObject;
@@ -131,50 +136,43 @@ public class HttpProcessor implements Processor {
             if (StringUtils.equalsIgnoreCase(getAction(), HttpProcessor.PROCESS_PATIENTS)) {
                 ConnectorService connectorService = Context.getService(ConnectorService.class);
 
+                EvaluationContext context = new EvaluationContext();
+
+                // evaluate and get the applicable form for the patients
+                CohortDefinitionService definitionService = Context.getService(CohortDefinitionService.class);
+                CohortDefinition cohortDefinition = definitionService.getDefinition(CohortDefinition.class, cohortId);
+
+                Cohort evaluatedCohort = new Cohort();
+                if (cohortDefinition != null)
+                    evaluatedCohort = definitionService.evaluate(cohortDefinition, context);
+
                 Cohort cohort = new Cohort();
-                if (savedSearch) {
-                    CohortSearchHistory history = new CohortSearchHistory();
-                    PatientSearchReportObject patientSearchReportObject = (PatientSearchReportObject) Context
-                            .getReportObjectService().getReportObject(cohortId);
-                    if (patientSearchReportObject != null) {
-                        if (log.isDebugEnabled()) {
-                            log.debug("Object Class: " + patientSearchReportObject.getClass());
-                            log.debug("Object Name: " + patientSearchReportObject.getName());
-                            log.debug("Object Subtype: " + patientSearchReportObject.getSubType());
-                            log.debug("Object Type: " + patientSearchReportObject.getType());
-                        }
-                        history.addSearchItem(PatientSearch.createSavedSearchReference(cohortId));
-                        cohort = history.getPatientSet(0, null);
-                    }
-                } else {
-                    cohort = Context.getCohortService().getCohort(cohortId);
-                }
+                List<Patient> patients = connectorService.getCohortPatients(evaluatedCohort);
+                for (Patient patient : patients)
+                    cohort.addMember(patient.getPatientId());
 
                 if (log.isDebugEnabled())
-                    log.debug("Cohort data: " + cohort.getMemberIds());
+                    log.debug("Cohort data (size: " + cohort.getMemberIds().size() + ") :" + cohort.getMemberIds());
 
-                log.info("Streaming patients information!");
-                serializer.write(dataOutputStream, connectorService.getCohortPatients(cohort));
+                System.out.println("Streaming " + patients.size() + " patients information!");
+                serializer.write(dataOutputStream, patients);
 
                 // check the concept list
                 Collection<Concept> concepts = null;
                 ConceptConfiguration conceptConfiguration = connectorService.getConceptConfiguration(programId);
                 if (conceptConfiguration != null) {
-
+                    concepts = ConnectorUtils.getConcepts(conceptConfiguration.getConfiguredConcepts());
                     if (log.isDebugEnabled())
                         log.debug("Printing concept configuration information: " + conceptConfiguration);
-
-                    concepts = ConnectorUtils.getConcepts(conceptConfiguration.getConfiguredConcepts());
                 }
-                log.info("Streaming observations information!");
-                serializer.write(dataOutputStream, connectorService.getCohortObservations(cohort, concepts));
 
-                // evaluate and get the applicable form for the patients
-                CohortDefinitionService cohortDefinitionService = Context.getService(CohortDefinitionService.class);
+                List<Obs> observations = connectorService.getCohortObservations(cohort, concepts);
+                System.out.println("Streaming " + observations.size() + " observations information!");
+                serializer.write(dataOutputStream, observations);
+
                 ReportingConnectorService reportingService = Context.getService(ReportingConnectorService.class);
                 List<ExtendedDefinition> definitions = reportingService.getAllExtendedDefinition();
 
-                EvaluationContext context = new EvaluationContext();
                 context.setBaseCohort(cohort);
 
                 Collection intersectedMemberIds = Collections.emptyList();
@@ -185,8 +183,7 @@ public class HttpProcessor implements Processor {
                         if (log.isDebugEnabled())
                             log.debug("Evaluating: " + definition.getCohortDefinition().getName());
 
-                        EvaluatedCohort evaluatedCohort =
-                                cohortDefinitionService.evaluate(definition.getCohortDefinition(), context);
+                        evaluatedCohort = definitionService.evaluate(definition.getCohortDefinition(), context);
                         // the cohort could be null, so we don't want to get exception during the intersection process
                         if (cohort != null)
                             intersectedMemberIds =
@@ -211,26 +208,11 @@ public class HttpProcessor implements Processor {
                 if (log.isDebugEnabled())
                     log.debug("Serialized form informations:" + serializedForms);
 
-                log.info("Streaming forms information!");
+                System.out.println("Streaming " + serializedForms.size() + " forms information!");
                 serializer.write(dataOutputStream, serializedForms);
 
             } else {
-                if (savedSearch) {
-                    List<SerializedCohort> serializedCohorts = new ArrayList<SerializedCohort>();
-                    List<AbstractReportObject> objects =
-                            Context.getReportObjectService().getReportObjectsByType(
-                                    OpenmrsConstants.REPORT_OBJECT_TYPE_PATIENTSEARCH);
-                    for (AbstractReportObject object : objects) {
-                        SerializedCohort serializedCohort = new SerializedCohort();
-                        serializedCohort.setId(object.getReportObjectId());
-                        serializedCohort.setName(object.getName());
-                        serializedCohorts.add(serializedCohort);
-                    }
-                    serializer.write(dataOutputStream, serializedCohorts);
-
-                } else {
-                    serializer.write(dataOutputStream, Context.getCohortService().getAllCohorts());
-                }
+                serializer.write(dataOutputStream, Context.getCohortService().getAllCohorts());
             }
 
             dataOutputStream.close();

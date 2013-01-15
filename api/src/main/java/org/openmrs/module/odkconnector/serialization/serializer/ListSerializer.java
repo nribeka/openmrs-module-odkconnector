@@ -51,12 +51,16 @@ public class ListSerializer implements Serializer {
         if (list == null || CollectionUtils.isEmpty(list))
             outputStream.writeInt(Serializer.ZERO);
         else {
+            int counter = 0;
             outputStream.writeInt(list.size());
             for (Object object : list) {
                 Serializer serializer = HandlerUtil.getPreferredHandler(Serializer.class, object.getClass());
                 serializer.write(outputStream, object);
+
+                counter ++;
+                if (counter % 50 == 0)
+                    outputStream.flush();
             }
-            outputStream.flush();
         }
     }
 }

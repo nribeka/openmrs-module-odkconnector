@@ -44,6 +44,5 @@ public class CohortSerializer implements Serializer {
 
         outputStream.writeInt(cohort.getCohortId());
         outputStream.writeUTF(cohort.getName());
-        outputStream.flush();
     }
 }

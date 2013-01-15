@@ -25,6 +25,7 @@ import org.openmrs.Cohort;
 import org.openmrs.Concept;
 import org.openmrs.Obs;
 import org.openmrs.Patient;
+import org.openmrs.PersonName;
 import org.openmrs.api.APIException;
 import org.openmrs.api.impl.BaseOpenmrsService;
 import org.openmrs.module.odkconnector.api.ConceptConfiguration;
@@ -66,28 +67,34 @@ public class ConnectorServiceImpl extends BaseOpenmrsService implements Connecto
         List<Patient> patients = new ArrayList<Patient>();
         if (cohort == null || CollectionUtils.isEmpty(cohort.getMemberIds()))
             return patients;
-//
-//        PatientService patientService = Context.getPatientService();
-//        for (Integer patientId : cohort.getMemberIds())
-//            patients.add(patientService.getPatient(patientId));
-//
-//        return patients;
-        return dao.getCohortPatients(cohort);
+        for (Patient patient : dao.getCohortPatients(cohort)) {
+            if (patient != null
+                    && patient.getPersonName() != null
+                    && patient.getPatientIdentifier() != null
+                    && patient.getBirthdate() != null
+                    && patient.getGender() != null) {
+
+                PersonName personName = patient.getPersonName();
+                if (personName.getGivenName() != null && personName.getFamilyName() != null)
+                    patients.add(patient);
+            }
+        }
+        return patients;
     }
 
     /**
      * Service method to get all observations for all patients in the cohort
      *
-     *
      * @param cohort   the cohort
      * @param concepts the concepts
-     * @return all observations for patients in the cohort or empty list when no observations for the patient ids in the cohort exists
+     * @return all observations for patients in the cohort or empty list when no observations for the patient ids in
+     * the cohort exists
      * @throws org.openmrs.api.APIException when the process failed
      */
     @Override
     public List<Obs> getCohortObservations(final Cohort cohort, final Collection<Concept> concepts) throws APIException {
         if (cohort == null || CollectionUtils.isEmpty(cohort.getMemberIds()) || CollectionUtils.isEmpty(concepts)) {
-            System.out.println("No observations found because of cohort or concepts is empty.");
+            log.info("No observations found because of cohort or concepts is empty.");
             return new ArrayList<Obs>();
         }
         return dao.getCohortObservations(cohort, concepts);

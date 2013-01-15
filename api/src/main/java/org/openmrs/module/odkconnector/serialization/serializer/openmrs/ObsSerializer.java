@@ -50,33 +50,29 @@ public class ObsSerializer implements Serializer {
      */
     @Override
     public void write(final OutputStream stream, final Object data) throws IOException {
-        try {
-            Obs obs = (Obs) data;
+        Obs obs = (Obs) data;
 
-            DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
-            DataOutputStream outputStream = new DataOutputStream(stream);
-            // write the person id of the observation
-            outputStream.writeInt(obs.getPersonId());
-            // write the concept name of the observation
-            outputStream.writeUTF(obs.getConcept().getDisplayString());
-            // write the data type and the value of the observation
-            if (obs.getValueDatetime() != null) {
-                outputStream.writeByte(TYPE_DATE);
-                outputStream.writeUTF(dateFormat.format(obs.getValueDatetime()));
-            } else if (obs.getValueCoded() != null) {
-                outputStream.writeByte(TYPE_STRING);
-                outputStream.writeUTF(obs.getValueCoded().getDisplayString());
-            } else if (obs.getValueNumeric() != null) {
-                outputStream.writeByte(TYPE_DOUBLE);
-                outputStream.writeDouble(obs.getValueNumeric());
-            } else {
-                outputStream.writeByte(TYPE_STRING);
-                outputStream.writeUTF(obs.getValueAsString(Context.getLocale()));
-            }
-            // write the datetime of the observation
-            outputStream.writeUTF(dateFormat.format(obs.getObsDatetime()));
-        } catch (IOException e) {
-            log.info("Writing obs information failed!", e);
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
+        DataOutputStream outputStream = new DataOutputStream(stream);
+        // write the person id of the observation
+        outputStream.writeInt(obs.getPersonId());
+        // write the concept name of the observation
+        outputStream.writeUTF(obs.getConcept().getDisplayString());
+        // write the data type and the value of the observation
+        if (obs.getValueDatetime() != null) {
+            outputStream.writeByte(TYPE_DATE);
+            outputStream.writeUTF(dateFormat.format(obs.getValueDatetime()));
+        } else if (obs.getValueCoded() != null) {
+            outputStream.writeByte(TYPE_STRING);
+            outputStream.writeUTF(obs.getValueCoded().getDisplayString());
+        } else if (obs.getValueNumeric() != null) {
+            outputStream.writeByte(TYPE_DOUBLE);
+            outputStream.writeDouble(obs.getValueNumeric());
+        } else {
+            outputStream.writeByte(TYPE_STRING);
+            outputStream.writeUTF(obs.getValueAsString(Context.getLocale()));
         }
+        // write the datetime of the observation
+        outputStream.writeUTF(dateFormat.format(obs.getObsDatetime()));
     }
 }
