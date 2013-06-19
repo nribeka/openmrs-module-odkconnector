@@ -36,12 +36,9 @@
 
     <!-- Maps hibernate file's, if present -->
     <mappingFiles>
-
         DefinitionProperty.hbm.xml
-        ExtendedDefinition.hbm.xml
         ConceptConfiguration.hbm.xml
         ConfiguredConcept.hbm.xml
-
     </mappingFiles>
 
     <!-- Internationalization -->
