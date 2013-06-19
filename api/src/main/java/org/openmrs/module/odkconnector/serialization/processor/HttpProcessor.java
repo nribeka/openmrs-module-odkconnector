@@ -191,14 +191,14 @@ public class HttpProcessor implements Processor {
                             serializedForms.add(new SerializedForm(patientId, formId));
                         }
                     }
-
-                    if (log.isDebugEnabled()) {
-                        log.debug("Serialized form informations:" + serializedForms);
-                    }
-
-                    log.info("Streaming " + serializedForms.size() + " forms information!");
-                    serializer.write(dataOutputStream, serializedForms);
                 }
+
+                if (log.isDebugEnabled()) {
+                    log.debug("Serialized form informations:" + serializedForms);
+                }
+
+                log.info("Streaming " + serializedForms.size() + " forms information!");
+                serializer.write(dataOutputStream, serializedForms);
 
             } else {
                 serializer.write(dataOutputStream, Context.getCohortService().getAllCohorts());
