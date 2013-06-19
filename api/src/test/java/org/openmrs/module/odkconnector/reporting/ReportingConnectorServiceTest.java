@@ -20,7 +20,6 @@ import org.apache.commons.logging.LogFactory;
 import org.junit.Test;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.odkconnector.reporting.metadata.DefinitionProperty;
-import org.openmrs.module.odkconnector.reporting.metadata.ExtendedDefinition;
 import org.openmrs.module.odkconnector.reporting.service.ReportingConnectorService;
 import org.openmrs.module.reporting.cohort.definition.CohortDefinition;
 import org.openmrs.module.reporting.cohort.definition.EncounterCohortDefinition;
@@ -52,13 +51,8 @@ public class ReportingConnectorServiceTest extends BaseModuleContextSensitiveTes
         DefinitionProperty definitionProperty = new DefinitionProperty(property, propertyValue, propertyDescription);
         // check if the extended definition for this cohort definition already exist or not
         CohortDefinition definition = definitionService.getDefinitionByUuid(savedDefinition.getUuid());
-        ExtendedDefinition extendedDefinition = reportingConnectorService.getExtendedDefinitionByDefinition(definition);
-        if (extendedDefinition == null) {
-            extendedDefinition = new ExtendedDefinition();
-            extendedDefinition.setCohortDefinition(definition);
-        }
-        extendedDefinition.addDefinitionProperty(definitionProperty);
-        reportingConnectorService.saveExtendedDefinition(extendedDefinition);
+        definitionProperty.setCohortDefinition(definition);
+        reportingConnectorService.saveDefinitionProperty(definitionProperty);
     }
 
 }

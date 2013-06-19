@@ -43,7 +43,6 @@ public class CohortWebConnectorTest extends BaseModuleContextSensitiveTest {
         connection.setDoOutput(true);
         connection.setRequestMethod("POST");
         connection.setConnectTimeout(8000);
-        connection.setReadTimeout(8000);
         connection.addRequestProperty("Content-type", "application/octet-stream");
 
         // write auth details to connection

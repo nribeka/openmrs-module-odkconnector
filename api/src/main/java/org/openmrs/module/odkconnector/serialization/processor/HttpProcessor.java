@@ -14,6 +14,28 @@
 
 package org.openmrs.module.odkconnector.serialization.processor;
 
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.math.NumberUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.openmrs.Cohort;
+import org.openmrs.Concept;
+import org.openmrs.Obs;
+import org.openmrs.Patient;
+import org.openmrs.api.context.Context;
+import org.openmrs.module.odkconnector.api.ConceptConfiguration;
+import org.openmrs.module.odkconnector.api.service.ConnectorService;
+import org.openmrs.module.odkconnector.api.utils.ConnectorUtils;
+import org.openmrs.module.odkconnector.reporting.metadata.DefinitionProperty;
+import org.openmrs.module.odkconnector.reporting.service.ReportingConnectorService;
+import org.openmrs.module.odkconnector.serialization.Processor;
+import org.openmrs.module.odkconnector.serialization.Serializer;
+import org.openmrs.module.odkconnector.serialization.serializable.SerializedForm;
+import org.openmrs.module.reporting.cohort.definition.CohortDefinition;
+import org.openmrs.module.reporting.cohort.definition.service.CohortDefinitionService;
+import org.openmrs.module.reporting.evaluation.EvaluationContext;
+import org.openmrs.util.HandlerUtil;
+
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.DataInputStream;
@@ -23,43 +45,11 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
-
-import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.math.NumberUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.openmrs.Cohort;
-import org.openmrs.Concept;
-import org.openmrs.Obs;
-import org.openmrs.Patient;
-import org.openmrs.api.PatientSetService;
-import org.openmrs.api.context.Context;
-import org.openmrs.cohort.CohortSearchHistory;
-import org.openmrs.module.odkconnector.api.ConceptConfiguration;
-import org.openmrs.module.odkconnector.api.service.ConnectorService;
-import org.openmrs.module.odkconnector.api.utils.ConnectorUtils;
-import org.openmrs.module.odkconnector.reporting.metadata.DefinitionProperty;
-import org.openmrs.module.odkconnector.reporting.metadata.ExtendedDefinition;
-import org.openmrs.module.odkconnector.reporting.service.ReportingConnectorService;
-import org.openmrs.module.odkconnector.serialization.Processor;
-import org.openmrs.module.odkconnector.serialization.Serializer;
-import org.openmrs.module.odkconnector.serialization.serializable.SerializedCohort;
-import org.openmrs.module.odkconnector.serialization.serializable.SerializedForm;
-import org.openmrs.module.reporting.cohort.EvaluatedCohort;
-import org.openmrs.module.reporting.cohort.definition.CohortDefinition;
-import org.openmrs.module.reporting.cohort.definition.SqlCohortDefinition;
-import org.openmrs.module.reporting.cohort.definition.service.CohortDefinitionService;
-import org.openmrs.module.reporting.evaluation.EvaluationContext;
-import org.openmrs.reporting.AbstractReportObject;
-import org.openmrs.reporting.PatientSearch;
-import org.openmrs.reporting.PatientSearchReportObject;
-import org.openmrs.util.HandlerUtil;
-import org.openmrs.util.OpenmrsConstants;
 
 public class HttpProcessor implements Processor {
 
@@ -127,9 +117,7 @@ public class HttpProcessor implements Processor {
             dataOutputStream.flush();
 
             if (log.isDebugEnabled()) {
-                log.debug("Saved Search Value: " + savedSearch);
-                log.debug("Cohort ID: " + cohortId);
-                log.debug("Program ID: " + programId);
+                log.debug("Saved search: " + savedSearch + ", Cohort: " + cohortId + ", Program: " + programId);
             }
 
             Serializer serializer = HandlerUtil.getPreferredHandler(Serializer.class, List.class);
@@ -142,19 +130,18 @@ public class HttpProcessor implements Processor {
                 CohortDefinitionService definitionService = Context.getService(CohortDefinitionService.class);
                 CohortDefinition cohortDefinition = definitionService.getDefinition(CohortDefinition.class, cohortId);
 
-                Cohort evaluatedCohort = new Cohort();
-                if (cohortDefinition != null)
-                    evaluatedCohort = definitionService.evaluate(cohortDefinition, context);
+                Cohort bigCohort = new Cohort();
+                if (cohortDefinition != null) {
+                    bigCohort = definitionService.evaluate(cohortDefinition, context);
+                }
 
-                Cohort cohort = new Cohort();
-                List<Patient> patients = connectorService.getCohortPatients(evaluatedCohort);
-                for (Patient patient : patients)
-                    cohort.addMember(patient.getPatientId());
+                List<Patient> patients = connectorService.getCohortPatients(bigCohort);
 
-                if (log.isDebugEnabled())
-                    log.debug("Cohort data (size: " + cohort.getMemberIds().size() + ") :" + cohort.getMemberIds());
+                if (log.isDebugEnabled()) {
+                    log.debug("Cohort data (size: " + bigCohort.getMemberIds().size() + ") :" + bigCohort.getMemberIds());
+                }
 
-                System.out.println("Streaming " + patients.size() + " patients information!");
+                log.info("Streaming " + patients.size() + " patients information!");
                 serializer.write(dataOutputStream, patients);
 
                 // check the concept list
@@ -162,59 +149,60 @@ public class HttpProcessor implements Processor {
                 ConceptConfiguration conceptConfiguration = connectorService.getConceptConfiguration(programId);
                 if (conceptConfiguration != null) {
                     concepts = ConnectorUtils.getConcepts(conceptConfiguration.getConfiguredConcepts());
-                    if (log.isDebugEnabled())
+                    if (log.isDebugEnabled()) {
                         log.debug("Printing concept configuration information: " + conceptConfiguration);
-                }
-
-                List<Obs> observations = connectorService.getCohortObservations(cohort, concepts);
-                System.out.println("Streaming " + observations.size() + " observations information!");
-                serializer.write(dataOutputStream, observations);
-
-                ReportingConnectorService reportingService = Context.getService(ReportingConnectorService.class);
-                List<ExtendedDefinition> definitions = reportingService.getAllExtendedDefinition();
-
-                context.setBaseCohort(cohort);
-
-                Collection intersectedMemberIds = Collections.emptyList();
-                List<SerializedForm> serializedForms = new ArrayList<SerializedForm>();
-                for (ExtendedDefinition definition : definitions) {
-                    if (definition.containsProperty(ExtendedDefinition.DEFINITION_PROPERTY_FORM)) {
-
-                        if (log.isDebugEnabled())
-                            log.debug("Evaluating: " + definition.getCohortDefinition().getName());
-
-                        evaluatedCohort = definitionService.evaluate(definition.getCohortDefinition(), context);
-                        // the cohort could be null, so we don't want to get exception during the intersection process
-                        if (cohort != null)
-                            intersectedMemberIds =
-                                    CollectionUtils.intersection(cohort.getMemberIds(), evaluatedCohort.getMemberIds());
-
-                        if (log.isDebugEnabled())
-                            log.debug("Cohort data after intersection: " + intersectedMemberIds);
-
-                        for (DefinitionProperty definitionProperty : definition.getProperties()) {
-                            // skip retired definition property
-                            if (definitionProperty.isRetired())
-                                continue;
-
-                            Integer formId = NumberUtils.toInt(definitionProperty.getPropertyValue());
-                            for (Object patientId : intersectedMemberIds)
-                                serializedForms.add(new SerializedForm(NumberUtils.toInt(String.valueOf(patientId)),
-                                        formId));
-                        }
                     }
                 }
 
-                if (log.isDebugEnabled())
-                    log.debug("Serialized form informations:" + serializedForms);
+                List<Obs> observations = connectorService.getCohortObservations(bigCohort, concepts);
+                log.info("Streaming " + observations.size() + " observations information!");
+                serializer.write(dataOutputStream, observations);
 
-                System.out.println("Streaming " + serializedForms.size() + " forms information!");
-                serializer.write(dataOutputStream, serializedForms);
+                ReportingConnectorService reportingService = Context.getService(ReportingConnectorService.class);
+                List<DefinitionProperty> definitionProperties = reportingService.getAllDefinitionProperties();
+                Map<CohortDefinition, List<DefinitionProperty>> definitionMap = new HashMap<CohortDefinition, List<DefinitionProperty>>();
+                for (DefinitionProperty definitionProperty : definitionProperties) {
+                    List<DefinitionProperty> definitionPropertyList = definitionMap.get(definitionProperty.getCohortDefinition());
+                    if (definitionPropertyList == null) {
+                        definitionPropertyList = new ArrayList<DefinitionProperty>();
+                        definitionMap.put(definitionProperty.getCohortDefinition(), definitionPropertyList);
+                    }
+                    definitionPropertyList.add(definitionProperty);
+                }
+
+                context.setBaseCohort(bigCohort);
+
+                List<SerializedForm> serializedForms = new ArrayList<SerializedForm>();
+                for (CohortDefinition definition : definitionMap.keySet()) {
+                    if (log.isDebugEnabled()) {
+                        log.debug("Evaluating cohort definition: " + definition.getName());
+                    }
+
+                    Cohort smallCohort = definitionService.evaluate(definition, context);
+                    // the cohort could be null, so we don't want to get exception during the intersection process
+                    Cohort intersectedCohort = Cohort.intersect(bigCohort, smallCohort);
+                    if (log.isDebugEnabled()) {
+                        log.debug("Cohort data after intersection: " + intersectedCohort.getMemberIds());
+                    }
+
+                    for (DefinitionProperty definitionProperty : definitionMap.get(cohortDefinition)) {
+                        Integer formId = NumberUtils.toInt(definitionProperty.getPropertyValue());
+                        for (Integer patientId : intersectedCohort.getMemberIds()) {
+                            serializedForms.add(new SerializedForm(patientId, formId));
+                        }
+                    }
+
+                    if (log.isDebugEnabled()) {
+                        log.debug("Serialized form informations:" + serializedForms);
+                    }
+
+                    log.info("Streaming " + serializedForms.size() + " forms information!");
+                    serializer.write(dataOutputStream, serializedForms);
+                }
 
             } else {
                 serializer.write(dataOutputStream, Context.getCohortService().getAllCohorts());
             }
-
             dataOutputStream.close();
         } catch (Exception e) {
             log.error("Processing stream failed!", e);

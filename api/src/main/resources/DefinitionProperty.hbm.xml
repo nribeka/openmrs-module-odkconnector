@@ -17,9 +17,8 @@
 
         <property name="propertyDescription" type="java.lang.String" column="property_description" length="255"/>
 
-        <many-to-one name="extendedDefinition" class="org.openmrs.module.odkconnector.reporting.metadata.ExtendedDefinition">
-            <column name="definition_id"/>
-        </many-to-one>
+        <property name="cohortDefinition" type="org.openmrs.module.odkconnector.api.db.hibernate.type.CohortDefinitionType"
+                  column="definition" not-null="true"/>
 
         <many-to-one name="creator" class="org.openmrs.User" not-null="true">
             <column name="creator"/>

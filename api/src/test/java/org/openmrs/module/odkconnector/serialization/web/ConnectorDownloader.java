@@ -11,29 +11,29 @@
  *
  * Copyright (C) OpenMRS, LLC.  All Rights Reserved.
  */
-
 package org.openmrs.module.odkconnector.serialization.web;
 
-import java.io.*;
+import org.openmrs.module.odkconnector.serialization.serializer.openmrs.ObsSerializer;
+
+import java.io.ByteArrayOutputStream;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.junit.Test;
-import org.openmrs.module.odkconnector.serialization.serializer.openmrs.ObsSerializer;
-import org.openmrs.test.BaseModuleContextSensitiveTest;
+/**
+ * TODO: Write brief description about the class here.
+ */
+public class ConnectorDownloader {
 
-public class PatientWebConnectorTest extends BaseModuleContextSensitiveTest {
+    private static final String SERVER_URL = "https://amrs.ampath.or.ke/amrs";
 
-    private static final Log log = LogFactory.getLog(PatientWebConnectorTest.class);
-
-    private static final String SERVER_URL = "http://localhost:8081/openmrs-standalone";
-
-    @Test
-    public void serialize_shouldDisplayAllPatientInformation() throws Exception {
+    public void download(final int cohortId, final String username, final String password) throws Exception {
 
         // compose url
         URL u = new URL(SERVER_URL + "/module/odkconnector/download/patients.form");
@@ -47,10 +47,10 @@ public class PatientWebConnectorTest extends BaseModuleContextSensitiveTest {
 
         // write auth details to connection
         DataOutputStream outputStream = new DataOutputStream(new GZIPOutputStream(connection.getOutputStream()));
-        outputStream.writeUTF("admin");
-        outputStream.writeUTF("test");
+        outputStream.writeUTF(username);
+        outputStream.writeUTF(password);
         outputStream.writeBoolean(true);
-        outputStream.writeInt(9);
+        outputStream.writeInt(cohortId);
         outputStream.writeInt(1);
         outputStream.close();
 
@@ -133,4 +133,12 @@ public class PatientWebConnectorTest extends BaseModuleContextSensitiveTest {
         inputStream.close();
     }
 
+    public static void main(final String[] args) {
+        try {
+            ConnectorDownloader c = new ConnectorDownloader();
+            c.download(333, "nribeka", "Winyo1604?");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }

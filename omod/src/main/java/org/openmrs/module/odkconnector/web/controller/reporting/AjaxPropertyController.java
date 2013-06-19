@@ -16,6 +16,7 @@ package org.openmrs.module.odkconnector.web.controller.reporting;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -27,7 +28,6 @@ import org.codehaus.jackson.JsonFactory;
 import org.codehaus.jackson.JsonGenerator;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.odkconnector.reporting.metadata.DefinitionProperty;
-import org.openmrs.module.odkconnector.reporting.metadata.ExtendedDefinition;
 import org.openmrs.module.odkconnector.reporting.service.ReportingConnectorService;
 import org.openmrs.module.reporting.cohort.definition.CohortDefinition;
 import org.openmrs.module.reporting.cohort.definition.service.CohortDefinitionService;
@@ -73,13 +73,8 @@ public class AjaxPropertyController {
         DefinitionProperty definitionProperty = new DefinitionProperty(property, propertyValue, propertyDescription);
         // check if the extended definition for this cohort definition already exist or not
         CohortDefinition definition = definitionService.getDefinitionByUuid(uuid);
-        ExtendedDefinition extendedDefinition = reportingConnectorService.getExtendedDefinitionByDefinition(definition);
-        if (extendedDefinition == null) {
-            extendedDefinition = new ExtendedDefinition();
-            extendedDefinition.setCohortDefinition(definition);
-        }
-        extendedDefinition.addDefinitionProperty(definitionProperty);
-        reportingConnectorService.saveExtendedDefinition(extendedDefinition);
+        definitionProperty.setCohortDefinition(definition);
+        reportingConnectorService.saveDefinitionProperty(definitionProperty);
     }
 
     @RequestMapping(value = "/module/odkconnector/reporting/searchProperty.form", method = RequestMethod.POST)
@@ -89,7 +84,7 @@ public class AjaxPropertyController {
         ReportingConnectorService reportingConnectorService = Context.getService(ReportingConnectorService.class);
 
         CohortDefinition definition = definitionService.getDefinitionByUuid(uuid);
-        ExtendedDefinition extendedDefinition = reportingConnectorService.getExtendedDefinitionByDefinition(definition);
+        List<DefinitionProperty> definitionProperties = reportingConnectorService.getDefinitionPropertiesByCohortDefinition(definition);
 
         OutputStream stream = response.getOutputStream();
 
@@ -98,17 +93,13 @@ public class AjaxPropertyController {
         g.useDefaultPrettyPrinter();
 
         g.writeStartArray();
-        if (extendedDefinition != null)
-            for (DefinitionProperty property : extendedDefinition.getProperties()) {
-                if (property.isRetired())
-                    continue;
-
+            for (DefinitionProperty definitionProperty : definitionProperties) {
                 g.writeStartObject();
-                g.writeNumberField("propertyId", property.getId());
-                g.writeStringField("property", property.getProperty());
-                g.writeStringField("propertyValue", property.getPropertyValue());
-                g.writeStringField("propertyDescription", property.getPropertyDescription());
-                g.writeStringField("propertyUuid", property.getUuid());
+                g.writeNumberField("propertyId", definitionProperty.getId());
+                g.writeStringField("property", definitionProperty.getProperty());
+                g.writeStringField("propertyValue", definitionProperty.getPropertyValue());
+                g.writeStringField("propertyDescription", definitionProperty.getPropertyDescription());
+                g.writeStringField("propertyUuid", definitionProperty.getUuid());
                 g.writeEndObject();
             }
         g.writeEndArray();

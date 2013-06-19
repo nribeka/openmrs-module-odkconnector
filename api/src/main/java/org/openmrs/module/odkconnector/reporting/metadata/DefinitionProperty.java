@@ -17,8 +17,11 @@ package org.openmrs.module.odkconnector.reporting.metadata;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.openmrs.BaseOpenmrsMetadata;
+import org.openmrs.module.reporting.cohort.definition.CohortDefinition;
 
 public class DefinitionProperty extends BaseOpenmrsMetadata {
+
+    public static final String DEFINITION_PROPERTY_FORM = "odkconnector.property.form";
 
     private static final Log log = LogFactory.getLog(DefinitionProperty.class);
 
@@ -30,7 +33,7 @@ public class DefinitionProperty extends BaseOpenmrsMetadata {
 
     private String propertyDescription;
 
-    private ExtendedDefinition extendedDefinition;
+    private CohortDefinition cohortDefinition;
 
     /**
      * Default constructor to create definition property
@@ -122,20 +125,20 @@ public class DefinitionProperty extends BaseOpenmrsMetadata {
     }
 
     /**
-     * The inverse reference to the definition property
+     * Get the cohort cohortDefinition object
      *
-     * @return the definition property
+     * @return the cohort cohortDefinition object
      */
-    public ExtendedDefinition getExtendedDefinition() {
-        return extendedDefinition;
+    public CohortDefinition getCohortDefinition() {
+        return cohortDefinition;
     }
 
     /**
-     * Set the inverse reference to the definition property
+     * Set the cohort cohortDefinition object
      *
-     * @param extendedDefinition the definition property
+     * @param cohortDefinition the cohort cohortDefinition object
      */
-    public void setExtendedDefinition(final ExtendedDefinition extendedDefinition) {
-        this.extendedDefinition = extendedDefinition;
+    public void setCohortDefinition(final CohortDefinition cohortDefinition) {
+        this.cohortDefinition = cohortDefinition;
     }
 }

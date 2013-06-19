@@ -14,17 +14,16 @@
 
 package org.openmrs.module.odkconnector.reporting.service.impl;
 
-import java.util.List;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.openmrs.api.APIException;
 import org.openmrs.api.impl.BaseOpenmrsService;
 import org.openmrs.module.odkconnector.reporting.db.ReportingConnectorDAO;
 import org.openmrs.module.odkconnector.reporting.metadata.DefinitionProperty;
-import org.openmrs.module.odkconnector.reporting.metadata.ExtendedDefinition;
 import org.openmrs.module.odkconnector.reporting.service.ReportingConnectorService;
 import org.openmrs.module.reporting.cohort.definition.CohortDefinition;
+
+import java.util.List;
 
 public class ReportingConnectorServiceImpl extends BaseOpenmrsService implements ReportingConnectorService {
 
@@ -44,65 +43,6 @@ public class ReportingConnectorServiceImpl extends BaseOpenmrsService implements
      */
     public ReportingConnectorDAO getDao() {
         return dao;
-    }
-
-    /**
-     * Service method to save extended information for the reporting cohort definition
-     *
-     * @param extendedDefinition the extended definition
-     * @return saved extended definition
-     * @throws org.openmrs.api.APIException when the saving process failed
-     */
-    @Override
-    public ExtendedDefinition saveExtendedDefinition(final ExtendedDefinition extendedDefinition) throws APIException {
-        return dao.saveExtendedDefinition(extendedDefinition);
-    }
-
-    /**
-     * Service method to get extended definition by the extended definition uuid
-     *
-     * @param uuid the extended definition uuid
-     * @return the extended definition
-     * @throws org.openmrs.api.APIException when retrieving the extended definition failed
-     */
-    @Override
-    public ExtendedDefinition getExtendedDefinitionByUuid(final String uuid) throws APIException {
-        return dao.getExtendedDefinitionByUuid(uuid);
-    }
-
-    /**
-     * Service method to get extended definition by the definition
-     *
-     * @param definition the definition
-     * @return the extended definition
-     * @throws org.openmrs.api.APIException when retrieving the extended definition failed
-     */
-    @Override
-    public ExtendedDefinition getExtendedDefinitionByDefinition(final CohortDefinition definition) throws APIException {
-        return dao.getExtendedDefinitionByDefinition(definition);
-    }
-
-    /**
-     * Service method to get extended definition by the extended definition id
-     *
-     * @param id the extended definition id
-     * @return the extended definition
-     * @throws org.openmrs.api.APIException when retrieving the extended definition failed
-     */
-    @Override
-    public ExtendedDefinition getExtendedDefinition(final Integer id) throws APIException {
-        return dao.getExtendedDefinition(id);
-    }
-
-    /**
-     * Service method to get all saved extended definitions
-     *
-     * @return alll saved extended definitions
-     * @throws org.openmrs.api.APIException when retrieving all extended definitions failed
-     */
-    @Override
-    public List<ExtendedDefinition> getAllExtendedDefinition() throws APIException {
-        return dao.getAllExtendedDefinition();
     }
 
     /**
@@ -141,4 +81,14 @@ public class ReportingConnectorServiceImpl extends BaseOpenmrsService implements
         return dao.getDefinitionPropertyByUuid(uuid);
     }
 
+    @Override
+    public List<DefinitionProperty> getDefinitionPropertiesByCohortDefinition(final CohortDefinition cohortDefinition)
+            throws APIException {
+        return dao.getDefinitionPropertiesByCohortDefinition(cohortDefinition);
+    }
+
+    @Override
+    public List<DefinitionProperty> getAllDefinitionProperties() throws APIException {
+        return dao.getAllDefinitionProperties();
+    }
 }

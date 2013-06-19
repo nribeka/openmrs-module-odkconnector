@@ -14,19 +14,19 @@
 
 package org.openmrs.module.odkconnector.serialization.serializer.custom;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.openmrs.annotation.Handler;
+import org.openmrs.module.odkconnector.reporting.metadata.DefinitionProperty;
+import org.openmrs.module.odkconnector.serialization.Serializer;
+import org.openmrs.module.odkconnector.serialization.serializable.SerializedForm;
+
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.openmrs.annotation.Handler;
-import org.openmrs.module.odkconnector.reporting.metadata.ExtendedDefinition;
-import org.openmrs.module.odkconnector.serialization.Serializer;
-import org.openmrs.module.odkconnector.serialization.serializable.SerializedForm;
 
 @Handler(supports = SerializedForm.class, order = 50)
 public class SerializedFormSerializer implements Serializer {
@@ -50,7 +50,7 @@ public class SerializedFormSerializer implements Serializer {
         DataOutputStream outputStream = new DataOutputStream(stream);
 
         outputStream.writeInt(serializedForm.getPatientId());
-        outputStream.writeUTF(ExtendedDefinition.DEFINITION_PROPERTY_FORM);
+        outputStream.writeUTF(DefinitionProperty.DEFINITION_PROPERTY_FORM);
         outputStream.writeByte(TYPE_INT);
         outputStream.writeInt(serializedForm.getFormId());
         outputStream.writeUTF(dateFormat.format(new Date()));

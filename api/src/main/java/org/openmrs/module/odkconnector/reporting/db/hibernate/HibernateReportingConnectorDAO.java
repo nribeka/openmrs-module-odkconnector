@@ -14,18 +14,19 @@
 
 package org.openmrs.module.odkconnector.reporting.db.hibernate;
 
-import java.util.List;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.Criteria;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
+import org.openmrs.api.APIException;
 import org.openmrs.api.db.DAOException;
 import org.openmrs.module.odkconnector.reporting.db.ReportingConnectorDAO;
 import org.openmrs.module.odkconnector.reporting.metadata.DefinitionProperty;
-import org.openmrs.module.odkconnector.reporting.metadata.ExtendedDefinition;
 import org.openmrs.module.reporting.cohort.definition.CohortDefinition;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class HibernateReportingConnectorDAO implements ReportingConnectorDAO {
 
@@ -45,56 +46,6 @@ public class HibernateReportingConnectorDAO implements ReportingConnectorDAO {
      */
     public SessionFactory getSessionFactory() {
         return sessionFactory;
-    }
-
-    /**
-     * @see org.openmrs.module.odkconnector.reporting.service.ReportingConnectorService#saveExtendedDefinition(org.openmrs.module.odkconnector.reporting.metadata.ExtendedDefinition)
-     */
-    @Override
-    public ExtendedDefinition saveExtendedDefinition(final ExtendedDefinition extendedDefinition) throws DAOException {
-        sessionFactory.getCurrentSession().saveOrUpdate(extendedDefinition);
-        return extendedDefinition;
-    }
-
-    /**
-     * @see org.openmrs.module.odkconnector.reporting.service.ReportingConnectorService#getExtendedDefinitionByUuid(String)
-     */
-    @Override
-    public ExtendedDefinition getExtendedDefinitionByUuid(final String uuid) throws DAOException {
-        Criteria criteria = sessionFactory.getCurrentSession().createCriteria(ExtendedDefinition.class);
-        criteria.add(Restrictions.eq("uuid", uuid));
-        criteria.add(Restrictions.eq("retired", Boolean.FALSE));
-        return (ExtendedDefinition) criteria.uniqueResult();
-    }
-
-    /**
-     * @see org.openmrs.module.odkconnector.reporting.service.ReportingConnectorService#getExtendedDefinitionByDefinition(org.openmrs.module.reporting.cohort.definition.CohortDefinition)
-     */
-    @Override
-    public ExtendedDefinition getExtendedDefinitionByDefinition(final CohortDefinition definition) throws DAOException {
-        Criteria criteria = sessionFactory.getCurrentSession().createCriteria(ExtendedDefinition.class);
-        criteria.add(Restrictions.eq("cohortDefinition", definition));
-        criteria.add(Restrictions.eq("retired", Boolean.FALSE));
-        return (ExtendedDefinition) criteria.uniqueResult();
-    }
-
-    /**
-     * @see org.openmrs.module.odkconnector.reporting.service.ReportingConnectorService#getExtendedDefinition(Integer)
-     */
-    @Override
-    public ExtendedDefinition getExtendedDefinition(final Integer id) throws DAOException {
-        return (ExtendedDefinition) sessionFactory.getCurrentSession().get(ExtendedDefinition.class, id);
-    }
-
-    /**
-     * @see org.openmrs.module.odkconnector.reporting.service.ReportingConnectorService#getAllExtendedDefinition()
-     */
-    @Override
-    @SuppressWarnings("unchecked")
-    public List<ExtendedDefinition> getAllExtendedDefinition() throws DAOException {
-        Criteria criteria = sessionFactory.getCurrentSession().createCriteria(ExtendedDefinition.class);
-        criteria.add(Restrictions.eq("retired", Boolean.FALSE));
-        return criteria.list();
     }
 
     /**
@@ -128,6 +79,24 @@ public class HibernateReportingConnectorDAO implements ReportingConnectorDAO {
         criteria.add(Restrictions.eq("uuid", uuid));
         criteria.add(Restrictions.eq("retired", Boolean.FALSE));
         return (DefinitionProperty) criteria.uniqueResult();
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public List<DefinitionProperty> getDefinitionPropertiesByCohortDefinition(final CohortDefinition cohortDefinition)
+            throws APIException {
+        Criteria criteria = sessionFactory.getCurrentSession().createCriteria(DefinitionProperty.class);
+        criteria.add(Restrictions.eq("cohortDefinition", cohortDefinition));
+        criteria.add(Restrictions.eq("retired", Boolean.FALSE));
+        return criteria.list();
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public List<DefinitionProperty> getAllDefinitionProperties() throws APIException {
+        Criteria criteria = sessionFactory.getCurrentSession().createCriteria(DefinitionProperty.class);
+        criteria.add(Restrictions.eq("retired", Boolean.FALSE));
+        return criteria.list();
     }
 
 }
