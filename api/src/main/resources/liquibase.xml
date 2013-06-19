@@ -19,7 +19,7 @@
             <column name="property_value" type="varchar(255)"/>
             <column name="property_description" type="varchar(255)"/>
 
-            <column name="definition_id" type="int" defaultValueNumeric="0">
+            <column name="definition" type="varchar(38)">
                 <constraints nullable="false"/>
             </column>
 
