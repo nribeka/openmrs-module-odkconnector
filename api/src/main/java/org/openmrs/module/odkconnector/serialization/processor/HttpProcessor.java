@@ -185,7 +185,7 @@ public class HttpProcessor implements Processor {
                         log.debug("Cohort data after intersection: " + intersectedCohort.getMemberIds());
                     }
 
-                    for (DefinitionProperty definitionProperty : definitionMap.get(cohortDefinition)) {
+                    for (DefinitionProperty definitionProperty : definitionMap.get(definition)) {
                         Integer formId = NumberUtils.toInt(definitionProperty.getPropertyValue());
                         for (Integer patientId : intersectedCohort.getMemberIds()) {
                             serializedForms.add(new SerializedForm(patientId, formId));

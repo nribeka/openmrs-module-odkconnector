@@ -22,6 +22,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.Criteria;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Disjunction;
 import org.hibernate.criterion.Restrictions;
 import org.openmrs.Cohort;
 import org.openmrs.Concept;
@@ -77,6 +78,15 @@ public class HibernateConnectorDAO implements ConnectorDAO {
         // only put the concepts restriction when they are not empty. otherwise, just return all obs
         if (CollectionUtils.isNotEmpty(concepts))
             criteria.add(Restrictions.in("concept", concepts));
+
+        Disjunction disjunction = Restrictions.disjunction();
+        disjunction.add(Restrictions.isNotNull("valueNumeric"));
+        disjunction.add(Restrictions.isNotNull("valueDatetime"));
+        disjunction.add(Restrictions.isNotNull("valueCoded"));
+        disjunction.add(Restrictions.isNotNull("valueText"));
+        disjunction.add(Restrictions.isNotNull("valueDrug"));
+        criteria.add(disjunction);
+
         criteria.add(Restrictions.eq("voided", Boolean.FALSE));
         return criteria.list();
     }
